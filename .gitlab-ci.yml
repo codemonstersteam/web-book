@@ -19,6 +19,8 @@ build:
       - site
 
 job:
+  stage: job
+  image: python:3.9.17-buster
   script:
     - echo "job rulles ok"
   rules:
