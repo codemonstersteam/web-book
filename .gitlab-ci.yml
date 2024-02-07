@@ -7,6 +7,12 @@ build:
   stage: build
   image: python:3.9.17-buster
   script:
+    - echo CI_COMMIT_TAG = $CI_COMMIT_TAG
+    - echo "CI_COMMIT_TAG != null :> $($CI_COMMIT_TAG != null)"
+    - echo CI_COMMIT_BRANCH = $CI_COMMIT_BRANCH
+    - echo CI_DEFAULT_BRANCH = $CI_DEFAULT_BRANCH
+    - echo "CI_COMMIT_BRANCH == CI_DEFAULT_BRANCH :> $($CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH)"
+    - echo "end debug params"
     - pip install mkdocs-material
     - mkdocs build
   artifacts:
