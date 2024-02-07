@@ -1,0 +1,46 @@
+stages:
+  - build
+  - docker
+  - deploy
+
+build:
+  stage: build
+  image: python:3.9.17-buster
+  script:
+    - pip install mkdocs-material
+    - mkdocs build
+  artifacts:
+    paths:
+      - site
+
+docker-build:
+  stage: docker
+  variables:
+    CI_REGISTRY_IMAGE: "codemonstersteam/${CI_PROJECT_NAME}"
+  image:
+    name: gcr.io/kaniko-project/executor:v1.14.0-debug
+    entrypoint: [""]
+  script:
+    - |
+      echo "{\"auths\":{\"${CI_REGISTRY}\":{\"auth\":\"$(printf "%s:%s" "${CI_REGISTRY_USER}" "${CI_REGISTRY_PASSWORD}" | base64 | tr -d '\n')\"}}}" > /kaniko/.docker/config.json
+    - /kaniko/executor
+      --context "${CI_PROJECT_DIR}"
+      --dockerfile "${CI_PROJECT_DIR}/Dockerfile"
+      --destination "${CI_REGISTRY_IMAGE}:${CI_COMMIT_TAG}"
+  rules:
+    - if: $CI_COMMIT_TAG && $CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH
+
+deploy:
+  stage: deploy
+  image:
+    name: bitnami/kubectl:latest
+    entrypoint: ['']
+  script:
+    - ls -l
+    - TAG=$CI_COMMIT_TAG && sed -i "s/:tagname/:${TAG}/g" k8s-deployment.yaml
+    - kubectl apply -f k8s-deployment.yaml
+  dependencies:
+    - build
+    - docker-build
+  rules:
+    - if: $CI_COMMIT_TAG && $CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH
