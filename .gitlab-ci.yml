@@ -61,8 +61,10 @@ deploy:
     entrypoint: ['']
   script:
     - ls -l
-    - TAG=$CI_COMMIT_TAG && sed -i "s/:tagname/:${TAG}/g" k8s-deployment.yaml
-    - kubectl apply -f k8s-deployment.yaml
+    - TAG=$CI_COMMIT_TAG && sed -i "s/:tagname/:${TAG}/g" k8s/k8s-deployment.yaml
+    - kubectl apply -f k8s/k8s-namespace.yaml
+    - kubectl apply -f k8s/k8s-deployment.yaml
+    - kubectl apply -f k8s/k8s-ingress-rules.yaml
   dependencies:
     - build
     - docker-build

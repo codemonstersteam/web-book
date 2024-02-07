@@ -1,0 +1,8 @@
+kind: Service
+apiVersion: v1
+metadata:
+  name: codemonsters-website
+  namespace: default
+spec:
+  type: ExternalName
+  externalName: codemonsters-website.codemonsters.svc.cluster.local
