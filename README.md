@@ -29,5 +29,11 @@ curl -v \
   - [ ] [вторую статью](https://tproger.ru/articles/kak-ne-stoit-pisat-kod-razbiraem-owibki)
   - [ ] [третью статью](https://docs.google.com/document/d/1VpK4RVPBIQThqbB_p858OaHTztFCghycuxAvTbHTY70/edit?usp=sharing)
   - [ ] четвертую статью (в процессе создания)
+  - [ ] статья пять
+  - [ ] статья шесть
   - [ ] перенести [обновленный кукбук](https://git.codemonsters.team/guides/ddd-code-toolkit) в [раздел tutorials](https://codemonsters.team/tutorials/server/ddd-in-action/) 
         как сделать универсально внешним линком?
+  - [ ] книга - добавь на сайт оглавление
+    - [ ] дорожную карту
+  - [ ] проект Flutter compose + test -> Backend kotlin ddd cook book
+  - [ ] тест производительности - эксперимент на фрэймворки  - затащить
