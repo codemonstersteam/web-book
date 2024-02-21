@@ -40,7 +40,7 @@ description: Рекомендую к прочтению! Коллекция пр
 
 !!! note ""
 
-      Крутейшая статья про SQL от автора фрэймворка JOOQ [True orders of SQL Operations](/https://blog.jooq.org/a-beginners-guide-to-the-true-order-of-sql-operations/)
+      Крутейшая статья про SQL от автора фрэймворка JOOQ [True orders of SQL Operations](https://blog.jooq.org/a-beginners-guide-to-the-true-order-of-sql-operations/)
 
 !!! note "SQL: быстрое погружение"
 

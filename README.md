@@ -22,7 +22,7 @@ curl -v \
 -e 192.168.50.98
 
 ## План
-- [ ] на сайт в раздел https://codemonsters.team/effective-developer/
+  - [ ] на сайт в раздел https://codemonsters.team/effective-developer/
   ниже раздела основы перенести, указать автора и ссылку на тпрогер
 
   - [ ] [первую статью](https://tproger.ru/articles/kak-napisat-chistyj-kod-i-sdelat-zhizn-proshhe) 
