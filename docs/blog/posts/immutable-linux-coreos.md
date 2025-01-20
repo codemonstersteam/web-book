@@ -13,7 +13,6 @@ categories:
   - gitlab runner
   - devops
   - container driven approach
-draft: true
 ---
 
 # Immitable Linux CoreOS как среда для бегущего в Gitlab тест контейнера 
