@@ -1,4 +1,9 @@
-Pipeline for CD
+## Upgrade Mk Docs
+
+https://squidfunk.github.io/mkdocs-material/upgrade/
+
+
+# Pipeline for CD
 ## install
 ```
 pip install mkdocs-material
@@ -16,12 +21,12 @@ mkdocs build
 
 ## Docker Build
 ````
-docker build -t codemonstersteam/website:0.0.1-RC36 .
+docker build -t codemonstersteam/website:0.0.2 .
 ````
 
 ## check
 ```
-docker run --name web-book -p 8082:80 codemonstersteam/web-book:0.0.1-RC5
+docker run --name web-book -p 8082:80 codemonstersteam/web-book:0.0.2
 
 curl http://localhost:8082 
 

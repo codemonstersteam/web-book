@@ -6,6 +6,7 @@ theme:
   features:
     - navigation.tabs
     - navigation.sections
+    - navigation.indexes
     - toc.integrate
     - navigation.top
     - search.suggest
@@ -27,7 +28,8 @@ theme:
         name: Switch to light mode
       primary: teal
       accent: lime
-
+plugins:
+  - blog
 extra:
   analytics:
     provider: yandex
