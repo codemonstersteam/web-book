@@ -1,5 +1,5 @@
 ---
-title: Книга кода
+title: Книга Кода
 description: Книга кода. Эффективная разработка без грузилова.
 group: https://t.me/codemonsterslogs
 ---
