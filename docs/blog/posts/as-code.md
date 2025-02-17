@@ -3,9 +3,9 @@ title: AS Code как ДНК инженерной культуры
 date: 2025-02-17  
 authors:  
   - gardener  
-slug: Immutable-linux-coreos  
+slug: as-code  
 description:   
-    Синтез про историю возникновения ..as code   
+    Синтез про историю возникновения ..as code и актуальность интеграции в культуру  
 categories:  
   - linux  
   - git  
