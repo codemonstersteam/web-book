@@ -1,7 +1,6 @@
 ---
-title: Обзор
+title: Об авторе
 description: О миссии и видении
-js: [{url: 'https://dartpad.dev/inject_embed.dart.js', defer: true}]
 ---
 
 <img
