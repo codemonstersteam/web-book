@@ -1,5 +1,5 @@
 ---
-title: 1 Заклинателю приложений.
+title: 1 Заклинателю приложений
 description: Книга кода. 1 Заклинателю приложений. Codegen Machine
 group: https://t.me/codemonsterslogs
 ---
