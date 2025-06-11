@@ -3,7 +3,7 @@ title: Пример разработки с ИИ компонентного те
 date: 2025-06-10  
 authors:  
   - gardener  
-slug: as-code  
+slug: ai-component-tests-example  
 description:   
     Пример разработки с ИИ компонентного тестирования на учебном проекте
 categories:  
