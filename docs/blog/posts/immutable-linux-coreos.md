@@ -341,7 +341,6 @@ docker run --interactive --rm quay.io/coreos/butane:release \
 
 ````
 ## Загружаю комп с флешки
-![img_1.png](lector.png)
 
 ## Прошиваю диск компа linux в соответствии с конфигом, зажигаем машину
 [Подробная инфа про разновидности снабжения машин](https://docs.fedoraproject.org/en-US/fedora-coreos/bare-metal/)
