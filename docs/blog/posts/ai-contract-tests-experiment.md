@@ -107,6 +107,7 @@ https://microcks.io/.
 > Как я могу разработать софт лучше, читабельнее, качественнее — с тестами и при этом не написать ни строчки кода вручную?
 
 ## Момент истины: 11.07.2025, 5:00
+[вторая версия утилиты](https://git.codemonsters.team/guides/mq-rest-sync-adapter/-/tree/feature/contract-tests/contract-tests-v2?ref_type=heads)  
 
 Еле встал в 5 утра. Добрался до Claude терминала, продирая глаза. В тот день стояла дикая жара в Подмосковье. 
 
@@ -157,6 +158,10 @@ https://microcks.io/.
 
 **Цель:** Написать инструмент валидации контрактных тестов на Go по спецификации AsyncAPI 3.0 потребителя и поставщика.
 
+Процесс и результаты разработки: 
+[вторая версия утилиты](https://git.codemonsters.team/guides/mq-rest-sync-adapter/-/tree/feature/contract-tests/contract-tests-v2?ref_type=heads)  
+
+
 **Методология:** TDD (Test-Driven Development) от тестов.
 
 ### Входные данные
@@ -165,9 +170,6 @@ https://microcks.io/.
 - Путь/URL к спецификации потребителя (consumer)
 - Канал взаимодействия с поставщиком
 - URL к спецификации поставщика
-
-
-
 
 
 
