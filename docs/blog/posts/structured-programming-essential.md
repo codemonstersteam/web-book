@@ -3,7 +3,7 @@ title: Структурирование программ
 date: 2025-12-12
 authors:
   - gardener
-slug: structuring-program-essential
+slug: structured-programming-essential
 description: >
   Как писать программы без ошибок с самого начала.
   Рассматриваем принципы структурного программирования и методы разработки правильных программ.
