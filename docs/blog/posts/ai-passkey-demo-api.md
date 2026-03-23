@@ -37,7 +37,7 @@ categories:
 2. Открой VS Code → Extensions (`Ctrl+Shift+X` / `Cmd+Shift+X`)
 3. Найди **Claude Code** и установи плагин
 
-![Claude Code extension in VS Code](https://marketplace.visualstudio.com/items?itemName=anthropic.claude-code)
+![Claude Code extension in VS Code](https://anthropic.gallerycdn.vsassets.io/extensions/anthropic/claude-code/2.1.81/1774045589184/Microsoft.VisualStudio.Services.Icons.Default)
 
 ### Установка Claude Code
 
