@@ -1,4 +1,5 @@
 site_name: CodeMonsters.team
+site_url: https://codemonsters.team
 theme:
   name: material
   custom_dir: overrides
