@@ -1,6 +1,6 @@
 ---
 title: README — это продукт. Документация по JTBD с ИИ-агентом
-date: 2026-04-07
+date: 2026-04-04
 authors:
   - gardener
 slug: documentation-as-product-jtbd
