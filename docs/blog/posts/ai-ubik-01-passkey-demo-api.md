@@ -11,6 +11,7 @@ categories:
   - go
   - webauthn
   - api
+  - ubik
 ---
 
 # Passkey Demo API — собираем сервис авторизации с ИИ-агентом | API First
