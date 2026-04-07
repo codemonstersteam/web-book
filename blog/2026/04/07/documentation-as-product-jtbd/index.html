@@ -1,0 +1,3416 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+        <meta name="description" content="Как мы перестали писать документацию «для всех» и сделали так, чтобы каждый файл в репозитории знал своего потребителя. Разбор процесса: Opus думает, Sonnet делает.">
+      
+      
+      
+        <link rel="canonical" href="https://codemonsters.team/blog/2026/04/07/documentation-as-product-jtbd/">
+      
+      
+        <link rel="prev" href="../../../03/23/ai-passkey-demo-api/">
+      
+      
+      
+        
+      
+      
+      <link rel="icon" href="../../../../../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.6">
+    
+    
+      
+        <title>README — это продукт. Документация по JTBD с ИИ-агентом - CodeMonsters.team</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../../../../assets/stylesheets/main.484c7ddc.min.css">
+      
+        
+        <link rel="stylesheet" href="../../../../../assets/stylesheets/palette.ab4e12ef.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+    <script>__md_scope=new URL("../../../../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+  
+
+
+  <!-- Yandex.Metrika counter -->
+<script type="text/javascript" >
+   (function(m,e,t,r,i,k,a){m[i]=m[i]||function(){(m[i].a=m[i].a||[]).push(arguments)};
+   m[i].l=1*new Date();
+   for (var j = 0; j < document.scripts.length; j++) {if (document.scripts[j].src === r) { return; }}
+   k=e.createElement(t),a=e.getElementsByTagName(t)[0],k.async=1,k.src=r,a.parentNode.insertBefore(k,a)})
+   (window, document, "script", "https://mc.yandex.ru/metrika/tag.js", "ym");
+
+   ym(92584192, "init", {
+        clickmap:true,
+        trackLinks:true,
+        accurateTrackBounce:true,
+        webvisor:true
+   });
+</script>
+<noscript><div><img src="https://mc.yandex.ru/watch/92584192" style="position:absolute; left:-9999px;" alt="" /></div></noscript>
+<!-- /Yandex.Metrika counter -->
+  
+    <script>"undefined"!=typeof __md_analytics&&__md_analytics()</script>
+  
+
+    
+    
+  </head>
+  
+  
+    
+    
+      
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="blue-grey" data-md-color-accent="purple">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#readme-jtbd-" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+<header class="md-header" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href="../../../../.." title="CodeMonsters.team" class="md-header__button md-logo" aria-label="CodeMonsters.team" data-md-component="logo">
+      
+  <img src="/cm-logo-header.png" alt="logo">
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            CodeMonsters.team
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              README — это продукт. Документация по JTBD с ИИ-агентом
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+        <form class="md-header__option" data-md-component="palette">
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="default" data-md-color-primary="blue-grey" data-md-color-accent="purple"  aria-label="Switch to dark mode"  type="radio" name="__palette" id="__palette_0">
+    
+      <label class="md-header__button md-icon" title="Switch to dark mode" for="__palette_1" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M17 6H7c-3.31 0-6 2.69-6 6s2.69 6 6 6h10c3.31 0 6-2.69 6-6s-2.69-6-6-6m0 10H7c-2.21 0-4-1.79-4-4s1.79-4 4-4h10c2.21 0 4 1.79 4 4s-1.79 4-4 4M7 9c-1.66 0-3 1.34-3 3s1.34 3 3 3 3-1.34 3-3-1.34-3-3-3"/></svg>
+      </label>
+    
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="slate" data-md-color-primary="teal" data-md-color-accent="lime"  aria-label="Switch to light mode"  type="radio" name="__palette" id="__palette_1">
+    
+      <label class="md-header__button md-icon" title="Switch to light mode" for="__palette_0" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M17 7H7a5 5 0 0 0-5 5 5 5 0 0 0 5 5h10a5 5 0 0 0 5-5 5 5 0 0 0-5-5m0 8a3 3 0 0 1-3-3 3 3 0 0 1 3-3 3 3 0 0 1 3 3 3 3 0 0 1-3 3"/></svg>
+      </label>
+    
+  
+</form>
+      
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+            
+<nav class="md-tabs" aria-label="Tabs" data-md-component="tabs">
+  <div class="md-grid">
+    <ul class="md-tabs__list">
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../../../../.." class="md-tabs__link">
+        
+  
+  
+    
+  
+  Начало
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../../../../../overview/" class="md-tabs__link">
+        
+  
+  
+    
+  
+  Об авторе
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+    
+  
+  
+    
+    
+      <li class="md-tabs__item md-tabs__item--active">
+        <a href="../../../../" class="md-tabs__link">
+          
+  
+  
+    
+  
+  Blog
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../../../../codebook/" class="md-tabs__link">
+          
+  
+  
+    
+  
+  Codebook
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../../../../effective-developer/" class="md-tabs__link">
+          
+  
+  
+    
+  
+  Effective developer
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../../../../resources/" class="md-tabs__link">
+          
+  
+  
+    
+  
+  Resources
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../../../../tutorials/" class="md-tabs__link">
+          
+  
+  
+    
+  
+  Tutorials
+
+        </a>
+      </li>
+    
+  
+
+      
+    </ul>
+  </div>
+</nav>
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+                
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" hidden>
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+  
+
+
+  
+
+<nav class="md-nav md-nav--primary md-nav--lifted md-nav--integrated" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../../../../.." title="CodeMonsters.team" class="md-nav__button md-logo" aria-label="CodeMonsters.team" data-md-component="logo">
+      
+  <img src="/cm-logo-header.png" alt="logo">
+
+    </a>
+    CodeMonsters.team
+  </label>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../.." class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Начало
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../../overview/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Об авторе
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+        
+        
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3" checked>
+        
+          
+          <div class="md-nav__link md-nav__container">
+            <a href="../../../../" class="md-nav__link ">
+              
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Blog
+  
+
+    
+  </span>
+  
+  
+
+            </a>
+            
+              
+              <label class="md-nav__link " for="__nav_3" id="__nav_3_label" tabindex="">
+                <span class="md-nav__icon md-icon"></span>
+              </label>
+            
+          </div>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_3_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_3">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Blog
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+        
+          
+          
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3_2" >
+        
+          
+          <label class="md-nav__link" for="__nav_3_2" id="__nav_3_2_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Archive
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_3_2_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_3_2">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Archive
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+    
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../archive/2026/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    2026
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../archive/2025/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    2025
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+        
+          
+          
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3_3" >
+        
+          
+          <label class="md-nav__link" for="__nav_3_3" id="__nav_3_3_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Categories
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_3_3_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_3_3">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Categories
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+    
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../category/ai/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    ai
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../category/api/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    api
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../category/claude/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    claude
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../category/code/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    code
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../category/codebook/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    codebook
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../category/communication/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    communication
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../category/component-tests/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    component-tests
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../category/container-driven-approach/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    container driven approach
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../category/contract-tests/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    contract-tests
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../category/coreos/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    coreos
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../category/devops/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    devops
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../category/documentation/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    documentation
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../category/git/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    git
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../category/gitlab/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    gitlab
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../category/gitlab-runner/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    gitlab runner
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../category/go/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    go
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../category/howtocode/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    howtocode
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../category/linux/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    linux
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../category/process/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    process
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../category/tests/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    tests
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../category/ubik/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    ubik
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../category/webauthn/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    webauthn
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4" >
+        
+          
+          <div class="md-nav__link md-nav__container">
+            <a href="../../../../../codebook/" class="md-nav__link ">
+              
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Codebook
+  
+
+    
+  </span>
+  
+  
+
+            </a>
+            
+              
+              <label class="md-nav__link " for="__nav_4" id="__nav_4_label" tabindex="0">
+                <span class="md-nav__icon md-icon"></span>
+              </label>
+            
+          </div>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_4_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Codebook
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../../codebook/1-codegen-machine/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    1 Заклинателю приложений
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_5" >
+        
+          
+          <div class="md-nav__link md-nav__container">
+            <a href="../../../../../effective-developer/" class="md-nav__link ">
+              
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Effective developer
+  
+
+    
+  </span>
+  
+  
+
+            </a>
+            
+              
+              <label class="md-nav__link " for="__nav_5" id="__nav_5_label" tabindex="0">
+                <span class="md-nav__icon md-icon"></span>
+              </label>
+            
+          </div>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_5_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_5">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Effective developer
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../../effective-developer/life/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Life
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../../effective-developer/rules/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Rules
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+      
+        
+      
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_5_4" >
+        
+          
+          <label class="md-nav__link" for="__nav_5_4" id="__nav_5_4_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Code
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_5_4_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_5_4">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Code
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_5_4_1" >
+        
+          
+          <label class="md-nav__link" for="__nav_5_4_1" id="__nav_5_4_1_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Clean code
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="3" aria-labelledby="__nav_5_4_1_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_5_4_1">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Clean code
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../../effective-developer/code/clean-code/how-not-to-write-code/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Как не стоит писать код: разбираем ошибки
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../../effective-developer/code/clean-code/how-to-integration-test/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Гайд по чистому коду. Учимся писать тесты.
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../../effective-developer/code/clean-code/how-to/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Как написать чистый код и сделать жизнь проще
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_5_5" >
+        
+          
+          <div class="md-nav__link md-nav__container">
+            <a href="../../../../../effective-developer/devops/" class="md-nav__link ">
+              
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Devops
+  
+
+    
+  </span>
+  
+  
+
+            </a>
+            
+              
+              <label class="md-nav__link " for="__nav_5_5" id="__nav_5_5_label" tabindex="0">
+                <span class="md-nav__icon md-icon"></span>
+              </label>
+            
+          </div>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_5_5_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_5_5">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Devops
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_5_5_2" >
+        
+          
+          <div class="md-nav__link md-nav__container">
+            <a href="../../../../../effective-developer/devops/free-ipa/" class="md-nav__link ">
+              
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Free ipa
+  
+
+    
+  </span>
+  
+  
+
+            </a>
+            
+          </div>
+        
+        <nav class="md-nav" data-md-level="3" aria-labelledby="__nav_5_5_2_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_5_5_2">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Free ipa
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_5_6" >
+        
+          
+          <div class="md-nav__link md-nav__container">
+            <a href="../../../../../effective-developer/newbie-roadmap/" class="md-nav__link ">
+              
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Newbie roadmap
+  
+
+    
+  </span>
+  
+  
+
+            </a>
+            
+          </div>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_5_6_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_5_6">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Newbie roadmap
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_6" >
+        
+          
+          <div class="md-nav__link md-nav__container">
+            <a href="../../../../../resources/" class="md-nav__link ">
+              
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Resources
+  
+
+    
+  </span>
+  
+  
+
+            </a>
+            
+              
+              <label class="md-nav__link " for="__nav_6" id="__nav_6_label" tabindex="0">
+                <span class="md-nav__icon md-icon"></span>
+              </label>
+            
+          </div>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_6_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_6">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Resources
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../../resources/videos/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Видео
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../../resources/web-links/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Полезные ссылки
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_6_4" >
+        
+          
+          <label class="md-nav__link" for="__nav_6_4" id="__nav_6_4_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Books
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_6_4_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_6_4">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Books
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../../resources/books/advanced-web/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Подборка Эффективных книг > Веб-разработка
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../../resources/books/essential/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Подборка Эффективных книг > новичку
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_7" >
+        
+          
+          <div class="md-nav__link md-nav__container">
+            <a href="../../../../../tutorials/" class="md-nav__link ">
+              
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Tutorials
+  
+
+    
+  </span>
+  
+  
+
+            </a>
+            
+              
+              <label class="md-nav__link " for="__nav_7" id="__nav_7_label" tabindex="0">
+                <span class="md-nav__icon md-icon"></span>
+              </label>
+            
+          </div>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_7_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_7">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Tutorials
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+      
+        
+      
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_7_2" >
+        
+          
+          <label class="md-nav__link" for="__nav_7_2" id="__nav_7_2_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Server
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_7_2_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_7_2">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Server
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../../tutorials/server/ddd-in-action/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Руководства
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+          
+          
+  <div class="md-content md-content--post" data-md-component="content">
+    <div class="md-sidebar md-sidebar--post" data-md-component="sidebar" data-md-type="navigation">
+      <div class="md-sidebar__scrollwrap">
+        <div class="md-sidebar__inner md-post">
+          <nav class="md-nav md-nav--primary">
+            <div class="md-post__back">
+              <div class="md-nav__title md-nav__container">
+                <a href="../../../../" class="md-nav__link">
+                  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+                  <span class="md-ellipsis">
+                    Back to index
+                  </span>
+                </a>
+              </div>
+            </div>
+            
+              <div class="md-post__authors md-typeset">
+                
+                  <div class="md-profile md-post__profile">
+                    <span class="md-author md-author--long">
+                      <img src="https://avatars.githubusercontent.com/u/45400275" alt="Max Morev">
+                    </span>
+                    <span class="md-profile__description">
+                      <strong>
+                        
+                          <a href="https://github.com/codemonstersteam">Max Morev</a>
+                        
+                      </strong>
+                      <br>
+                      Creator
+                    </span>
+                  </div>
+                
+              </div>
+            
+            <ul class="md-post__meta md-nav__list">
+              <li class="md-nav__item md-nav__item--section">
+                <div class="md-post__title">
+                  <span class="md-ellipsis">
+                    Metadata
+                  </span>
+                </div>
+                <nav class="md-nav">
+                  <ul class="md-nav__list">
+                    <li class="md-nav__item">
+                      <div class="md-nav__link">
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 19H5V8h14m-3-7v2H8V1H6v2H5c-1.11 0-2 .89-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V5a2 2 0 0 0-2-2h-1V1m-1 11h-5v5h5z"/></svg>
+                        <time datetime="2026-04-07 00:00:00+00:00" class="md-ellipsis">April 7, 2026</time>
+                      </div>
+                    </li>
+                    
+                    
+                      <li class="md-nav__item">
+                        <div class="md-nav__link">
+                          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9 3v15h3V3zm3 2 4 13 3-1-4-13zM5 5v13h3V5zM3 19v2h18v-2z"/></svg>
+                          <span class="md-ellipsis">
+                            in
+                            
+                              <a href="../../../../category/code/">code</a>, 
+                              <a href="../../../../category/ai/">ai</a>, 
+                              <a href="../../../../category/documentation/">documentation</a>, 
+                              <a href="../../../../category/process/">process</a></span>
+                        </div>
+                      </li>
+                    
+                    
+                      
+                      <li class="md-nav__item">
+                        <div class="md-nav__link">
+                          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 20a8 8 0 0 0 8-8 8 8 0 0 0-8-8 8 8 0 0 0-8 8 8 8 0 0 0 8 8m0-18a10 10 0 0 1 10 10 10 10 0 0 1-10 10C6.47 22 2 17.5 2 12A10 10 0 0 1 12 2m.5 5v5.25l4.5 2.67-.75 1.23L11 13V7z"/></svg>
+                          <span class="md-ellipsis">
+                            
+                              11 min read
+                            
+                          </span>
+                        </div>
+                      </li>
+                    
+                  </ul>
+                </nav>
+              </li>
+            </ul>
+            
+          </nav>
+          
+            
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Что нужно заранее
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_2" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Проблема
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Проблема">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#_3" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        А вот цифры, чтобы не быть голословным
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#jtbd-30" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        JTBD за 30 секунд
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#1-opus" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Часть 1 — Проектируем с Opus
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Часть 1 — Проектируем с Opus">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#1-vs" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Шаг 1 — Первые два сегмента: создатель vs потребитель
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#2" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Шаг 2 — Добавляем менеджера
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#3-" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Шаг 3 — Добавляем ИИ-агента
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#4" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Шаг 4 — Свои идеи из опыта
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#5" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Шаг 5 — Куда деть иерархию модулей
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#6" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Шаг 6 — Лестница вглубь
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#1" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Результат части 1
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#2-sonnet" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Часть 2 — Применяем через Sonnet
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Часть 2 — Применяем через Sonnet">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#1_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Шаг 1 — Загружаем контекст
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#2_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Шаг 2 — Подтверждаем по порядку
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#sonnet" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Что Sonnet добавил сверх плана
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#3" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Шаг 3 — Точки контроля
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#4-contributingmd" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Шаг 4 — CONTRIBUTING.md
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#5_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Шаг 5 — Применяем к существующим репозиториям
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_4" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Что получилось
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#opus-sonnet" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Opus думает, Sonnet делает
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_5" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Следующая сессия
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+          
+        </div>
+      </div>
+    </div>
+    <article class="md-content__inner md-typeset">
+      
+        
+  
+
+
+
+
+<h1 id="readme-jtbd-">README — это продукт. Документация по JTBD с ИИ-агентом</h1>
+<p>В <a href="https://codemonsters.team/blog/2026/03/23/ai-passkey-demo-api/">первой практике</a> мы собрали сервис авторизации — OpenAPI-спека, README, devlog. Всё работает. Но документация получилась «для всех» — а значит ни для кого.</p>
+<p>В этой сессии разбираем: у README четыре потребителя, и каждый нанимает его на свою работу. Проектируем структуру документации с Claude Opus, применяем через Claude Sonnet в терминале.</p>
+<p>Репозиторий с результатом: <a href="https://github.com/ubik-life/service-template">service-template</a></p>
+<p><strong>GL HF DD!</strong></p>
+<!-- more -->
+
+<hr />
+<h2 id="_1">Что нужно заранее</h2>
+<ul>
+<li>Пройденная <a href="https://codemonsters.team/blog/2026/03/23/ai-passkey-demo-api/">первая практика</a> — репозиторий с AGENTS.md и CLAUDE.md</li>
+<li><strong>Claude Opus</strong> — для проектирования (через claude.ai или API)</li>
+<li><strong>Claude Code</strong> — для применения (Sonnet в терминале)</li>
+</ul>
+<hr />
+<h2 id="_2">Проблема</h2>
+<p>Откройте README большинства сервисов в вашей компании. Там будет пусто или каша. Каша - отсутствие уважения к себе и коллегам или не понимание важности это работы. </p>
+<p>Если у тебя не так, тебе повезло! 
+Я допускаю, что материал может быть тебе полезен для того, чтобы улучшить текущие решения.</p>
+<!-- TODO: вставить фото лапши -->
+
+<p>Инструкция по запуску перемешана с архитектурными решениями. Quick start утонул в ADR-ах. Менеджер не понимает, что это за система. Кстати, менеджер — вообще редкий гость в своём хозяйстве. Ему не до порядка в репозиториях. А зря. Разве CTO не может взглянуть на репы своего хозяйства и оценить масштаб великолепия? Или бардака?</p>
+<p>Новый разработчик не понимает, как запустить. ИИ-агент сожрал 2000 токенов контекста и всё ещё не знает, куда класть новый файл. Мидл на грани нервного срыва. Джуна рвёт в туалете от волнения. Всё как в «Апокалипсис сегодня». Смотрели?</p>
+<p>Почему всё так хреново? Не знаю. Возможно, всем пофиг. Возможно, люди не понимают, что делают и зачем. Проще всего сказать: вы все тупые мартышки. Но это неконструктивно и несправедливо. Люди делают плохо не со зла — они делают как умеют, потому что никто не показал, как надо.</p>
+<h3 id="_3">А вот цифры, чтобы не быть голословным</h3>
+<p>Качественная документация повышает производительность команды на 25% (<a href="https://cloud.google.com/blog/products/devops-sre/announcing-the-2023-state-of-devops-report">Google Cloud DORA Report 2023</a>).</p>
+<p>Команды с сильной внутренней документацией в 2.4 раза чаще достигают целевых показателей надёжности (<a href="https://cloud.google.com/resources/state-of-devops">Google Cloud DORA Report 2021</a>).</p>
+<p>62% разработчиков тратят больше 30 минут каждый день на поиск ответов в плохо задокументированных системах (<a href="https://www.archbee.com/blog/invisible-roadblock-poor-documentation-and-how-to-break-through">Stack Overflow</a>).
+Я вспоминаю как тратил часы на поиск решение и распаковывал плохо структурированную раздутую документацию до сути.</p>
+<p>На команду из 100 инженеров плохая документация съедает 15–25% мощности — это 15–25 человек, которые не пишут код, а компенсируют отсутствие документов (<a href="https://getdx.com/blog/developer-documentation/">GetDX</a>).</p>
+<p>38% разработчиков называют плохую документацию одной из главных причин увольнения (<a href="https://evizi.com/insights/operational-efficiency/the-hidden-cost-of-poor-documentation-in-software-development/">Stack Overflow / Evizi</a>).</p>
+<p>Онбординг новых инженеров затягивается на 2–3 месяца, когда документация отсутствует (важно ❗, что плохая, громоздкая дока — всё равно что отсутствие доки) (<a href="https://getdx.com/blog/developer-documentation/">GetDX</a>).</p>
+<p>Это не «было бы неплохо написать README». Это реальные деньги, люди и время.</p>
+<p>README не пишут — или пишут «для всех». А документация «для всех» — это документация ни для кого. Как записка на холодосе в кофепоинте, адресованная «жильцам дома» — никто не читает, все в беготне, сроки горят. Много непонятного вокруг.</p>
+<hr />
+<h2 id="jtbd-30">JTBD за 30 секунд</h2>
+<p>Jobs-to-be-Done — способ думать о продукте через работу, на которую его нанимают. Не «кто наш пользователь», а «какую задачу он решает, когда берёт наш продукт».</p>
+<p>На какую работу подруга нанимает меня, когда мы едем в музей? Не просто «смотреть картины». Она нанимает меня поболтать — когда мы оба без мобильных, без лент, просто поговорить обо всём и про арт. И я в этот момент нанимаю её на схожую работу. Мэтч. Музей — это место синхронизации, старта нового вайба, где телефон в кармане. А потом мы снимаем контент.</p>
+<p>JTBD заставляет задать вопрос: а на какую <em>настоящую</em> работу нанимают продукт?</p>
+<p>README — тоже продукт. У него есть потребители, и каждый нанимает его на свою работу. Осталось понять — на какую.</p>
+<hr />
+<h2 id="1-opus">Часть 1 — Проектируем с Opus</h2>
+<p>Opus — для архитектурного мышления. Не для написания кода — для рассуждений, аналогий, переработки идей. В этой части мы ведём диалог в claude.ai. Вся сессия — итеративная: не один промпт на всё, а серия вопросов, каждый из которых углубляет результат.</p>
+<h3 id="1-vs">Шаг 1 — Первые два сегмента: создатель vs потребитель</h3>
+<p>Начинаем не с «напиши хороший README», а с вопроса о потребителях, чтобы было увлекательно:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a>Разбираем по JTBD на какую работу нанимают README
+<a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a>в репозитории разные сегменты потребителей.
+<a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a>В чём отличие инженера-мейнтейнера от инженера
+<a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a>из другой команды, который тоже может захотеть
+<a id="__codelineno-0-5" name="__codelineno-0-5" href="#__codelineno-0-5"></a>доработать коробку?
+</code></pre></div>
+<p>Opus разложил два сегмента:</p>
+<p><strong>Инженер-создатель</strong> (мейнтейнер) — он уже внутри. Знает, как всё устроено. Его боль — к нему приходят люди и задают одни и те же вопросы. Или присылают PR, который ломает архитектурные решения, потому что не поняли <em>почему</em> сделано именно так.</p>
+<p>Job: «Передать знания о сервисе новому участнику команды без личного участия.»</p>
+<p><strong>Инженер-потребитель</strong> (другая команда) — он снаружи. У него свои дедлайны. Не хочет становиться контрибьютором — хочет подключить, вызвать, получить результат.</p>
+<p>Job: «Оценить пригодность чужого сервиса для своей задачи при ограниченном❗ времени.»</p>
+<p>Opus дал аналогию: мейнтейнер — тренер, который пишет правила. Ему нужно, чтобы новый человек зашёл и <em>уже знал</em>, где переодеться, как кланяться, что нельзя делать на татами. (Например какать на татами - нельзя, терпи но тащи дерьмо в туалет, Какать на татами неуважительно по отношению к себе, к тренеру, к ребятам с которыми тренируешься, к школе) 
+Потребитель — человек, который ищет секцию для ребёнка. Ему не нужны правила додзё. Ему нужно: расписание, цена, возраст, один абзац — <em>почему именно здесь</em>.</p>
+<p>Уже на этом шаге стало понятно: <strong>если README пытается обслужить обе работы в одном потоке текста — он не обслуживает ни одну</strong>.</p>
+<h3 id="2">Шаг 2 — Добавляем менеджера</h3>
+<p>Два сегмента — хорошо, но мало. Из опыта работы в больших компаниях я знал, что есть ещё один потребитель, которого обычно игнорируют:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a>Разберём JTBD ещё двух сегментов.
+<a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a>Сегмент 3: Тупой Менеджер нанимает ридми для —
+<a id="__codelineno-1-3" name="__codelineno-1-3" href="#__codelineno-1-3"></a>понять чо за система, как она работает в целом
+<a id="__codelineno-1-4" name="__codelineno-1-4" href="#__codelineno-1-4"></a>и из каких кусков состоит. Значит на каждом
+<a id="__codelineno-1-5" name="__codelineno-1-5" href="#__codelineno-1-5"></a>отдельном куске должна быть отсылка ко всей системе.
+<a id="__codelineno-1-6" name="__codelineno-1-6" href="#__codelineno-1-6"></a>Где мы опишем всю систему? Правильно — в отдельном
+<a id="__codelineno-1-7" name="__codelineno-1-7" href="#__codelineno-1-7"></a>репозитории.
+</code></pre></div>
+<p>Менеджер не лезет в кишки. Ему нужна картина целого за 3 минуты.</p>
+<p>Job: «Получить представление о структуре системы при подготовке к управленческому решению.»</p>
+<p>И запихивать это в README конкретного сервиса — ошибка. Он утонет в деталях одного куска и не увидит целого.</p>
+<p>Решение: мета-репозиторий <a href="https://github.com/ubik-life/concept"><code>concept</code></a> с описанием всей системы. А каждый сервисный репозиторий содержит в первых строках ссылку:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a><span class="k">&gt; </span><span class="ge">Часть платформы [Ubik](https://github.com/ubik-life/concept).</span>
+<a id="__codelineno-2-2" name="__codelineno-2-2" href="#__codelineno-2-2"></a><span class="k">&gt; </span><span class="ge">Архитектура и концепция — там.</span>
+</code></pre></div>
+<p>Менеджер зашёл в любой репозиторий, кликнул, попал в понятную картину мира.</p>
+<h3 id="3-">Шаг 3 — Добавляем ИИ-агента</h3>
+<p>В том же промпте:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a>Сегмент 4: ИИ-агент. РИДМИ нанимает для того,
+<a id="__codelineno-3-2" name="__codelineno-3-2" href="#__codelineno-3-2"></a>чтобы за минимальное количество токенов загрузить
+<a id="__codelineno-3-3" name="__codelineno-3-3" href="#__codelineno-3-3"></a>контекст и быть готовым выполнить задачу.
+</code></pre></div>
+<p>Агент — самый прагматичный потребитель. У него буквально бюджет — токены. Каждое лишнее слово — вытесненный контекст или деньги. Ему не нужна мотивация, история проекта и бейджики.</p>
+<p>Job: «Загрузить контекст проекта для выполнения задачи при ограниченном бюджете токенов.»</p>
+<p>Принципы написания для агента:</p>
+<ul>
+<li>Максимальная плотность информации на токен. Ноль воды.</li>
+<li>Один плоский файл — агент не кликает по ссылкам, он читает линейно.</li>
+<li>Структура через заголовки и таблицы, не через прозу.</li>
+<li>Явные запреты: «НЕ делай X», а не «старайся избегать X».</li>
+</ul>
+<p>По сути, это то, что мы уже делали в CLAUDE.md и AGENTS.md — но теперь это формализовано как отдельный сегмент с явным Job-to-be-Done.</p>
+<h3 id="4">Шаг 4 — Свои идеи из опыта</h3>
+<p>После того, как Opus разложил четыре сегмента, я закинул свои заметки — вещи, которые знал из практики, но не формализовал:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a>Посмотри есть ли тут интересные мысли. Я написал их
+<a id="__codelineno-4-2" name="__codelineno-4-2" href="#__codelineno-4-2"></a>опираясь на свой опыт работы и рассуждения с тобой.
+<a id="__codelineno-4-3" name="__codelineno-4-3" href="#__codelineno-4-3"></a>Возьми полезное, что упустил и добавь в описание
+<a id="__codelineno-4-4" name="__codelineno-4-4" href="#__codelineno-4-4"></a>документов.
+</code></pre></div>
+<details>
+<summary>Полный промпт с заметками из опыта</summary>
+
+<div class="highlight"><pre><span></span><code><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a>Как улучшить README.md
+<a id="__codelineno-5-2" name="__codelineno-5-2" href="#__codelineno-5-2"></a>
+<a id="__codelineno-5-3" name="__codelineno-5-3" href="#__codelineno-5-3"></a><span class="k">1.</span> Инженер (создатель)
+<a id="__codelineno-5-4" name="__codelineno-5-4" href="#__codelineno-5-4"></a><span class="k">2.</span> Инженер(клиент) который работает с нашей коробкой (Клиент)
+<a id="__codelineno-5-5" name="__codelineno-5-5" href="#__codelineno-5-5"></a><span class="k">3.</span> Тупой Менеджер
+<a id="__codelineno-5-6" name="__codelineno-5-6" href="#__codelineno-5-6"></a><span class="k">4.</span> Агенту ИИ
+<a id="__codelineno-5-7" name="__codelineno-5-7" href="#__codelineno-5-7"></a>
+<a id="__codelineno-5-8" name="__codelineno-5-8" href="#__codelineno-5-8"></a>1 Инженеру(создателю) ридмин нанимает на
+<a id="__codelineno-5-9" name="__codelineno-5-9" href="#__codelineno-5-9"></a>
+<a id="__codelineno-5-10" name="__codelineno-5-10" href="#__codelineno-5-10"></a>&quot;Помоги мне не тратить время на объяснение одного и того же
+<a id="__codelineno-5-11" name="__codelineno-5-11" href="#__codelineno-5-11"></a>каждому новому человеку.&quot; Снизи стоимость онбординга новых
+<a id="__codelineno-5-12" name="__codelineno-5-12" href="#__codelineno-5-12"></a>контрибьюторов до нуля, чтобы я занимался кодом, а не объяснениями.
+<a id="__codelineno-5-13" name="__codelineno-5-13" href="#__codelineno-5-13"></a>
+<a id="__codelineno-5-14" name="__codelineno-5-14" href="#__codelineno-5-14"></a>Нужно краткое описание продукта (какую задачу решает) (овервью)
+<a id="__codelineno-5-15" name="__codelineno-5-15" href="#__codelineno-5-15"></a>Что ему важно в README: архитектурные решения с обоснованиями (ADR-стиль)
+<a id="__codelineno-5-16" name="__codelineno-5-16" href="#__codelineno-5-16"></a>
+<a id="__codelineno-5-17" name="__codelineno-5-17" href="#__codelineno-5-17"></a>Что за АПИ есть у продукта + ссылка на спеку
+<a id="__codelineno-5-18" name="__codelineno-5-18" href="#__codelineno-5-18"></a>
+<a id="__codelineno-5-19" name="__codelineno-5-19" href="#__codelineno-5-19"></a>Как продукт работает на пальцах(простое описание каждого апи)
+<a id="__codelineno-5-20" name="__codelineno-5-20" href="#__codelineno-5-20"></a>получаем запрос
+<a id="__codelineno-5-21" name="__codelineno-5-21" href="#__codelineno-5-21"></a>Какую задачу решаем по АПИ (может мы ее решаем хреново)
+<a id="__codelineno-5-22" name="__codelineno-5-22" href="#__codelineno-5-22"></a>Пример описания АПИ в пайп стиле
+<a id="__codelineno-5-23" name="__codelineno-5-23" href="#__codelineno-5-23"></a>| Идем за данными в сервис 1
+<a id="__codelineno-5-24" name="__codelineno-5-24" href="#__codelineno-5-24"></a>| Идем за данными в сервис 2
+<a id="__codelineno-5-25" name="__codelineno-5-25" href="#__codelineno-5-25"></a>| Делаем с данными
+<a id="__codelineno-5-26" name="__codelineno-5-26" href="#__codelineno-5-26"></a>| Валидируем состояние
+<a id="__codelineno-5-27" name="__codelineno-5-27" href="#__codelineno-5-27"></a>| Выдаем данные
+<a id="__codelineno-5-28" name="__codelineno-5-28" href="#__codelineno-5-28"></a>
+<a id="__codelineno-5-29" name="__codelineno-5-29" href="#__codelineno-5-29"></a>(Это уже для тех кто умеет запускать терминал, менеджер сюда не пойдет)
+<a id="__codelineno-5-30" name="__codelineno-5-30" href="#__codelineno-5-30"></a>
+<a id="__codelineno-5-31" name="__codelineno-5-31" href="#__codelineno-5-31"></a>Как пользоваться коробкой
+<a id="__codelineno-5-32" name="__codelineno-5-32" href="#__codelineno-5-32"></a>(Как запустить и протестировать - тут нам пипец поможет компонентный тест)
+<a id="__codelineno-5-33" name="__codelineno-5-33" href="#__codelineno-5-33"></a>Как ее запустить
+<a id="__codelineno-5-34" name="__codelineno-5-34" href="#__codelineno-5-34"></a>Полезно будет иметь ссылку на Компонентные Тесты, чтобы понять как
+<a id="__codelineno-5-35" name="__codelineno-5-35" href="#__codelineno-5-35"></a>запускать, тестить эту штуку в изоляции)
+<a id="__codelineno-5-36" name="__codelineno-5-36" href="#__codelineno-5-36"></a>
+<a id="__codelineno-5-37" name="__codelineno-5-37" href="#__codelineno-5-37"></a>2 Инженеру пользователь РИДМИ нанимает на
+<a id="__codelineno-5-38" name="__codelineno-5-38" href="#__codelineno-5-38"></a>&quot;Помоги мне за 5 минут понять — решит ли эта штука мою проблему,
+<a id="__codelineno-5-39" name="__codelineno-5-39" href="#__codelineno-5-39"></a>и если да, покажи самый короткий путь к работающему результату.&quot;
+<a id="__codelineno-5-40" name="__codelineno-5-40" href="#__codelineno-5-40"></a>Job-to-be-Done: &quot;Дай мне уверенность, что это работает для моего кейса,
+<a id="__codelineno-5-41" name="__codelineno-5-41" href="#__codelineno-5-41"></a>и покажи как запустить — без погружения в кишки.&quot;
+<a id="__codelineno-5-42" name="__codelineno-5-42" href="#__codelineno-5-42"></a>
+<a id="__codelineno-5-43" name="__codelineno-5-43" href="#__codelineno-5-43"></a>Мне нужно
+<a id="__codelineno-5-44" name="__codelineno-5-44" href="#__codelineno-5-44"></a>Понять чо за система
+<a id="__codelineno-5-45" name="__codelineno-5-45" href="#__codelineno-5-45"></a>Как она работает в целом и из каких кусков состоит
+<a id="__codelineno-5-46" name="__codelineno-5-46" href="#__codelineno-5-46"></a>Как работает каждый отдельный кусок (я могу быть брошен на доработку
+<a id="__codelineno-5-47" name="__codelineno-5-47" href="#__codelineno-5-47"></a>надеюсь не сражение с демо-пиццей)
+<a id="__codelineno-5-48" name="__codelineno-5-48" href="#__codelineno-5-48"></a>
+<a id="__codelineno-5-49" name="__codelineno-5-49" href="#__codelineno-5-49"></a><span class="k">3.</span> Тупой Менеджер нанимает ридми для
+<a id="__codelineno-5-50" name="__codelineno-5-50" href="#__codelineno-5-50"></a>Понять чо за система
+<a id="__codelineno-5-51" name="__codelineno-5-51" href="#__codelineno-5-51"></a>Как она работает в целом и из каких кусков состоит
+<a id="__codelineno-5-52" name="__codelineno-5-52" href="#__codelineno-5-52"></a>Значит на каждом отдельном куске должна быть отсылка ко всей системе
+<a id="__codelineno-5-53" name="__codelineno-5-53" href="#__codelineno-5-53"></a>Где мы опишем всю систему?
+<a id="__codelineno-5-54" name="__codelineno-5-54" href="#__codelineno-5-54"></a>Правильно в отдельном репозитория
+<a id="__codelineno-5-55" name="__codelineno-5-55" href="#__codelineno-5-55"></a>
+<a id="__codelineno-5-56" name="__codelineno-5-56" href="#__codelineno-5-56"></a><span class="k">4.</span> ИИ Агент нанимает доки для
+<a id="__codelineno-5-57" name="__codelineno-5-57" href="#__codelineno-5-57"></a>того чтобы за минимальное количество токенов загрузить контекст
+<a id="__codelineno-5-58" name="__codelineno-5-58" href="#__codelineno-5-58"></a>и быть готовым выполнить задачу
+</code></pre></div>
+
+</details>
+
+<p>Три вещи, которые Opus не придумал сам — их принёс я:</p>
+<p><strong>Pipe-стиль описания API.</strong> Таблица «метод → ресурс → действие» отвечает на «что есть». Но не на «как работает и где сломается». Pipe показывает поток данных:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a>POST /v1/registrations
+<a id="__codelineno-6-2" name="__codelineno-6-2" href="#__codelineno-6-2"></a>| Принимаем handle от клиента
+<a id="__codelineno-6-3" name="__codelineno-6-3" href="#__codelineno-6-3"></a>| Генерируем challenge (32 байта, TTL 5 мин)
+<a id="__codelineno-6-4" name="__codelineno-6-4" href="#__codelineno-6-4"></a>| Сохраняем challenge в БД
+<a id="__codelineno-6-5" name="__codelineno-6-5" href="#__codelineno-6-5"></a>| Возвращаем challenge + WebAuthn options → 201
+</code></pre></div>
+<p>Посмотри как ☝️ это лаконично. Можно в режиме сканирования понять как работает АПИ верхнеуровнево.
+Кайф. Часто такая запись помогает увидеть ошибку в реализации или как можно упростить решение.</p>
+<p><strong>Компонентные тесты как документация.</strong> Gherkin-сценарии уже были в правилах, но не как способ объяснить «как пользоваться коробкой». А это буквально исполняемая инструкция к устройству на полке.
+Не терпится посмотреть, что у нас получится.</p>
+<p><strong>Инженер-клиент может быть «брошен на доработку».</strong> Это размывает границу между сегментами 1 и 2. Человек пришёл как потребитель, а стал контрибьютором. README должен дать ему лестницу, а не стену.</p>
+<p>Opus взял эти идеи, структурировал и вписал в JTBD-сегментацию. Это важный момент для статьи: <strong>дорогая модель — не волшебник, который думает за тебя. Она — партнёр по мышлению, который формализует то, что ты уже знаешь из опыта.</strong></p>
+<h3 id="5">Шаг 5 — Куда деть иерархию модулей</h3>
+<p>В AGENTS.md были пункты «Схема иерархий модулей» и «Блок-схема entry point». Вопрос — где им жить:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-7-1" name="__codelineno-7-1" href="#__codelineno-7-1"></a>Где будут описаны эти пункты?
+<a id="__codelineno-7-2" name="__codelineno-7-2" href="#__codelineno-7-2"></a>4. Схема иерархий модулей
+<a id="__codelineno-7-3" name="__codelineno-7-3" href="#__codelineno-7-3"></a>5. Блок-схема алгоритма головного модуля
+</code></pre></div>
+<p>Opus предложил два варианта: в CLAUDE.md (ближе к агенту, обновляется каждую сессию) или в <code>docs/architecture.md</code> (рядом с ADR, для мейнтейнера). Я выбрал вариант Б:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-8-1" name="__codelineno-8-1" href="#__codelineno-8-1"></a>Вариант Б. Эта информация нужна, чтобы научить
+<a id="__codelineno-8-2" name="__codelineno-8-2" href="#__codelineno-8-2"></a>человека проектировать программу и агента.
+</code></pre></div>
+<p>Потому что иерархия модулей — это не только контекст для агента. Это знание о том, как устроена программа. Оно нужно инженеру, которого бросили на доработку.</p>
+<h3 id="6">Шаг 6 — Лестница вглубь</h3>
+<p>Из обсуждения предыдущих шагов сложилась структура — путь наращивания контекста:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-9-1" name="__codelineno-9-1" href="#__codelineno-9-1"></a>README.md (что это, как запустить)
+<a id="__codelineno-9-2" name="__codelineno-9-2" href="#__codelineno-9-2"></a>  → component-tests/ (как работает снаружи)
+<a id="__codelineno-9-3" name="__codelineno-9-3" href="#__codelineno-9-3"></a>    → docs/architecture.md (как устроено внутри)
+<a id="__codelineno-9-4" name="__codelineno-9-4" href="#__codelineno-9-4"></a>      → docs/adr/ (почему сделано именно так)
+<a id="__codelineno-9-5" name="__codelineno-9-5" href="#__codelineno-9-5"></a>        → CONTRIBUTING.md (как правильно менять)
+</code></pre></div>
+<p>Каждый уровень — отдельный файл, не раздел и не якорь. Потребитель останавливается на том уровне, который ему нужен.</p>
+<h3 id="1">Результат части 1</h3>
+<p>Opus сгенерировал обновлённый AGENTS.md со всем, что мы наработали: JTBD-сегментация с четырьмя потребителями, pipe-формат, лестница вглубь, <code>docs/architecture.md</code> с примерами иерархии модулей и блок-схемы entry point, карта файлов с указанием потребителя.</p>
+<p>Скачиваем файл — он пойдёт в шаблон.</p>
+<hr />
+<h2 id="2-sonnet">Часть 2 — Применяем через Sonnet</h2>
+<p>Sonnet в терминале — для исполнения. Берёт готовую архитектуру и раскладывает по файлам.</p>
+<h3 id="1_1">Шаг 1 — Загружаем контекст</h3>
+<p>Закидываем обновлённый AGENTS.md в шаблон и запускаем Claude Code:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-10-1" name="__codelineno-10-1" href="#__codelineno-10-1"></a><span class="nb">cd</span><span class="w"> </span>service-template
+<a id="__codelineno-10-2" name="__codelineno-10-2" href="#__codelineno-10-2"></a>claude<span class="w"> </span>--model<span class="w"> </span>claude-sonnet-4-5
+</code></pre></div>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-11-1" name="__codelineno-11-1" href="#__codelineno-11-1"></a>загрузи правила разработки AGENTS.md себе в контекст
+<a id="__codelineno-11-2" name="__codelineno-11-2" href="#__codelineno-11-2"></a>и предложи доработки этого шаблона сервиса.
+<a id="__codelineno-11-3" name="__codelineno-11-3" href="#__codelineno-11-3"></a>Мы работаем над улучшением шаблона сервиса связанного
+<a id="__codelineno-11-4" name="__codelineno-11-4" href="#__codelineno-11-4"></a>с документацией.
+</code></pre></div>
+<p>Sonnet прочитал AGENTS.md, CLAUDE.md, README.md, backlog.md и предложил 7 пунктов доработки:</p>
+<ol>
+<li>Вынести статические инструкции агента из CLAUDE.md в AGENTS.md</li>
+<li>Добавить недостающие блоки в README.md (concept-ссылка, стек, умеет/не умеет, pipe)</li>
+<li>Добавить шаблон devlog-записи в AGENTS.md</li>
+<li>Добавить шаблон ADR в AGENTS.md</li>
+<li>Добавить <code>docs/architecture.md</code> в backlog</li>
+<li>Добавить триггерную таблицу обновления документов</li>
+<li>Создать стаб-структуру директорий в шаблоне</li>
+</ol>
+<h3 id="2_1">Шаг 2 — Подтверждаем по порядку</h3>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-12-1" name="__codelineno-12-1" href="#__codelineno-12-1"></a>работай по порядку
+</code></pre></div>
+<p>Дальше — по одному:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-13-1" name="__codelineno-13-1" href="#__codelineno-13-1"></a>пункт 2 — да
+</code></pre></div>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-14-1" name="__codelineno-14-1" href="#__codelineno-14-1"></a>пункт 3 — да
+</code></pre></div>
+<p>Один промпт — одна команда. Не объяснения, не контекст — просто «да, делай». Sonnet уже знает план. Наша работа — валидировать результат, а не дублировать постановку.</p>
+<p>По ходу корректировали решения. Например, <code>docs/architecture.md</code> агент хотел создать сразу:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-15-1" name="__codelineno-15-1" href="#__codelineno-15-1"></a>docs/architecture.md предлагаю на пункт три перенести,
+<a id="__codelineno-15-2" name="__codelineno-15-2" href="#__codelineno-15-2"></a>когда начнём проектировать коробку.
+</code></pre></div>
+<p>Согласились: architecture.md создаётся на шаге 3 (когда есть модули и entry point), а не на шаге 0.</p>
+<h3 id="sonnet">Что Sonnet добавил сверх плана</h3>
+<p>Три вещи, которые мы с Opus не проектировали:</p>
+<p><strong>Триггерная таблица обновления документов</strong> — какое событие → какие файлы обновить:</p>
+<table>
+<thead>
+<tr>
+<th>Событие</th>
+<th>Что обновить</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Новый эндпоинт</td>
+<td><code>api-specification/</code>, <code>README.md</code> (таблица + pipe)</td>
+</tr>
+<tr>
+<td>Изменение entry point</td>
+<td><code>docs/architecture.md</code></td>
+</tr>
+<tr>
+<td>Архитектурный выбор</td>
+<td><code>docs/adr/</code> + <code>CLAUDE.md</code></td>
+</tr>
+<tr>
+<td>Merge шага</td>
+<td><code>CLAUDE.md</code>, <code>backlog.md</code></td>
+</tr>
+</tbody>
+</table>
+<p><strong>Шаблоны devlog и ADR</strong> — вынесены в <code>docs/templates/</code>, в AGENTS.md только ссылка. Экономия токенов при каждой загрузке контекста.</p>
+<p><strong>Сценарий первой сессии агента</strong> (§20) — агент при старте проверяет backlog, находит первый <code>todo</code>, предлагает выполнить. Без этого он ждёт явной команды.</p>
+<p>Все три — операционные, тактические. Ровно то, что хорошо делает исполнитель.</p>
+<h3 id="3">Шаг 3 — Точки контроля</h3>
+<p>Первая версия §20 содержала «жди подтверждения перед каждым действием». Это замедляет агента на рутинных операциях. Мы обсудили это с Opus:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-16-1" name="__codelineno-16-1" href="#__codelineno-16-1"></a>Тут важно указать так: мы работаем маленькими
+<a id="__codelineno-16-2" name="__codelineno-16-2" href="#__codelineno-16-2"></a>итерациями, и я хочу валидировать эти итерации,
+<a id="__codelineno-16-3" name="__codelineno-16-3" href="#__codelineno-16-3"></a>или это лишний контроль?
+</code></pre></div>
+<p>Если итерация = один коммит, то подтверждение внутри сессии — двойной контроль (ты и так делаешь PR → merge). Коммит — естественная граница: до него всё откатываемо, после — в истории.</p>
+<p>Переформулировали:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-17-1" name="__codelineno-17-1" href="#__codelineno-17-1"></a>- Рутинные операции (создание/редактирование файлов,
+<a id="__codelineno-17-2" name="__codelineno-17-2" href="#__codelineno-17-2"></a>  обновление backlog) — выполняй без остановки
+<a id="__codelineno-17-3" name="__codelineno-17-3" href="#__codelineno-17-3"></a>- Перед git commit — остановись, покажи результат,
+<a id="__codelineno-17-4" name="__codelineno-17-4" href="#__codelineno-17-4"></a>  жди подтверждения
+<a id="__codelineno-17-5" name="__codelineno-17-5" href="#__codelineno-17-5"></a>- Деструктивные действия (удаление файлов, изменение
+<a id="__codelineno-17-6" name="__codelineno-17-6" href="#__codelineno-17-6"></a>  API-контракта) — явное подтверждение
+</code></pre></div>
+<p>Одна точка контроля вместо десяти.</p>
+<h3 id="4-contributingmd">Шаг 4 — CONTRIBUTING.md</h3>
+<p>Последний документ в лестнице. Для мейнтейнера, который готов вносить изменения.</p>
+<p>Ключевое решение: CONTRIBUTING.md не дублирует AGENTS.md — он ссылается. Правила коммитов — «см. AGENTS.md §12». Флоу веток — «см. AGENTS.md §11». Единый источник правды.</p>
+<details>
+<summary>CONTRIBUTING.md целиком</summary>
+
+<div class="highlight"><pre><span></span><code><a id="__codelineno-18-1" name="__codelineno-18-1" href="#__codelineno-18-1"></a><span class="gh"># CONTRIBUTING.md</span>
+<a id="__codelineno-18-2" name="__codelineno-18-2" href="#__codelineno-18-2"></a>
+<a id="__codelineno-18-3" name="__codelineno-18-3" href="#__codelineno-18-3"></a>Правила для тех, кто вносит изменения в сервис.
+<a id="__codelineno-18-4" name="__codelineno-18-4" href="#__codelineno-18-4"></a>
+<a id="__codelineno-18-5" name="__codelineno-18-5" href="#__codelineno-18-5"></a><span class="gu">## Быстрый старт</span>
+<a id="__codelineno-18-6" name="__codelineno-18-6" href="#__codelineno-18-6"></a>
+<a id="__codelineno-18-7" name="__codelineno-18-7" href="#__codelineno-18-7"></a><span class="k">1.</span> Клонируй репозиторий
+<a id="__codelineno-18-8" name="__codelineno-18-8" href="#__codelineno-18-8"></a><span class="k">2.</span> Настрой окружение — см. <span class="sb">`.env.example`</span>
+<a id="__codelineno-18-9" name="__codelineno-18-9" href="#__codelineno-18-9"></a><span class="k">3.</span> Запусти сервис — см. <span class="sb">`README.md → Запуск`</span>
+<a id="__codelineno-18-10" name="__codelineno-18-10" href="#__codelineno-18-10"></a><span class="k">4.</span> Убедись что компонентные тесты проходят — см. <span class="sb">`component-tests/`</span>
+<a id="__codelineno-18-11" name="__codelineno-18-11" href="#__codelineno-18-11"></a>
+<a id="__codelineno-18-12" name="__codelineno-18-12" href="#__codelineno-18-12"></a><span class="gu">## Флоу разработки</span>
+<a id="__codelineno-18-13" name="__codelineno-18-13" href="#__codelineno-18-13"></a>
+<a id="__codelineno-18-14" name="__codelineno-18-14" href="#__codelineno-18-14"></a>Правила разработки, коммитов и веток — в <span class="sb">`AGENTS.md`</span>.
+<a id="__codelineno-18-15" name="__codelineno-18-15" href="#__codelineno-18-15"></a>
+<a id="__codelineno-18-16" name="__codelineno-18-16" href="#__codelineno-18-16"></a>Коротко:
+<a id="__codelineno-18-17" name="__codelineno-18-17" href="#__codelineno-18-17"></a><span class="k">-</span><span class="w"> </span>Ветка от main, живёт не дольше 1–2 дней (AGENTS.md §11)
+<a id="__codelineno-18-18" name="__codelineno-18-18" href="#__codelineno-18-18"></a><span class="k">-</span><span class="w"> </span>Коммиты по Conventional Commits (AGENTS.md §12)
+<a id="__codelineno-18-19" name="__codelineno-18-19" href="#__codelineno-18-19"></a><span class="k">-</span><span class="w"> </span>Сначала тест, потом код (AGENTS.md §5)
+<a id="__codelineno-18-20" name="__codelineno-18-20" href="#__codelineno-18-20"></a><span class="k">-</span><span class="w"> </span>Изменения API — только через спеку в api-specification/ (AGENTS.md §2)
+<a id="__codelineno-18-21" name="__codelineno-18-21" href="#__codelineno-18-21"></a>
+<a id="__codelineno-18-22" name="__codelineno-18-22" href="#__codelineno-18-22"></a><span class="gu">## Перед отправкой PR</span>
+<a id="__codelineno-18-23" name="__codelineno-18-23" href="#__codelineno-18-23"></a>
+<a id="__codelineno-18-24" name="__codelineno-18-24" href="#__codelineno-18-24"></a><span class="k">-</span><span class="w"> </span>Компонентные тесты проходят
+<a id="__codelineno-18-25" name="__codelineno-18-25" href="#__codelineno-18-25"></a><span class="k">-</span><span class="w"> </span>api-specification/ обновлена, если изменился API
+<a id="__codelineno-18-26" name="__codelineno-18-26" href="#__codelineno-18-26"></a><span class="k">-</span><span class="w"> </span>README.md обновлён, если изменился API, стек или способ запуска
+<a id="__codelineno-18-27" name="__codelineno-18-27" href="#__codelineno-18-27"></a><span class="k">-</span><span class="w"> </span>Коммиты по Conventional Commits
+<a id="__codelineno-18-28" name="__codelineno-18-28" href="#__codelineno-18-28"></a><span class="k">-</span><span class="w"> </span>Ветка актуальна относительно main
+<a id="__codelineno-18-29" name="__codelineno-18-29" href="#__codelineno-18-29"></a>
+<a id="__codelineno-18-30" name="__codelineno-18-30" href="#__codelineno-18-30"></a><span class="gu">## Документация</span>
+<a id="__codelineno-18-31" name="__codelineno-18-31" href="#__codelineno-18-31"></a>
+<a id="__codelineno-18-32" name="__codelineno-18-32" href="#__codelineno-18-32"></a>При изменениях обновляй документы согласно триггерной таблице
+<a id="__codelineno-18-33" name="__codelineno-18-33" href="#__codelineno-18-33"></a>в AGENTS.md §19.
+</code></pre></div>
+
+</details>
+
+<h3 id="5_1">Шаг 5 — Применяем к существующим репозиториям</h3>
+<p>После доработки шаблона мы прогнали Sonnet по двум живым репозиториям:</p>
+<ul>
+<li><a href="https://github.com/ubik-life/passkey-demo-api"><strong>passkey-demo-api</strong></a> — добавлена ссылка на concept, структура репозитория в README, devlog</li>
+<li><a href="https://github.com/ubik-life/concept"><strong>concept</strong></a> — остался как мета-репозиторий для менеджера, с архитектурой всей платформы и текущим шагом</li>
+</ul>
+<hr />
+<h2 id="_4">Что получилось</h2>
+<p>Четыре потребителя — четыре слоя документации:</p>
+<table>
+<thead>
+<tr>
+<th>Документ</th>
+<th>Потребитель</th>
+<th>Job (Глагол + Объект + Контекст)</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>README.md</code></td>
+<td>Инженер-потребитель</td>
+<td>Оценить пригодность сервиса для своей задачи</td>
+</tr>
+<tr>
+<td><code>README.md</code></td>
+<td>Инженер-создатель</td>
+<td>Передать знания о сервисе без личного участия</td>
+</tr>
+<tr>
+<td><code>CONTRIBUTING.md</code></td>
+<td>Мейнтейнер</td>
+<td>Внести изменения в чужой сервис по правилам</td>
+</tr>
+<tr>
+<td><code>docs/architecture.md</code></td>
+<td>Создатель + агент</td>
+<td>Понять внутреннее устройство программы перед доработкой</td>
+</tr>
+<tr>
+<td><code>docs/adr/</code></td>
+<td>Мейнтейнер</td>
+<td>Восстановить причины архитектурного решения при ревью</td>
+</tr>
+<tr>
+<td><code>AGENTS.md</code></td>
+<td>ИИ-агент</td>
+<td>Загрузить правила разработки перед выполнением задачи</td>
+</tr>
+<tr>
+<td><code>CLAUDE.md</code></td>
+<td>ИИ-агент</td>
+<td>Загрузить контекст текущей сессии при старте</td>
+</tr>
+<tr>
+<td><code>concept</code> (мета-репо)</td>
+<td>Менеджер</td>
+<td>Получить представление о структуре системы</td>
+</tr>
+</tbody>
+</table>
+<p>Три репозитория приведены к единой структуре:</p>
+<ul>
+<li><a href="https://github.com/ubik-life/concept"><strong>concept</strong></a> — мета-репозиторий для менеджера</li>
+<li><a href="https://github.com/ubik-life/passkey-demo-api"><strong>passkey-demo-api</strong></a> — сервис с README по новой структуре</li>
+<li><a href="https://github.com/ubik-life/service-template"><strong>service-template</strong></a> — шаблон для новых сервисов</li>
+</ul>
+<hr />
+<h2 id="opus-sonnet">Opus думает, Sonnet делает</h2>
+<p>Это главный паттерн сессии. Не «Opus лучше» и не «Sonnet дешевле». Разные модели — для разных задач.</p>
+<p><strong>Opus</strong> — для архитектурных рассуждений, аналогий, переработки концепций. Но он не придумывал всё сам. Он структурировал и формализовал идеи, которые принёс я из 14 лет работы. Pipe-формат, компонентные тесты как документация, «бросили на доработку» — это мой опыт. Opus превратил его в систему. А мой опыт помог провалидировать, что реальные боли учтены — например, боль инженера-потребителя, которому нужно за 5 минут понять: решит ли эта коробка мою проблему, или я зря трачу время. Эту боль модель сама не придумает — её нужно принести из жизни.</p>
+<p><strong>Sonnet</strong> — для применения готовой архитектуры к коду. Он разложил концепцию по файлам за 9 промптов и добавил три тактических улучшения (триггерная таблица, шаблоны, сценарий старта), которые мы с Opus не проектировали. Операционные вещи — его стихия.</p>
+<p>Дорогая модель — не волшебник, который думает за тебя. Она — партнёр по мышлению. Ты приносишь опыт и задаёшь направление. Она формализует и находит пробелы. Результат лучше, чем мог бы дать каждый по отдельности.</p>
+<p>Архитектор проектирует додзё. Строитель строит. Если строитель начнёт проектировать — додзё будет кривое. Если архитектор начнёт класть кирпичи — будет дорого и долго.</p>
+<hr />
+<h2 id="_5">Следующая сессия</h2>
+<p>Шаблон готов. Документация знает своих потребителей. В следующей сессии — компонентные тесты на Gherkin: описываем поведение сервиса до того, как напишем первую строку кода.</p>
+<p>Продолжение: <a href="https://github.com/ubik-life/passkey-demo-api/tree/main/devlog">devlog/</a></p>
+
+
+
+
+
+
+
+  
+  
+
+
+
+  
+
+
+  
+
+
+
+      
+    </article>
+  </div>
+
+          
+  <script>var tabs=__md_get("__tabs");if(Array.isArray(tabs))e:for(var set of document.querySelectorAll(".tabbed-set")){var labels=set.querySelector(".tabbed-labels");for(var tab of tabs)for(var label of labels.getElementsByTagName("label"))if(label.innerText.trim()===tab){var input=document.getElementById(label.htmlFor);input.checked=!0;continue e}}</script>
+
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+          <button type="button" class="md-top md-icon" data-md-component="top" hidden>
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8z"/></svg>
+  Back to top
+</button>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+    <div class="md-copyright__highlight">
+      &copy; 2023 <a href="https://git.codemonsters.team/guides/web-book"  target="_blank" rel="noopener">CodeMonsters.team</a>
+    </div>
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+        
+<div class="md-social">
+  
+    
+    
+    
+    
+      
+      
+    
+    <a href="https://git.codemonsters.team/guides/web-book" target="_blank" rel="noopener" title="git.codemonsters.team" class="md-social__link">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M202.1 328.7c0 20.9-10.9 55.1-36.7 55.1s-36.7-34.2-36.7-55.1 10.9-55.1 36.7-55.1 36.7 34.2 36.7 55.1M496 278.2c0 31.9-3.2 65.7-17.5 95-37.9 76.6-142.1 74.8-216.7 74.8-75.8 0-186.2 2.7-225.6-74.8-14.6-29-20.2-63.1-20.2-95 0-41.9 13.9-81.5 41.5-113.6-5.2-15.8-7.7-32.4-7.7-48.8 0-21.5 4.9-32.3 14.6-51.8 45.3 0 74.3 9 108.8 36 29-6.9 58.8-10 88.7-10 27 0 54.2 2.9 80.4 9.2 34-26.7 63-35.2 107.8-35.2 9.8 19.5 14.6 30.3 14.6 51.8 0 16.4-2.6 32.7-7.7 48.2 27.5 32.4 39 72.3 39 114.2m-64.3 50.5c0-43.9-26.7-82.6-73.5-82.6-18.9 0-37 3.4-56 6-14.9 2.3-29.8 3.2-45.1 3.2-15.2 0-30.1-.9-45.1-3.2-18.7-2.6-37-6-56-6-46.8 0-73.5 38.7-73.5 82.6 0 87.8 80.4 101.3 150.4 101.3h48.2c70.3 0 150.6-13.4 150.6-101.3m-82.6-55.1c-25.8 0-36.7 34.2-36.7 55.1s10.9 55.1 36.7 55.1 36.7-34.2 36.7-55.1-10.9-55.1-36.7-55.1"/></svg>
+    </a>
+  
+    
+    
+    
+    
+      
+      
+    
+    <a href="https://t.me/codemonsterslogs" target="_blank" rel="noopener" title="t.me" class="md-social__link">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M256 8a248 248 0 1 0 0 496 248 248 0 1 0 0-496m115 168.7c-3.7 39.2-19.9 134.4-28.1 178.3-3.5 18.6-10.3 24.8-16.9 25.4-14.4 1.3-25.3-9.5-39.3-18.7-21.8-14.3-34.2-23.2-55.3-37.2-24.5-16.1-8.6-25 5.3-39.5 3.7-3.8 67.1-61.5 68.3-66.7.2-.7.3-3.1-1.2-4.4s-3.6-.8-5.1-.5c-2.2.5-37.1 23.5-104.6 69.1-9.9 6.8-18.9 10.1-26.9 9.9-8.9-.2-25.9-5-38.6-9.1-15.5-5-27.9-7.7-26.8-16.3.6-4.5 6.7-9 18.4-13.7 72.3-31.5 120.5-52.3 144.6-62.3 68.9-28.6 83.2-33.6 92.5-33.8 2.1 0 6.6.5 9.6 2.9 2 1.7 3.2 4.1 3.5 6.7.5 3.2.6 6.5.4 9.8z"/></svg>
+    </a>
+  
+    
+    
+    
+    
+      
+      
+    
+    <a href="https://www.linkedin.com/in/maximmorev/" target="_blank" rel="noopener" title="www.linkedin.com" class="md-social__link">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M416 32H31.9C14.3 32 0 46.5 0 64.3v383.4C0 465.5 14.3 480 31.9 480H416c17.6 0 32-14.5 32-32.3V64.3c0-17.8-14.4-32.3-32-32.3M135.4 416H69V202.2h66.5V416zM102.2 96a38.5 38.5 0 1 1 0 77 38.5 38.5 0 1 1 0-77m282.1 320h-66.4V312c0-24.8-.5-56.7-34.5-56.7-34.6 0-39.9 27-39.9 54.9V416h-66.4V202.2h63.7v29.2h.9c8.9-16.8 30.6-34.5 62.9-34.5 67.2 0 79.7 44.3 79.7 101.9z"/></svg>
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    
+      
+      
+      <script id="__config" type="application/json">{"annotate": null, "base": "../../../../..", "features": ["navigation.tabs", "navigation.sections", "navigation.indexes", "toc.integrate", "navigation.top", "search.suggest", "search.highlight", "content.tabs.link", "content.code.annotation", "content.code.copy"], "search": "../../../../../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
+    
+    
+      <script src="../../../../../assets/javascripts/bundle.79ae519e.min.js"></script>
+      
+    
+  </body>
+</html>
