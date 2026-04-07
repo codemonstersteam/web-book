@@ -1,5 +1,5 @@
 site_name: CodeMonsters.team
-site_url: https://codemonsters.team
+site_url: https://codemonstersteam.github.io/web-book/
 theme:
   name: material
   custom_dir: overrides
