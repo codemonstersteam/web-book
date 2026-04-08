@@ -1,6 +1,6 @@
 ---
 title: README — это продукт. Документация по JTBD с ИИ-агентом
-date: 2026-04-04
+date: 2026-04-07
 authors:
   - gardener
 slug: documentation-as-product-jtbd
@@ -38,7 +38,7 @@ categories:
 Откройте README большинства сервисов в вашей компании. Там будет пусто или каша. Каша - отсутствие уважения к себе и коллегам или не понимание важности это работы. 
 
 Если у тебя не так, тебе повезло! 
-Я допускаю, что материал может быть тебе полезен для того, чтобы улучшить текущие решения.
+Материал может быть тебе полезен для того, чтобы улучшить текущие решения.
 
 
 <!-- TODO: вставить фото лапши -->
@@ -51,18 +51,35 @@ categories:
 
 ### А вот числа, чтобы не быть голословным
 
-Качественная документация повышает производительность команды на 25% ([Google Cloud DORA Report 2023](https://cloud.google.com/blog/products/devops-sre/announcing-the-2023-state-of-devops-report)).
+Качественная документация повышает производительность команды на 25% ([DORA 2023, раздел Documentation quality](https://cloud.google.com/blog/products/devops-sre/announcing-the-2023-state-of-devops-report)):
 
-Команды с сильной внутренней документацией в 2.4 раза чаще достигают целевых показателей надёжности ([Google Cloud DORA Report 2021](https://cloud.google.com/resources/state-of-devops)).
+> "High-quality documentation leads to 25% higher team performance relative to low-quality documentation."
 
-62% разработчиков тратят больше 30 минут каждый день на поиск ответов в плохо задокументированных системах ([Stack Overflow](https://www.archbee.com/blog/invisible-roadblock-poor-documentation-and-how-to-break-through)).
+Команды с качественной документацией в 2.4 раза чаще показывают высокую производительность доставки и эксплуатации ПО ([DORA 2021, раздел Documentation](https://cloud.google.com/resources/state-of-devops)):
+
+> "Teams with higher quality documentation are 2.4 times more likely to see better software delivery and operational (SDO) performance."
+
+И отдельно — команды с качественной документацией в 2.4 раза чаще достигают целевых показателей надёжности ([там же](https://cloud.google.com/resources/state-of-devops)):
+
+> "Teams with quality documentation are 2.4 times more likely to meet or exceed their reliability targets."
+
+62% разработчиков тратят больше 30 минут каждый день на поиск ответов в плохо задокументированных системах ([Stack Overflow Developer Survey / Archbee](https://www.archbee.com/blog/invisible-roadblock-poor-documentation-and-how-to-break-through)):
+
+> "According to the Stack Overflow Developer Survey, 62% of developers spend over 30 minutes each day looking for answers to poorly documented issues, with 25% exceeding an hour."
+
 Я вспоминаю как тратил часы на поиск решение и распаковывал плохо структурированную раздутую документацию до сути.
 
-На команду из 100 инженеров плохая документация съедает 15–25% мощности — это 15–25 человек, которые не пишут код, а компенсируют отсутствие документов ([GetDX](https://getdx.com/blog/developer-documentation/)).
+На команду из 100 инженеров плохая документация съедает 15–25% мощности — это 15–25 человек, которые не пишут код, а компенсируют отсутствие документов ([GetDX](https://getdx.com/blog/developer-documentation/)):
 
-38% разработчиков называют плохую документацию одной из главных причин увольнения ([Stack Overflow / Evizi](https://evizi.com/insights/operational-efficiency/the-hidden-cost-of-poor-documentation-in-software-development/)).
+> "Documentation problems cost 15-25% of engineering capacity. That's 15-25 engineers per 100-person team effectively doing nothing but compensating for missing documentation."
 
-Онбординг новых инженеров затягивается на 2–3 месяца, когда документация отсутствует (важно ❗, что плохая, громоздкая дока — всё равно что отсутствие доки) ([GetDX](https://getdx.com/blog/developer-documentation/)).
+38% разработчиков называют плохую документацию одной из главных причин увольнения ([Stack Overflow / Evizi](https://evizi.com/insights/operational-efficiency/the-hidden-cost-of-poor-documentation-in-software-development/)):
+
+> "Research from Stack Overflow found that 38% of developers listed poor documentation as one of the top reasons for leaving a company."
+
+Онбординг новых инженеров затягивается на 2–3 месяца, когда документация отсутствует (важно ❗, что плохая, громоздкая дока — всё равно что отсутствие доки) ([GetDX](https://getdx.com/blog/developer-documentation/)):
+
+> "New hires take 2-3 months longer to become productive when documentation is poor."
 
 Это не «было бы неплохо написать README». Это реальные деньги, люди и время.
 
