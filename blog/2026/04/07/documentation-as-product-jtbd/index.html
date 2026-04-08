@@ -10,7 +10,7 @@
       
       
       
-        <link rel="canonical" href="https://codemonsters.team/blog/2026/04/04/documentation-as-product-jtbd/">
+        <link rel="canonical" href="https://codemonsters.team/blog/2026/04/07/documentation-as-product-jtbd/">
       
       
         <link rel="prev" href="../../../03/23/ai-passkey-demo-api/">
@@ -2565,7 +2565,7 @@
                     <li class="md-nav__item">
                       <div class="md-nav__link">
                         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 19H5V8h14m-3-7v2H8V1H6v2H5c-1.11 0-2 .89-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V5a2 2 0 0 0-2-2h-1V1m-1 11h-5v5h5z"/></svg>
-                        <time datetime="2026-04-04 00:00:00+00:00" class="md-ellipsis">April 4, 2026</time>
+                        <time datetime="2026-04-07 00:00:00+00:00" class="md-ellipsis">April 7, 2026</time>
                       </div>
                     </li>
                     
@@ -2590,7 +2590,7 @@
                           <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 20a8 8 0 0 0 8-8 8 8 0 0 0-8-8 8 8 0 0 0-8 8 8 8 0 0 0 8 8m0-18a10 10 0 0 1 10 10 10 10 0 0 1-10 10C6.47 22 2 17.5 2 12A10 10 0 0 1 12 2m.5 5v5.25l4.5 2.67-.75 1.23L11 13V7z"/></svg>
                           <span class="md-ellipsis">
                             
-                              11 min read
+                              12 min read
                             
                           </span>
                         </div>
@@ -2911,20 +2911,41 @@
 <h2 id="_2">Проблема</h2>
 <p>Откройте README большинства сервисов в вашей компании. Там будет пусто или каша. Каша - отсутствие уважения к себе и коллегам или не понимание важности это работы. </p>
 <p>Если у тебя не так, тебе повезло! 
-Я допускаю, что материал может быть тебе полезен для того, чтобы улучшить текущие решения.</p>
-<!-- TODO: вставить фото лапши -->
-
+Материал может быть тебе полезен для того, чтобы улучшить текущие решения.</p>
+<p><img alt="Хаотичный README без структуры" src="../../../../ubik-chaos-readme.png" style="display: block; margin: 0 auto;" width="480" /></p>
 <p>Инструкция по запуску перемешана с архитектурными решениями. Quick start утонул в ADR-ах. Менеджер не понимает, что это за система. Кстати, менеджер — вообще редкий гость в своём хозяйстве. Ему не до порядка в репозиториях. А зря. Разве CTO не может взглянуть на репы своего хозяйства и оценить масштаб великолепия? Или бардака?</p>
 <p>Новый разработчик не понимает, как запустить. ИИ-агент сожрал 2000 токенов контекста и всё ещё не знает, куда класть новый файл. Мидл на грани нервного срыва. Джуна рвёт в туалете от волнения. Всё как в «Апокалипсис сегодня». Смотрели?</p>
 <p>Почему всё так хреново? Не знаю. Возможно, всем пофиг. Возможно, люди не понимают, что делают и зачем. Проще всего сказать: вы все тупые мартышки. Но это неконструктивно и несправедливо. Люди делают плохо не со зла — они делают как умеют, потому что никто не показал, как надо.</p>
 <h3 id="_3">А вот числа, чтобы не быть голословным</h3>
-<p>Качественная документация повышает производительность команды на 25% (<a href="https://cloud.google.com/blog/products/devops-sre/announcing-the-2023-state-of-devops-report">Google Cloud DORA Report 2023</a>).</p>
-<p>Команды с сильной внутренней документацией в 2.4 раза чаще достигают целевых показателей надёжности (<a href="https://cloud.google.com/resources/state-of-devops">Google Cloud DORA Report 2021</a>).</p>
-<p>62% разработчиков тратят больше 30 минут каждый день на поиск ответов в плохо задокументированных системах (<a href="https://www.archbee.com/blog/invisible-roadblock-poor-documentation-and-how-to-break-through">Stack Overflow</a>).
-Я вспоминаю как тратил часы на поиск решение и распаковывал плохо структурированную раздутую документацию до сути.</p>
-<p>На команду из 100 инженеров плохая документация съедает 15–25% мощности — это 15–25 человек, которые не пишут код, а компенсируют отсутствие документов (<a href="https://getdx.com/blog/developer-documentation/">GetDX</a>).</p>
-<p>38% разработчиков называют плохую документацию одной из главных причин увольнения (<a href="https://evizi.com/insights/operational-efficiency/the-hidden-cost-of-poor-documentation-in-software-development/">Stack Overflow / Evizi</a>).</p>
-<p>Онбординг новых инженеров затягивается на 2–3 месяца, когда документация отсутствует (важно ❗, что плохая, громоздкая дока — всё равно что отсутствие доки) (<a href="https://getdx.com/blog/developer-documentation/">GetDX</a>).</p>
+<p>Качественная документация повышает производительность команды на 25% (<a href="https://cloud.google.com/blog/products/devops-sre/announcing-the-2023-state-of-devops-report">DORA 2023, раздел Documentation quality</a>):</p>
+<blockquote>
+<p>"High-quality documentation leads to 25% higher team performance relative to low-quality documentation."</p>
+</blockquote>
+<p>Команды с качественной документацией в 2.4 раза чаще показывают высокую производительность доставки и эксплуатации ПО (<a href="https://cloud.google.com/resources/state-of-devops">DORA 2021, раздел Documentation</a>):</p>
+<blockquote>
+<p>"Teams with higher quality documentation are 2.4 times more likely to see better software delivery and operational (SDO) performance."</p>
+</blockquote>
+<p>И отдельно — команды с качественной документацией в 2.4 раза чаще достигают целевых показателей надёжности (<a href="https://cloud.google.com/resources/state-of-devops">там же</a>):</p>
+<blockquote>
+<p>"Teams with quality documentation are 2.4 times more likely to meet or exceed their reliability targets."</p>
+</blockquote>
+<p>62% разработчиков тратят больше 30 минут каждый день на поиск ответов в плохо задокументированных системах (<a href="https://www.archbee.com/blog/invisible-roadblock-poor-documentation-and-how-to-break-through">Stack Overflow Developer Survey / Archbee</a>):</p>
+<blockquote>
+<p>"According to the Stack Overflow Developer Survey, 62% of developers spend over 30 minutes each day looking for answers to poorly documented issues, with 25% exceeding an hour."</p>
+</blockquote>
+<p>Я вспоминаю как тратил часы на поиск решение и распаковывал плохо структурированную раздутую документацию до сути.</p>
+<p>На команду из 100 инженеров плохая документация съедает 15–25% мощности — это 15–25 человек, которые не пишут код, а компенсируют отсутствие документов (<a href="https://getdx.com/blog/developer-documentation/">GetDX</a>):</p>
+<blockquote>
+<p>"Documentation problems cost 15-25% of engineering capacity. That's 15-25 engineers per 100-person team effectively doing nothing but compensating for missing documentation."</p>
+</blockquote>
+<p>38% разработчиков называют плохую документацию одной из главных причин увольнения (<a href="https://evizi.com/insights/operational-efficiency/the-hidden-cost-of-poor-documentation-in-software-development/">Stack Overflow / Evizi</a>):</p>
+<blockquote>
+<p>"Research from Stack Overflow found that 38% of developers listed poor documentation as one of the top reasons for leaving a company."</p>
+</blockquote>
+<p>Онбординг новых инженеров затягивается на 2–3 месяца, когда документация отсутствует (важно ❗, что плохая, громоздкая дока — всё равно что отсутствие доки) (<a href="https://getdx.com/blog/developer-documentation/">GetDX</a>):</p>
+<blockquote>
+<p>"New hires take 2-3 months longer to become productive when documentation is poor."</p>
+</blockquote>
 <p>Это не «было бы неплохо написать README». Это реальные деньги, люди и время.</p>
 <p>README не пишут — или пишут «для всех». А документация «для всех» — это документация ни для кого. Как записка на холодосе в кофепоинте, адресованная «жильцам дома» — никто не читает, все в беготне, сроки горят. Много непонятного вокруг.</p>
 <hr />
