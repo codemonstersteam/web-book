@@ -2591,7 +2591,7 @@
                           <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 20a8 8 0 0 0 8-8 8 8 0 0 0-8-8 8 8 0 0 0-8 8 8 8 0 0 0 8 8m0-18a10 10 0 0 1 10 10 10 10 0 0 1-10 10C6.47 22 2 17.5 2 12A10 10 0 0 1 12 2m.5 5v5.25l4.5 2.67-.75 1.23L11 13V7z"/></svg>
                           <span class="md-ellipsis">
                             
-                              14 min read
+                              16 min read
                             
                           </span>
                         </div>
@@ -3095,7 +3095,7 @@
 <h3 id="2">Шаг 2 — Добавляем менеджера</h3>
 <p>Два сегмента — хорошо, но мало. Из опыта работы в больших компаниях я знал, что есть ещё один потребитель, которого обычно игнорируют:</p>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a>Разберём JTBD ещё двух сегментов.
-<a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a>Сегмент 3: Тупой Менеджер нанимает ридми для —
+<a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a>Сегмент 3: Менеджер нанимает ридми для —
 <a id="__codelineno-1-3" name="__codelineno-1-3" href="#__codelineno-1-3"></a>понять чо за система, как она работает в целом
 <a id="__codelineno-1-4" name="__codelineno-1-4" href="#__codelineno-1-4"></a>и из каких кусков состоит. Значит на каждом
 <a id="__codelineno-1-5" name="__codelineno-1-5" href="#__codelineno-1-5"></a>отдельном куске должна быть отсылка ко всей системе.
@@ -3140,7 +3140,7 @@
 <a id="__codelineno-5-2" name="__codelineno-5-2" href="#__codelineno-5-2"></a>
 <a id="__codelineno-5-3" name="__codelineno-5-3" href="#__codelineno-5-3"></a><span class="k">1.</span> Инженер (создатель)
 <a id="__codelineno-5-4" name="__codelineno-5-4" href="#__codelineno-5-4"></a><span class="k">2.</span> Инженер(клиент) который работает с нашей коробкой (Клиент)
-<a id="__codelineno-5-5" name="__codelineno-5-5" href="#__codelineno-5-5"></a><span class="k">3.</span> Тупой Менеджер
+<a id="__codelineno-5-5" name="__codelineno-5-5" href="#__codelineno-5-5"></a><span class="k">3.</span> Менеджер
 <a id="__codelineno-5-6" name="__codelineno-5-6" href="#__codelineno-5-6"></a><span class="k">4.</span> Агенту ИИ
 <a id="__codelineno-5-7" name="__codelineno-5-7" href="#__codelineno-5-7"></a>
 <a id="__codelineno-5-8" name="__codelineno-5-8" href="#__codelineno-5-8"></a>1 Инженеру(создателю) ридмин нанимает на
@@ -3184,7 +3184,7 @@
 <a id="__codelineno-5-46" name="__codelineno-5-46" href="#__codelineno-5-46"></a>Как работает каждый отдельный кусок (я могу быть брошен на доработку
 <a id="__codelineno-5-47" name="__codelineno-5-47" href="#__codelineno-5-47"></a>надеюсь не сражение с демо-пиццей)
 <a id="__codelineno-5-48" name="__codelineno-5-48" href="#__codelineno-5-48"></a>
-<a id="__codelineno-5-49" name="__codelineno-5-49" href="#__codelineno-5-49"></a><span class="k">3.</span> Тупой Менеджер нанимает ридми для
+<a id="__codelineno-5-49" name="__codelineno-5-49" href="#__codelineno-5-49"></a><span class="k">3.</span> Менеджер нанимает ридми для
 <a id="__codelineno-5-50" name="__codelineno-5-50" href="#__codelineno-5-50"></a>Понять чо за система
 <a id="__codelineno-5-51" name="__codelineno-5-51" href="#__codelineno-5-51"></a>Как она работает в целом и из каких кусков состоит
 <a id="__codelineno-5-52" name="__codelineno-5-52" href="#__codelineno-5-52"></a>Значит на каждом отдельном куске должна быть отсылка ко всей системе
@@ -3208,6 +3208,22 @@
 </code></pre></div>
 <p>Посмотри как ☝️ это лаконично. Можно в режиме сканирования понять как работает АПИ верхнеуровнево.
 Кайф. Часто такая запись помогает увидеть ошибку в реализации или как можно упростить решение.</p>
+<p>Но главное — pipe учит инженера объяснять «на пальцах», как работает поток. Без ORM, без middleware, без фреймворковой магии — просто шаги, которые проходят данные. Это ценно по нескольким причинам:</p>
+<ul>
+<li><strong>Снижение когнитивной нагрузки.</strong> Рабочая память удерживает 4±1 чанка (Cowan, 2001<sup id="fnref:cowan"><a class="footnote-ref" href="#fn:cowan">1</a></sup>). Pipe-запись — это готовые чанки: один шаг = один чанк. Таблица «метод → ресурс → действие» заставляет собирать поток в голове самому.</li>
+<li><strong>Чёрный ящик становится прозрачным.</strong> Инженер видит не интерфейс коробки, а что происходит внутри — и в каком порядке. Это разница между «POST возвращает 201» и «мы генерируем challenge, кладём в базу и только потом отвечаем».</li>
+<li><strong>Ошибки видны на уровне текста.</strong> Если шаг пропущен или стоит не в том месте — это заметно при чтении, без запуска кода. По сути, pipe — это code review до написания кода.</li>
+<li><strong>Общий язык между ролями.</strong> Фронтендер, бэкендер и тестировщик читают один и тот же pipe и одинаково понимают контракт. Исследования distributed cognition (Hutchins, 1995<sup id="fnref:hutchins"><a class="footnote-ref" href="#fn:hutchins">2</a></sup>) показывают: общее внешнее представление снижает ошибки координации в команде.</li>
+</ul>
+<p><strong>А если шагов много?</strong> Главная критика pipe: «процесс на 15 шагов превратится в простыню». Но это не баг нотации — это сигнал. Если pipe не помещается в голову, проблема не в записи, а в дизайне endpoint-а.</p>
+<ul>
+<li>Те же 4±1 чанка Cowan-а<sup id="fnref2:cowan"><a class="footnote-ref" href="#fn:cowan">1</a></sup> работают и здесь: pipe длиннее ~5 шагов нужно либо группировать в суб-пайпы, либо упрощать сам процесс.</li>
+<li>Ousterhout в <em>A Philosophy of Software Design</em> (2018)<sup id="fnref:ousterhout"><a class="footnote-ref" href="#fn:ousterhout">3</a></sup> вводит понятие «complexity signals» — если модуль нельзя описать коротко, он слишком сложный. Длинный pipe — буквально такой детектор.</li>
+<li>Правило 5 строк Sandi Metz<sup id="fnref:metz"><a class="footnote-ref" href="#fn:metz">4</a></sup> — эвристика из Ruby-сообщества: метод длиннее 5 строк — кандидат на разбиение. Pipe работает аналогично: больше 5 шагов — стоит спросить «а это точно один endpoint?».</li>
+<li>Цикломатическая сложность McCabe (1976)<sup id="fnref:mccabe"><a class="footnote-ref" href="#fn:mccabe">5</a></sup>: чем больше ветвлений, тем больше ошибок. Pipe с ветвлениями (if → path A / path B) — сигнал, что endpoint делает слишком много.</li>
+<li>Rich Hickey в докладе <em>Simple Made Easy</em> (2011)<sup id="fnref:hickey"><a class="footnote-ref" href="#fn:hickey">6</a></sup>: simple ≠ easy. Длинный pipe показывает complected (переплетённую) логику. Это приглашение распутать, а не записать покороче.</li>
+</ul>
+<p>Pipe — это одновременно документация и линтер дизайна. Если запись раздувается, это обратная связь от системы: «упрости меня».</p>
 <p><strong>Компонентные тесты как документация.</strong> Gherkin-сценарии уже были в правилах, но не как способ объяснить «как пользоваться коробкой». А это буквально исполняемая инструкция к устройству на полке.
 Не терпится посмотреть, что у нас получится.</p>
 <p><strong>Инженер-клиент может быть «брошен на доработку».</strong> Это размывает границу между сегментами 1 и 2. Человек пришёл как потребитель, а стал контрибьютором. README должен дать ему лестницу, а не стену.</p>
@@ -3445,6 +3461,29 @@
 <h2 id="_6">Следующая сессия</h2>
 <p>Шаблон готов. Документация знает своих потребителей. В следующей сессии — компонентные тесты на Gherkin: описываем поведение сервиса до того, как напишем первую строку кода.</p>
 <p>Продолжение: <a href="https://github.com/ubik-life/passkey-demo-api/tree/main/devlog">devlog/</a></p>
+<div class="footnote">
+<hr />
+<ol>
+<li id="fn:cowan">
+<p>Cowan N. <em>The magical number 4 in short-term memory: A reconsideration of mental storage capacity.</em> Behavioral and Brain Sciences, 2001.&#160;<a class="footnote-backref" href="#fnref:cowan" title="Jump back to footnote 1 in the text">&#8617;</a><a class="footnote-backref" href="#fnref2:cowan" title="Jump back to footnote 1 in the text">&#8617;</a></p>
+</li>
+<li id="fn:hutchins">
+<p>Hutchins E. <em>Cognition in the Wild.</em> MIT Press, 1995 — классическая работа о том, как внешние представления (карты, схемы, чек-листы) разгружают когнитивную систему команды.&#160;<a class="footnote-backref" href="#fnref:hutchins" title="Jump back to footnote 2 in the text">&#8617;</a></p>
+</li>
+<li id="fn:ousterhout">
+<p>Ousterhout J. <em>A Philosophy of Software Design.</em> Yaknyam Press, 2018.&#160;<a class="footnote-backref" href="#fnref:ousterhout" title="Jump back to footnote 3 in the text">&#8617;</a></p>
+</li>
+<li id="fn:metz">
+<p>Metz S. <em>Practical Object-Oriented Design.</em> Addison-Wesley, 2012 — правило «5 строк на метод» как эвристика декомпозиции.&#160;<a class="footnote-backref" href="#fnref:metz" title="Jump back to footnote 4 in the text">&#8617;</a></p>
+</li>
+<li id="fn:mccabe">
+<p>McCabe T. <em>A Complexity Measure.</em> IEEE Transactions on Software Engineering, 1976.&#160;<a class="footnote-backref" href="#fnref:mccabe" title="Jump back to footnote 5 in the text">&#8617;</a></p>
+</li>
+<li id="fn:hickey">
+<p>Hickey R. <em>Simple Made Easy.</em> Strange Loop Conference, 2011 — доклад о разнице между простотой и лёгкостью, и о цене переплетённой (complected) логики.&#160;<a class="footnote-backref" href="#fnref:hickey" title="Jump back to footnote 6 in the text">&#8617;</a></p>
+</li>
+</ol>
+</div>
 
 
 
