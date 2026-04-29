@@ -1,0 +1,3568 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+        <meta name="description" content="Скилл готов, на бумаге всё ясно. Прикручиваем к реальному сервису — и сразу упираемся в пустой контракт, нерабочие режимы отказа и отсутствие раннера. История одной сессии: opus прошёл от теории до зелёного smoke и подготовил почву; sonnet написал .feature за один день.">
+      
+      
+      
+        <link rel="canonical" href="https://codemonsters.team/blog/2026/04/28/component-tests-skill-application/">
+      
+      
+        <link rel="prev" href="../../26/component-tests-skill-passkey-demo/">
+      
+      
+      
+        
+      
+      
+      <link rel="icon" href="../../../../../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.6">
+    
+    
+      
+        <title>Применение и доработка скилла компонентных тестов. Сессия с opus и хендофф sonnet'у - CodeMonsters.team</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../../../../assets/stylesheets/main.484c7ddc.min.css">
+      
+        
+        <link rel="stylesheet" href="../../../../../assets/stylesheets/palette.ab4e12ef.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+    <script>__md_scope=new URL("../../../../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+  
+
+
+  <!-- Yandex.Metrika counter -->
+<script type="text/javascript" >
+   (function(m,e,t,r,i,k,a){m[i]=m[i]||function(){(m[i].a=m[i].a||[]).push(arguments)};
+   m[i].l=1*new Date();
+   for (var j = 0; j < document.scripts.length; j++) {if (document.scripts[j].src === r) { return; }}
+   k=e.createElement(t),a=e.getElementsByTagName(t)[0],k.async=1,k.src=r,a.parentNode.insertBefore(k,a)})
+   (window, document, "script", "https://mc.yandex.ru/metrika/tag.js", "ym");
+
+   ym(92584192, "init", {
+        clickmap:true,
+        trackLinks:true,
+        accurateTrackBounce:true,
+        webvisor:true
+   });
+</script>
+<noscript><div><img src="https://mc.yandex.ru/watch/92584192" style="position:absolute; left:-9999px;" alt="" /></div></noscript>
+<!-- /Yandex.Metrika counter -->
+  
+    <script>"undefined"!=typeof __md_analytics&&__md_analytics()</script>
+  
+
+    
+    
+  </head>
+  
+  
+    
+    
+      
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="blue-grey" data-md-color-accent="purple">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#opus-sonnet" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+<header class="md-header" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href="../../../../.." title="CodeMonsters.team" class="md-header__button md-logo" aria-label="CodeMonsters.team" data-md-component="logo">
+      
+  <img src="/cm-logo-header.png" alt="logo">
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            CodeMonsters.team
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              Применение и доработка скилла компонентных тестов. Сессия с opus и хендофф sonnet'у
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+        <form class="md-header__option" data-md-component="palette">
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="default" data-md-color-primary="blue-grey" data-md-color-accent="purple"  aria-label="Switch to dark mode"  type="radio" name="__palette" id="__palette_0">
+    
+      <label class="md-header__button md-icon" title="Switch to dark mode" for="__palette_1" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M17 6H7c-3.31 0-6 2.69-6 6s2.69 6 6 6h10c3.31 0 6-2.69 6-6s-2.69-6-6-6m0 10H7c-2.21 0-4-1.79-4-4s1.79-4 4-4h10c2.21 0 4 1.79 4 4s-1.79 4-4 4M7 9c-1.66 0-3 1.34-3 3s1.34 3 3 3 3-1.34 3-3-1.34-3-3-3"/></svg>
+      </label>
+    
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="slate" data-md-color-primary="teal" data-md-color-accent="lime"  aria-label="Switch to light mode"  type="radio" name="__palette" id="__palette_1">
+    
+      <label class="md-header__button md-icon" title="Switch to light mode" for="__palette_0" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M17 7H7a5 5 0 0 0-5 5 5 5 0 0 0 5 5h10a5 5 0 0 0 5-5 5 5 0 0 0-5-5m0 8a3 3 0 0 1-3-3 3 3 0 0 1 3-3 3 3 0 0 1 3 3 3 3 0 0 1-3 3"/></svg>
+      </label>
+    
+  
+</form>
+      
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+            
+<nav class="md-tabs" aria-label="Tabs" data-md-component="tabs">
+  <div class="md-grid">
+    <ul class="md-tabs__list">
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../../../../.." class="md-tabs__link">
+        
+  
+  
+    
+  
+  Начало
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../../../../../overview/" class="md-tabs__link">
+        
+  
+  
+    
+  
+  Об авторе
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+    
+  
+  
+    
+    
+      <li class="md-tabs__item md-tabs__item--active">
+        <a href="../../../../" class="md-tabs__link">
+          
+  
+  
+    
+  
+  Blog
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../../../../codebook/" class="md-tabs__link">
+          
+  
+  
+    
+  
+  Codebook
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../../../../effective-developer/" class="md-tabs__link">
+          
+  
+  
+    
+  
+  Effective developer
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../../../../resources/" class="md-tabs__link">
+          
+  
+  
+    
+  
+  Resources
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../../../../tutorials/" class="md-tabs__link">
+          
+  
+  
+    
+  
+  Tutorials
+
+        </a>
+      </li>
+    
+  
+
+      
+    </ul>
+  </div>
+</nav>
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+                
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" hidden>
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+  
+
+
+  
+
+<nav class="md-nav md-nav--primary md-nav--lifted md-nav--integrated" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../../../../.." title="CodeMonsters.team" class="md-nav__button md-logo" aria-label="CodeMonsters.team" data-md-component="logo">
+      
+  <img src="/cm-logo-header.png" alt="logo">
+
+    </a>
+    CodeMonsters.team
+  </label>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../.." class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Начало
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../../overview/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Об авторе
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+        
+        
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3" checked>
+        
+          
+          <div class="md-nav__link md-nav__container">
+            <a href="../../../../" class="md-nav__link ">
+              
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Blog
+  
+
+    
+  </span>
+  
+  
+
+            </a>
+            
+              
+              <label class="md-nav__link " for="__nav_3" id="__nav_3_label" tabindex="">
+                <span class="md-nav__icon md-icon"></span>
+              </label>
+            
+          </div>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_3_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_3">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Blog
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+        
+          
+          
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3_2" >
+        
+          
+          <label class="md-nav__link" for="__nav_3_2" id="__nav_3_2_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Archive
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_3_2_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_3_2">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Archive
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+    
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../archive/2026/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    2026
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../archive/2025/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    2025
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+        
+          
+          
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3_3" >
+        
+          
+          <label class="md-nav__link" for="__nav_3_3" id="__nav_3_3_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Categories
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_3_3_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_3_3">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Categories
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+    
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../category/agents/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    agents
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../category/ai/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    ai
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../category/api/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    api
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../category/claude/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    claude
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../category/code/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    code
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../category/codebook/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    codebook
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../category/communication/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    communication
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../category/component-tests/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    component-tests
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../category/container-driven-approach/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    container driven approach
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../category/contract-tests/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    contract-tests
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../category/coreos/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    coreos
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../category/devops/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    devops
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../category/documentation/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    documentation
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../category/git/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    git
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../category/gitlab/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    gitlab
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../category/gitlab-runner/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    gitlab runner
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../category/go/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    go
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../category/howtocode/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    howtocode
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../category/linux/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    linux
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../category/process/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    process
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../category/tests/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    tests
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../category/ubik/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    ubik
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../category/webauthn/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    webauthn
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4" >
+        
+          
+          <div class="md-nav__link md-nav__container">
+            <a href="../../../../../codebook/" class="md-nav__link ">
+              
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Codebook
+  
+
+    
+  </span>
+  
+  
+
+            </a>
+            
+              
+              <label class="md-nav__link " for="__nav_4" id="__nav_4_label" tabindex="0">
+                <span class="md-nav__icon md-icon"></span>
+              </label>
+            
+          </div>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_4_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Codebook
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../../codebook/1-codegen-machine/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    1 Заклинателю приложений
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_5" >
+        
+          
+          <div class="md-nav__link md-nav__container">
+            <a href="../../../../../effective-developer/" class="md-nav__link ">
+              
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Effective developer
+  
+
+    
+  </span>
+  
+  
+
+            </a>
+            
+              
+              <label class="md-nav__link " for="__nav_5" id="__nav_5_label" tabindex="0">
+                <span class="md-nav__icon md-icon"></span>
+              </label>
+            
+          </div>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_5_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_5">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Effective developer
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../../effective-developer/life/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Life
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../../effective-developer/rules/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Rules
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+      
+        
+      
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_5_4" >
+        
+          
+          <label class="md-nav__link" for="__nav_5_4" id="__nav_5_4_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Code
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_5_4_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_5_4">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Code
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_5_4_1" >
+        
+          
+          <label class="md-nav__link" for="__nav_5_4_1" id="__nav_5_4_1_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Clean code
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="3" aria-labelledby="__nav_5_4_1_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_5_4_1">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Clean code
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../../effective-developer/code/clean-code/how-not-to-write-code/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Как не стоит писать код: разбираем ошибки
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../../effective-developer/code/clean-code/how-to-integration-test/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Гайд по чистому коду. Учимся писать тесты.
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../../effective-developer/code/clean-code/how-to/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Как написать чистый код и сделать жизнь проще
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_5_5" >
+        
+          
+          <div class="md-nav__link md-nav__container">
+            <a href="../../../../../effective-developer/devops/" class="md-nav__link ">
+              
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Devops
+  
+
+    
+  </span>
+  
+  
+
+            </a>
+            
+              
+              <label class="md-nav__link " for="__nav_5_5" id="__nav_5_5_label" tabindex="0">
+                <span class="md-nav__icon md-icon"></span>
+              </label>
+            
+          </div>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_5_5_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_5_5">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Devops
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_5_5_2" >
+        
+          
+          <div class="md-nav__link md-nav__container">
+            <a href="../../../../../effective-developer/devops/free-ipa/" class="md-nav__link ">
+              
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Free ipa
+  
+
+    
+  </span>
+  
+  
+
+            </a>
+            
+          </div>
+        
+        <nav class="md-nav" data-md-level="3" aria-labelledby="__nav_5_5_2_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_5_5_2">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Free ipa
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_5_6" >
+        
+          
+          <div class="md-nav__link md-nav__container">
+            <a href="../../../../../effective-developer/newbie-roadmap/" class="md-nav__link ">
+              
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Newbie roadmap
+  
+
+    
+  </span>
+  
+  
+
+            </a>
+            
+          </div>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_5_6_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_5_6">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Newbie roadmap
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_6" >
+        
+          
+          <div class="md-nav__link md-nav__container">
+            <a href="../../../../../resources/" class="md-nav__link ">
+              
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Resources
+  
+
+    
+  </span>
+  
+  
+
+            </a>
+            
+              
+              <label class="md-nav__link " for="__nav_6" id="__nav_6_label" tabindex="0">
+                <span class="md-nav__icon md-icon"></span>
+              </label>
+            
+          </div>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_6_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_6">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Resources
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../../resources/videos/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Видео
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../../resources/web-links/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Полезные ссылки
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_6_4" >
+        
+          
+          <label class="md-nav__link" for="__nav_6_4" id="__nav_6_4_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Books
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_6_4_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_6_4">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Books
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../../resources/books/advanced-web/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Подборка Эффективных книг > Веб-разработка
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../../resources/books/essential/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Подборка Эффективных книг > новичку
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_7" >
+        
+          
+          <div class="md-nav__link md-nav__container">
+            <a href="../../../../../tutorials/" class="md-nav__link ">
+              
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Tutorials
+  
+
+    
+  </span>
+  
+  
+
+            </a>
+            
+              
+              <label class="md-nav__link " for="__nav_7" id="__nav_7_label" tabindex="0">
+                <span class="md-nav__icon md-icon"></span>
+              </label>
+            
+          </div>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_7_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_7">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Tutorials
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+      
+        
+      
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_7_2" >
+        
+          
+          <label class="md-nav__link" for="__nav_7_2" id="__nav_7_2_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Server
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_7_2_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_7_2">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Server
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../../tutorials/server/ddd-in-action/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Руководства
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+          
+          
+  <div class="md-content md-content--post" data-md-component="content">
+    <div class="md-sidebar md-sidebar--post" data-md-component="sidebar" data-md-type="navigation">
+      <div class="md-sidebar__scrollwrap">
+        <div class="md-sidebar__inner md-post">
+          <nav class="md-nav md-nav--primary">
+            <div class="md-post__back">
+              <div class="md-nav__title md-nav__container">
+                <a href="../../../../" class="md-nav__link">
+                  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+                  <span class="md-ellipsis">
+                    Back to index
+                  </span>
+                </a>
+              </div>
+            </div>
+            
+              <div class="md-post__authors md-typeset">
+                
+                  <div class="md-profile md-post__profile">
+                    <span class="md-author md-author--long">
+                      <img src="https://avatars.githubusercontent.com/u/45400275" alt="Max Morev">
+                    </span>
+                    <span class="md-profile__description">
+                      <strong>
+                        
+                          <a href="https://github.com/codemonstersteam">Max Morev</a>
+                        
+                      </strong>
+                      <br>
+                      Creator
+                    </span>
+                  </div>
+                
+              </div>
+            
+            <ul class="md-post__meta md-nav__list">
+              <li class="md-nav__item md-nav__item--section">
+                <div class="md-post__title">
+                  <span class="md-ellipsis">
+                    Metadata
+                  </span>
+                </div>
+                <nav class="md-nav">
+                  <ul class="md-nav__list">
+                    <li class="md-nav__item">
+                      <div class="md-nav__link">
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 19H5V8h14m-3-7v2H8V1H6v2H5c-1.11 0-2 .89-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V5a2 2 0 0 0-2-2h-1V1m-1 11h-5v5h5z"/></svg>
+                        <time datetime="2026-04-28 00:00:00+00:00" class="md-ellipsis">April 28, 2026</time>
+                      </div>
+                    </li>
+                    
+                    
+                      <li class="md-nav__item">
+                        <div class="md-nav__link">
+                          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9 3v15h3V3zm3 2 4 13 3-1-4-13zM5 5v13h3V5zM3 19v2h18v-2z"/></svg>
+                          <span class="md-ellipsis">
+                            in
+                            
+                              <a href="../../../../category/code/">code</a>, 
+                              <a href="../../../../category/tests/">tests</a>, 
+                              <a href="../../../../category/component-tests/">component-tests</a>, 
+                              <a href="../../../../category/howtocode/">howtocode</a>, 
+                              <a href="../../../../category/agents/">agents</a></span>
+                        </div>
+                      </li>
+                    
+                    
+                      
+                      <li class="md-nav__item">
+                        <div class="md-nav__link">
+                          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 20a8 8 0 0 0 8-8 8 8 0 0 0-8-8 8 8 0 0 0-8 8 8 8 0 0 0 8 8m0-18a10 10 0 0 1 10 10 10 10 0 0 1-10 10C6.47 22 2 17.5 2 12A10 10 0 0 1 12 2m.5 5v5.25l4.5 2.67-.75 1.23L11 13V7z"/></svg>
+                          <span class="md-ellipsis">
+                            
+                              15 min read
+                            
+                          </span>
+                        </div>
+                      </li>
+                    
+                  </ul>
+                </nav>
+              </li>
+            </ul>
+            
+          </nav>
+          
+            
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#karta-mestnost" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Как карта встретилась с местностью
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#raund-1" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Раунд 1: один режим, как написано в учебнике
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#raund-2" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Раунд 2: тимлид-критика — слишком крупная гранулярность
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#raund-3" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Раунд 3: «а вы это вообще тестировать собираетесь?»
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#timlid-review" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Тимлид-ревью перед хендоффом
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#shag-2-0" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Шаг 2.0 — шаблон тестов в Docker
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#sem-voprosov" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Семь вопросов по архитектуре раннера
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#shag-2-sonnet" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Шаг 2 — sonnet пишет .feature-файлы
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Шаг 2 — sonnet пишет .feature-файлы">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#sonnet-gherkin" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Что обнаружил sonnet до того, как написал первую строчку Gherkin
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#sonnet" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Решения, которые sonnet принял по ходу
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#sonnet-" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Промпты sonnet-сессии
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#2" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Итог Шага 2
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#uroki" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Уроки сессии
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Уроки сессии">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#1" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1. Скилл — рамка, не алгоритм
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#2_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2. Контракт первичен — буквально
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#3" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3. Только воспроизводимые режимы
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#4-" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4. Тимлид-ревью обязателен перед хендоффом
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#5" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        5. Раннер — артефакт первого класса
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#6-q-by-q" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        6. Q-by-Q дисциплина в архитектурных решениях
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#7-backlog" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        7. Backlog обновлять по тикетно
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#8-sonnet" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        8. Sonnet чинит локальное, останавливается на стратегическом
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Резюме
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_2" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Что дальше
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_3" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Источники
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+          
+        </div>
+      </div>
+    </div>
+    <article class="md-content__inner md-typeset">
+      
+        
+  
+
+
+
+
+<h1 id="opus-sonnet">Применение и доработка скилла компонентных тестов. Сессия с opus и хендофф sonnet'у</h1>
+<blockquote>
+<p><em>«Если карта не сходится с местностью — права местность.»</em></p>
+<p>— старая военная пословица</p>
+</blockquote>
+<p>В <a href="https://codemonsters.team/blog/2026/04/26/component-tests-skill-passkey-demo/">предыдущей статье</a> мы зафиксировали скилл компонентных тестов как артефакт: положили <code>SKILL.md</code> рядом с проектом, написали процедуру, посчитали для passkey-demo-api по формуле семь сценариев. Всё красиво.</p>
+<p>Реальность вмешалась на первой же минуте применения. Эта статья — журнал двух смежных сессий: opus прошёл от теории до зелёного smoke, потом sonnet за один день написал восемь сценариев по готовому шаблону. Карта (скилл) встретилась с местностью (реальный репозиторий), оба после этого изменились.</p>
+<!-- more -->
+
+<p>В этой главе рассмотрим:</p>
+<ul>
+<li><a href="#karta-mestnost">Как карта встретилась с местностью</a></li>
+<li><a href="#raund-1">Раунд 1: один режим, как написано в учебнике</a></li>
+<li><a href="#raund-2">Раунд 2: тимлид-критика — слишком крупная гранулярность</a></li>
+<li><a href="#raund-3">Раунд 3: «а вы это вообще тестировать собираетесь?»</a></li>
+<li><a href="#timlid-review">Тимлид-ревью перед хендоффом</a></li>
+<li><a href="#shag-2-0">Шаг 2.0 — шаблон тестов в Docker</a></li>
+<li><a href="#sem-voprosov">Семь вопросов по архитектуре раннера</a></li>
+<li><a href="#shag-2-sonnet">Шаг 2 — sonnet пишет <code>.feature</code>-файлы</a></li>
+<li><a href="#uroki">Уроки сессии</a></li>
+</ul>
+<h2 id="karta-mestnost">Как карта встретилась с местностью</h2>
+<p>Сессия началась короткой задачей:</p>
+<blockquote>
+<p><strong>Промпт 1 (opus).</strong> Изучи две статьи <code>ai-ubik-03-testing-mythology.md</code> и <code>ai-ubik-04-component-tests-skill-demo.md</code>, на основании статей доработай AGENTS.md, добавь SKILL для компонентных тестов, работу начинай с новой ветки согласно правилам в AGENTS.md и CLAUDE.md.</p>
+</blockquote>
+<p>Opus прочитал статьи, создал ветку, положил <code>skills/component-tests/SKILL.md</code>, обновил <code>AGENTS.md</code> и <code>README.md</code>, добавил devlog. Первый PR закрылся за полчаса.</p>
+<p>Дальше — Шаг 0 скилла: «прочитай OpenAPI, перечисли режимы отказа из 5xx-ответов».</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a>$ grep -E &quot;5[0-9][0-9]&quot; api-specification/openapi.yaml
+<a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a>$
+</code></pre></div>
+<p>Пусто. Ни одного <code>5xx</code> ни на одном эндпоинте. В статье 04 я уверенно писал: «у passkey-demo-api в OpenAPI один <code>error.code: db_unavailable</code> под 503». В реальной спеке ничего этого не было.</p>
+<p>Контракт обещал то, чего не существовало.</p>
+<blockquote>
+<p><strong>Промпт 2 (opus).</strong> Описать сценарии отказа на интеграции с БД.</p>
+</blockquote>
+<p>Здесь и началась настоящая работа.</p>
+<h2 id="raund-1">Раунд 1: один режим, как написано в учебнике</h2>
+<p>Я сделал ровно то, что предписывал <a href="https://codemonsters.team/blog/2026/04/26/component-tests-skill-passkey-demo/">скилл</a>:</p>
+<ul>
+<li>перечислил интеграции (одна — SQLite);</li>
+<li>теоретические режимы отказа (locked, timeout, disk full, corruption);</li>
+<li>свернул всё в один <code>db_unavailable</code> → 503;</li>
+<li>добавил в OpenAPI и README по одной строке.</li>
+</ul>
+<p>Получалось семь компонентных тестов: 6 эндпоинтов + 1 режим. Чисто, по учебнику.</p>
+<h2 id="raund-2">Раунд 2: тимлид-критика — слишком крупная гранулярность</h2>
+<blockquote>
+<p><strong>Промпт 3 (opus).</strong> Посмотри критически: какие ещё отказы на интеграции с БД могут быть? Сеть недоступна между сервисом и БД? Мы всё будем заворачивать в 503? Будет сложнее ошибки траблшутить.</p>
+</blockquote>
+<p>Это разворот. Я слишком быстро согласился со статьёй и упустил операционную сторону. Один <code>error.code</code> на всё означает:</p>
+<ul>
+<li>ops-pipeline не различает «диск кончился» (звать оператора) и «БД отвалилась на минуту» (само пройдёт);</li>
+<li>клиент не знает, ретраить ли с короткой задержкой (<code>SQLITE_BUSY</code>) или с длинной;</li>
+<li>разработчик при разборе инцидента видит одинаковый код и идёт в логи, чтобы понять причину.</li>
+</ul>
+<p>Мы развернули критерий. Раньше скилл говорил: «по умолчанию один режим на интеграцию, если нет явной потребности дифференцировать». Теперь — иначе:</p>
+<blockquote>
+<p><strong>Правило различимости.</strong> Режим — отдельный, если различается хотя бы одно из четырёх:</p>
+<ol>
+<li>HTTP-статус (503 vs 507 vs 500);</li>
+<li>заголовки ответа (<code>Retry-After</code> есть/нет);</li>
+<li>действие клиента (ретраить / не ретраить / ретраить с backoff);</li>
+<li>действие оператора (ничего / alert / эскалация).</li>
+</ol>
+<p>Если все четыре одинаковы — режимы сворачиваются в один <code>error.code</code>.</p>
+</blockquote>
+<p>Рассмотрели четыре варианта от 1 до 5 режимов; выбрали три:</p>
+<table>
+<thead>
+<tr>
+<th>Режим</th>
+<th>HTTP</th>
+<th>Заголовки</th>
+<th>Действие клиента</th>
+<th>Действие оператора</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>db_unavailable</code></td>
+<td>503</td>
+<td>—</td>
+<td>Ретраить позже</td>
+<td>—</td>
+</tr>
+<tr>
+<td><code>db_locked</code></td>
+<td>503</td>
+<td><code>Retry-After: 1</code></td>
+<td>Ретраить с backoff</td>
+<td>—</td>
+</tr>
+<tr>
+<td><code>db_disk_full</code></td>
+<td>507</td>
+<td>—</td>
+<td><strong>Не</strong> ретраить</td>
+<td>Эскалация (расширить диск)</td>
+</tr>
+</tbody>
+</table>
+<p>Стало девять компонентных тестов: 6 эндпоинтов + 3 режима. Ops-pipeline и клиент видят разное при разных причинах отказа. Стоило двух лишних тестов.</p>
+<p>Контракт обновили: в OpenAPI появился общий <code>ServiceUnavailable</code>-ответ с двумя примерами <code>error.code</code> и заголовком <code>Retry-After</code>, плюс новый <code>InsufficientStorage</code> (507) для <code>db_disk_full</code> на write-эндпоинтах. README получил расширенную «Карту режимов отказа» с колонкой «поведение клиента». Скилл получил правило различимости.</p>
+<p>Опубликовали бы — и закрыли бы шаг.</p>
+<h2 id="raund-3">Раунд 3: «а вы это вообще тестировать собираетесь?»</h2>
+<blockquote>
+<p><strong>Промпт 4 (opus).</strong> Failure-режимы SQLite — как ставятся в compose/тестах точно можно сделать?</p>
+</blockquote>
+<p>Простой вопрос, перевернувший всё. Честный разбор показал:</p>
+<p><code>db_locked</code> — точно. Раннер шарит volume с SUT, открывает свой коннект к SQLite-файлу, делает <code>BEGIN EXCLUSIVE TRANSACTION</code>, не коммитит. SUT при попытке записи получает <code>SQLITE_BUSY</code> → отдаёт 503. Семантика SQLite-локов через несколько процессов давно стабильна.</p>
+<p><code>db_disk_full</code> — точно. tmpfs ограниченного размера через docker-compose, runner перед сценарием пишет junk-файл, забивает место. Первая же запись SUT падает с <code>SQLITE_FULL</code> → 507.</p>
+<p><code>db_unavailable</code> — оказался <strong>синтетическим</strong>. SQLite встроенная, нет «сетевой недоступности». Все способы воспроизвести «БД недоступна» либо требуют архитектурного компромисса, либо не работают:</p>
+<ul>
+<li><strong>При старте</strong> сервис падает по AGENTS.md (panic при ошибке открытия БД) — никаких 503 не будет.</li>
+<li><strong>Mid-test</strong> открытый файловый дескриптор переживает <code>chmod 000</code>/<code>unlink</code> по POSIX-семантике. Сервис продолжит писать, тест не поймает отказ.</li>
+<li><strong>Lazy-init адаптера + <code>MaxIdleConns=0</code></strong> работает, но требует переписать архитектуру сервиса.</li>
+<li><strong>Unmount тома</strong> — privileged-операция, не работает на Docker Desktop.</li>
+<li><strong>Test-hook в коде</strong> — анти-паттерн, тест-код в продакшне.</li>
+</ul>
+<blockquote>
+<p><strong>Промпт 5 (opus).</strong> Убери лишние синт проверки, оставь реальный возможный отказ.</p>
+</blockquote>
+<p>Принцип, выкристаллизованный по итогу:</p>
+<p><strong>В контракт идут только реально воспроизводимые в тестах режимы. Не теоретически возможные.</strong></p>
+<p><code>db_unavailable</code> отложили — он естественно вернётся при миграции на сетевую БД (Postgres). <code>db_timeout</code> и <code>db_corrupt</code> тоже отложили: первый поведением совпадает с <code>db_locked</code>, второй — катастрофическое событие, требует ручного вмешательства, в demo избыточен.</p>
+<p>Финал: <strong>2 режима, 8 тестов</strong>.</p>
+<p>Заметьте трёхтактовый разворот: 1 → 3 → 2. Первый раунд — следовали скиллу буквально. Второй — критика про операционность пушила вверх. Третий — критика про реализуемость придавила обратно. Скилл получил ещё одно правило: <strong>сначала проверь, можешь ли ты режим воспроизвести в тесте; только потом записывай в контракт</strong>.</p>
+<h2 id="timlid-review">Тимлид-ревью перед хендоффом</h2>
+<p>Контракт зафиксирован, можно передавать sonnet'у писать <code>.feature</code>-файлы. Перед хендоффом — пауза.</p>
+<blockquote>
+<p><strong>Промпт 6 (opus).</strong> Посмотри критически как тимлид с 20-летним стажем: всего хватает, чтобы передать управление sonnet на разработку тестов?</p>
+</blockquote>
+<p>Опус-в-роли-тимлида прошёлся по чек-листу. Пять блокеров:</p>
+<ol>
+<li>
+<p><strong>Не выбран тест-раннер и формат степ-дефиниций.</strong> Sonnet написал бы <code>.feature</code> в воздухе. На Шаге 3 окажется, что половина степов нереализуема в выбранном раннере.</p>
+</li>
+<li>
+<p><strong>Не определена WebAuthn-фикстура.</strong> «Валидная подпись» без фикстуры — пустая абстракция. Без библиотеки виртуального аутентификатора шаг <code>клиент собирает attestation</code> означает что-то разное в каждой реализации.</p>
+</li>
+<li>
+<p><strong>Не определено, как ставить SQLite в каждый из режимов отказа.</strong> Шаг <code>Given БД заблокирована</code> — это <code>BEGIN EXCLUSIVE</code> от runner-процесса? Sidecar-контейнер с локером? Test-endpoint в SUT? Без выбора sonnet выдумал бы три разных подхода в трёх файлах.</p>
+</li>
+<li>
+<p><strong>Не описан чейнинг токенов и id из phase 1 в phase 2.</strong> Двухфазный протокол требует прокидки challenge id между шагами. Без явного механизма sonnet каждый раз писал бы по-новому.</p>
+</li>
+<li>
+<p><strong>Постусловие «не сохранено» при <code>db_disk_full</code> непроверяемо без сброса состояния.</strong> БД-то в режиме disk-full — как проверить «не сохранено»?</p>
+</li>
+</ol>
+<p>Вердикт: <strong>не отпускаем sonnet'а на пустоту</strong>. Нужен Шаг 2.0 — построить шаблон компонентных тестов с раннером, фикстурами и базовыми степами.</p>
+<h2 id="shag-2-0">Шаг 2.0 — шаблон тестов в Docker</h2>
+<blockquote>
+<p><strong>Промпт 7 (opus).</strong> Нужно добавить в бэклог — создать шаблон компонентных тестов на go c docker-compose. Вот аналог тест-раннера и структура compose на JVM, сможешь сделать такой же на Go?</p>
+</blockquote>
+<p>Аналог — <a href="https://github.com/codemonstersteam/mq-rest-sync-adapter/tree/main/component-tests"><code>codemonstersteam/mq-rest-sync-adapter/component-tests</code></a>: Cucumber + Gradle + Docker Compose + WireMock + IBM MQ. Перенос на Go: <code>godog</code> вместо <code>Cucumber</code>, <code>go.mod</code> вместо <code>Gradle</code>, остальное — структурно тоже.</p>
+<p>Ключевое отличие: SQLite встроенная — нет внешних контейнеров-стабов. «Стабы» сводятся к параметризации SQLite-mount через env-профили compose-файла. Один <code>docker-compose.test.yml</code> с базовым стеком + override для <code>disk-full</code> профиля.</p>
+<blockquote>
+<p><strong>Промпт 8 (opus).</strong> (godog проще запускать с хоста через <code>go test</code>). Нужно в докере запускать, чтобы была полная изоляция раннера.</p>
+</blockquote>
+<p>Я предложил практичное «запускать с хоста — это быстрее» и получил возражение. <strong>Раннер в контейнере, без компромиссов</strong>:</p>
+<ul>
+<li>окружение в CI и локально — одно и то же;</li>
+<li>раннер не зависит от Go-toolchain хоста;</li>
+<li>сеть между раннером и сервисом — внутренняя docker-сеть, не loopback;</li>
+<li>отказ воспроизводится одинаково везде.</li>
+</ul>
+<p><code>go test ./steps/...</code> с хоста — никогда. Только <code>./scripts/run-tests.sh</code> через <code>docker compose run runner</code>. Это закрывает класс багов «у меня работает, в CI падает».</p>
+<h2 id="sem-voprosov">Семь вопросов по архитектуре раннера</h2>
+<p>Шаблон — это десяток конфиг-файлов, два Dockerfile, шесть Go-файлов со степами. На каждый артефакт — несколько архитектурных развилок. Я мог бы катить решения волевым порядком и потом расхлёбывать. Вместо этого:</p>
+<blockquote>
+<p><strong>Промпт 9 (opus).</strong> Что мне нужно провалидировать?</p>
+<p><strong>Промпт 10 (opus).</strong> Задай вопросы по одному.</p>
+</blockquote>
+<p>Вопросы по одному — критическая дисциплина. Если задать семь вопросов одним списком, человек ответит на первые три и устанет. Если по одному — каждый ответ продуман.</p>
+<p>Вот они:</p>
+<table>
+<thead>
+<tr>
+<th>#</th>
+<th>Вопрос</th>
+<th>Ответ</th>
+<th>Почему</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Q1</td>
+<td>Версия Go</td>
+<td><strong>1.26</strong></td>
+<td>Установлена у разработчика, актуальная стабильная</td>
+</tr>
+<tr>
+<td>Q2</td>
+<td>Один или два модуля</td>
+<td><strong>Два</strong> (<code>/go.mod</code> + <code>/component-tests/go.mod</code>)</td>
+<td>Тест-зависимости (godog, virtualwebauthn, mattn/go-sqlite3) не пачкают прод-<code>go.mod</code>. Соответствует JVM-аналогу</td>
+</tr>
+<tr>
+<td>Q3</td>
+<td>Драйвер SQLite</td>
+<td><strong><code>mattn/go-sqlite3</code></strong></td>
+<td>Стандарт де-факто, важно для обучающего материала. Цена — CGO + alpine runtime вместо distroless/static</td>
+</tr>
+<tr>
+<td>Q4</td>
+<td>Поведение placeholder</td>
+<td><strong><code>501 Not Implemented</code></strong> на всё, кроме <code>/health</code> (200)</td>
+<td>Чёткая граница «эндпоинт не реализован», не путается с реальным <code>401</code> (нет токена) в Шаге 3</td>
+</tr>
+<tr>
+<td>Q5</td>
+<td>Как ставить <code>db_locked</code></td>
+<td><strong>Раннер шарит volume с SUT, открывает свой коннект, делает <code>BEGIN EXCLUSIVE</code></strong></td>
+<td>Прямой путь, никаких sidecar/test-endpoint</td>
+</tr>
+<tr>
+<td>Q6</td>
+<td>HEALTHCHECK SUT</td>
+<td><strong>В <code>service.Dockerfile</code></strong> + <code>depends_on: condition: service_healthy</code></td>
+<td>Стандартный compose-флоу. После Q3 (alpine) — wget доступен</td>
+</tr>
+<tr>
+<td>Q7</td>
+<td>Структура compose-файлов</td>
+<td><strong>Один базовый + override</strong> (<code>docker-compose.test.yml</code> + <code>docker-compose.disk-full.yml</code>)</td>
+<td>Стандартный путь, видно явно, что меняется</td>
+</tr>
+</tbody>
+</table>
+<p>Каждый ответ продуман. Никаких «сделал на авось — потом перекатим».</p>
+<p>Особенно важен <strong>Q3</strong>. <code>mattn/go-sqlite3</code> требует CGO и C-тулчейна на сборке. Альтернатива (<code>modernc.org/sqlite</code>) — чистый Go, мельче образ, быстрее CI. Для <strong>demo</strong> разница в перфе не имеет значения. Для <strong>обучающего материала</strong> — наоборот, важно показать стандартный стек, который встретится в любом проде. Решение — <code>mattn</code>, цена — alpine-runtime вместо distroless/static. Это решение <strong>архитектурно влияет на Шаг 3</strong>: при написании модулей БД импорт пойдёт именно на <code>mattn/go-sqlite3</code>.</p>
+<p>И <strong>Q4</strong>. Placeholder-сервис — это компромисс с принципом «контракт первичен». Без него smoke-тесту не во что стрелять. С ним — у нас есть HTTP-сервер, который отдаёт 501 на всё, и постепенно его хендлеры заменяются реальной логикой в Шаге 3. Выбор 501 вместо 401 — чёткая граница: «эндпоинт не реализован» против «токен не подходит». Мелочь, но сохранит часы в Шаге 3, когда часть эндпоинтов начнёт отдавать реальные ответы, а часть продолжит отвечать placeholder-кодом 501.</p>
+<p>После всех Q opus построил шаблон в три этапа: каркас (<code>go.mod</code>, Dockerfiles, compose), степы (HTTP, WebAuthn через <code>descope/virtualwebauthn</code>, db_failure, auth-макрошаг), скрипты и smoke-сценарий. Каждый этап — закрытие нескольких тикетов в <code>backlog.md</code> сразу после реализации (правило, которое мы по ходу записали в <code>AGENTS.md §10</code>).</p>
+<p>Smoke-сценарий — единственный <code>.feature</code> в Шаге 2.0:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a><span class="c"># language: ru</span>
+<a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a><span class="k">Функционал:</span><span class="nf"> Smoke — проверка обвязки компонентных тестов</span>
+<a id="__codelineno-1-3" name="__codelineno-1-3" href="#__codelineno-1-3"></a>
+<a id="__codelineno-1-4" name="__codelineno-1-4" href="#__codelineno-1-4"></a><span class="nf">  </span><span class="k">Сценарий:</span><span class="nf"> Placeholder-сервис отдаёт 501 на любой нереализованный эндпоинт</span>
+<a id="__codelineno-1-5" name="__codelineno-1-5" href="#__codelineno-1-5"></a><span class="nf">    Когда клиент отправляет GET /v1/users/me</span>
+<a id="__codelineno-1-6" name="__codelineno-1-6" href="#__codelineno-1-6"></a><span class="nf">    Тогда ответ 501</span>
+<a id="__codelineno-1-7" name="__codelineno-1-7" href="#__codelineno-1-7"></a><span class="k">    И </span><span class="nf">ответ содержит JSON-поле code со значением &quot;</span><span class="s">NOT_IMPLEMENTED</span><span class="nf">&quot;</span>
+</code></pre></div>
+<blockquote>
+<p><strong>Промпт 11 (opus).</strong> Запусти End-to-end smoke, я запустил докер.</p>
+</blockquote>
+<p>Первый прогон — раннер падает с <code>missing go.sum</code>: я забыл скопировать <code>go.sum</code> в <code>Dockerfile.runtime</code> (оставил TODO с момента, когда <code>go.sum</code> ещё не было). Поправил — второй прогон зелёный:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a>1 scenarios (1 passed), 3 steps (3 passed)
+</code></pre></div>
+<p>Обвязка готова.</p>
+<h2 id="shag-2-sonnet">Шаг 2 — sonnet пишет <code>.feature</code>-файлы</h2>
+<p>После мержа Шага 2.0 в main эстафету подхватил sonnet. На входе — <code>backlog.md</code> с семью тикетами T2.1–T2.7, готовый шаблон, промпт-шаблон с явными ограничениями («используй существующие степы, не выдумывай новые формулировки — если не хватает, останови и сообщи»).</p>
+<p><strong>Что было в <code>backlog.md</code> (раздел «Шаг 2»):</strong></p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a>### Шаг 2 — Компонентные тесты (Gherkin) — план для sonnet
+<a id="__codelineno-3-2" name="__codelineno-3-2" href="#__codelineno-3-2"></a>
+<a id="__codelineno-3-3" name="__codelineno-3-3" href="#__codelineno-3-3"></a>Контекст: контракт зафиксирован, шаблон тестов готов (Шаг 2.0 завершён).
+<a id="__codelineno-3-4" name="__codelineno-3-4" href="#__codelineno-3-4"></a>OpenAPI содержит 503 db_locked и 507 db_disk_full; README — таблица
+<a id="__codelineno-3-5" name="__codelineno-3-5" href="#__codelineno-3-5"></a>из двух режимов. Шаг 0 SKILL пройден заранее, sonnet сразу начинает
+<a id="__codelineno-3-6" name="__codelineno-3-6" href="#__codelineno-3-6"></a>с Шага 1.
+<a id="__codelineno-3-7" name="__codelineno-3-7" href="#__codelineno-3-7"></a>
+<a id="__codelineno-3-8" name="__codelineno-3-8" href="#__codelineno-3-8"></a>Ожидаемый итог: 4 файла, 8 сценариев = 6 happy-path + 2 отказа SQLite.
+<a id="__codelineno-3-9" name="__codelineno-3-9" href="#__codelineno-3-9"></a>Запуск: Docker Compose с реальным SQLite, без моков.
+<a id="__codelineno-3-10" name="__codelineno-3-10" href="#__codelineno-3-10"></a>
+<a id="__codelineno-3-11" name="__codelineno-3-11" href="#__codelineno-3-11"></a>Раскладка failure-сценариев по эндпоинтам:
+<a id="__codelineno-3-12" name="__codelineno-3-12" href="#__codelineno-3-12"></a>  db_locked      → POST /v1/sessions/{id}/assertion   (горячий путь записи)
+<a id="__codelineno-3-13" name="__codelineno-3-13" href="#__codelineno-3-13"></a>  db_disk_full   → POST /v1/registrations/{id}/attestation (тяжёлая запись)
+<a id="__codelineno-3-14" name="__codelineno-3-14" href="#__codelineno-3-14"></a>
+<a id="__codelineno-3-15" name="__codelineno-3-15" href="#__codelineno-3-15"></a>Раскладка по файлам:
+<a id="__codelineno-3-16" name="__codelineno-3-16" href="#__codelineno-3-16"></a>  component-tests/
+<a id="__codelineno-3-17" name="__codelineno-3-17" href="#__codelineno-3-17"></a>  ├── registrations.feature       2 happy + db_disk_full
+<a id="__codelineno-3-18" name="__codelineno-3-18" href="#__codelineno-3-18"></a>  ├── sessions.feature            2 happy + db_locked
+<a id="__codelineno-3-19" name="__codelineno-3-19" href="#__codelineno-3-19"></a>  ├── sessions-current.feature    1 happy
+<a id="__codelineno-3-20" name="__codelineno-3-20" href="#__codelineno-3-20"></a>  └── users.feature               1 happy
+<a id="__codelineno-3-21" name="__codelineno-3-21" href="#__codelineno-3-21"></a>
+<a id="__codelineno-3-22" name="__codelineno-3-22" href="#__codelineno-3-22"></a>Тикеты:
+<a id="__codelineno-3-23" name="__codelineno-3-23" href="#__codelineno-3-23"></a>
+<a id="__codelineno-3-24" name="__codelineno-3-24" href="#__codelineno-3-24"></a>- [ ] T2.1 — registrations.feature: 3 сценария
+<a id="__codelineno-3-25" name="__codelineno-3-25" href="#__codelineno-3-25"></a>        (1) POST /v1/registrations с валидным handle
+<a id="__codelineno-3-26" name="__codelineno-3-26" href="#__codelineno-3-26"></a>            → 201 {id, options}, challenge сохранён в БД
+<a id="__codelineno-3-27" name="__codelineno-3-27" href="#__codelineno-3-27"></a>        (2) POST /v1/registrations/{id}/attestation с валидным attestation
+<a id="__codelineno-3-28" name="__codelineno-3-28" href="#__codelineno-3-28"></a>            → 200 TokenPair, пользователь и credential сохранены,
+<a id="__codelineno-3-29" name="__codelineno-3-29" href="#__codelineno-3-29"></a>              challenge помечен использованным
+<a id="__codelineno-3-30" name="__codelineno-3-30" href="#__codelineno-3-30"></a>        (3) db_disk_full на attestation
+<a id="__codelineno-3-31" name="__codelineno-3-31" href="#__codelineno-3-31"></a>            → 507, error.code=db_disk_full
+<a id="__codelineno-3-32" name="__codelineno-3-32" href="#__codelineno-3-32"></a>
+<a id="__codelineno-3-33" name="__codelineno-3-33" href="#__codelineno-3-33"></a>- [ ] T2.2 — sessions.feature: 3 сценария
+<a id="__codelineno-3-34" name="__codelineno-3-34" href="#__codelineno-3-34"></a>        (1) POST /v1/sessions с известным handle
+<a id="__codelineno-3-35" name="__codelineno-3-35" href="#__codelineno-3-35"></a>            → 201 {id, options}, challenge сохранён
+<a id="__codelineno-3-36" name="__codelineno-3-36" href="#__codelineno-3-36"></a>        (2) POST /v1/sessions/{id}/assertion с валидной подписью
+<a id="__codelineno-3-37" name="__codelineno-3-37" href="#__codelineno-3-37"></a>            → 200 TokenPair, сессия создана
+<a id="__codelineno-3-38" name="__codelineno-3-38" href="#__codelineno-3-38"></a>        (3) db_locked на assertion (SQLITE_BUSY)
+<a id="__codelineno-3-39" name="__codelineno-3-39" href="#__codelineno-3-39"></a>            → 503 с заголовком Retry-After, error.code=db_locked
+<a id="__codelineno-3-40" name="__codelineno-3-40" href="#__codelineno-3-40"></a>
+<a id="__codelineno-3-41" name="__codelineno-3-41" href="#__codelineno-3-41"></a>- [ ] T2.3 — sessions-current.feature: 1 сценарий
+<a id="__codelineno-3-42" name="__codelineno-3-42" href="#__codelineno-3-42"></a>        DELETE /v1/sessions/current с валидным Bearer-токеном
+<a id="__codelineno-3-43" name="__codelineno-3-43" href="#__codelineno-3-43"></a>            → 204, refresh token инвалидирован в БД
+<a id="__codelineno-3-44" name="__codelineno-3-44" href="#__codelineno-3-44"></a>
+<a id="__codelineno-3-45" name="__codelineno-3-45" href="#__codelineno-3-45"></a>- [ ] T2.4 — users.feature: 1 сценарий
+<a id="__codelineno-3-46" name="__codelineno-3-46" href="#__codelineno-3-46"></a>        GET /v1/users/me с валидным Bearer-токеном
+<a id="__codelineno-3-47" name="__codelineno-3-47" href="#__codelineno-3-47"></a>            → 200 User, поля id и handle соответствуют
+<a id="__codelineno-3-48" name="__codelineno-3-48" href="#__codelineno-3-48"></a>              пользователю из токена
+<a id="__codelineno-3-49" name="__codelineno-3-49" href="#__codelineno-3-49"></a>
+<a id="__codelineno-3-50" name="__codelineno-3-50" href="#__codelineno-3-50"></a>- [ ] T2.5 — Сверка. Прогнать чек-лист SKILL:
+<a id="__codelineno-3-51" name="__codelineno-3-51" href="#__codelineno-3-51"></a>        4 файла = 4 ресурса
+<a id="__codelineno-3-52" name="__codelineno-3-52" href="#__codelineno-3-52"></a>        6 happy-path = 6 эндпоинтов
+<a id="__codelineno-3-53" name="__codelineno-3-53" href="#__codelineno-3-53"></a>        2 сценария отказа = 2 режима
+<a id="__codelineno-3-54" name="__codelineno-3-54" href="#__codelineno-3-54"></a>
+<a id="__codelineno-3-55" name="__codelineno-3-55" href="#__codelineno-3-55"></a>- [ ] T2.6 — Devlog. Зафиксировать в devlog/02-gherkin.md
+<a id="__codelineno-3-56" name="__codelineno-3-56" href="#__codelineno-3-56"></a>        по формату «Промпт / Что сделал агент / Решения / Результат»
+<a id="__codelineno-3-57" name="__codelineno-3-57" href="#__codelineno-3-57"></a>
+<a id="__codelineno-3-58" name="__codelineno-3-58" href="#__codelineno-3-58"></a>- [ ] T2.7 — Merge в main
+</code></pre></div>
+<p><strong>Хронология (видимая снаружи):</strong></p>
+<table>
+<thead>
+<tr>
+<th>Время</th>
+<th>Событие</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>17:06</td>
+<td>Sonnet начинает T2.1, сразу обнаруживает разрыв в WebAuthn-степах</td>
+</tr>
+<tr>
+<td>17:11</td>
+<td>PR #10 — <code>registrations.feature</code>, 3 сценария (T2.1)</td>
+</tr>
+<tr>
+<td>17:50</td>
+<td>PR #11 — <code>sessions.feature</code>, 3 сценария (T2.2)</td>
+</tr>
+<tr>
+<td>22:38</td>
+<td>PR #12 — <code>sessions-current.feature</code> + <code>users.feature</code>, 2 сценария (T2.3 + T2.4)</td>
+</tr>
+<tr>
+<td>22:45</td>
+<td>PR #13 — сверка чек-листа SKILL + <code>devlog/02-gherkin.md</code> (T2.5 + T2.6)</td>
+</tr>
+<tr>
+<td>22:47</td>
+<td>T2.7 — Шаг 2 закрыт</td>
+</tr>
+</tbody>
+</table>
+<h3 id="sonnet-gherkin">Что обнаружил sonnet до того, как написал первую строчку Gherkin</h3>
+<p>Первый коммит sonnet — не <code>.feature</code>-файл, а <strong>fix к WebAuthn-степам</strong>:</p>
+<blockquote>
+<p><code>fix(component-tests): WebAuthn-степы читают id из lastBody, новый степ непустого поля</code></p>
+</blockquote>
+<p>Opus оставил степы вида:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a><span class="nf">Когда клиент собирает attestation для challenge с id &quot;</span><span class="s">abc-123</span><span class="nf">&quot; и отправляет его</span>
+</code></pre></div>
+<p>С аргументом-id из Gherkin. Sonnet увидел, что <strong>UUID challenge-сессии генерируется сервером динамически на каждый прогон</strong> — в <code>.feature</code>-файл его статически не вписать. Поле <code>phase1.ID</code> уже парсилось в <code>w.lastBody</code>, но игнорировалось. Sonnet рефакторнул оба степа: ID читается из <code>w.lastBody</code> автоматически, аргумент убран:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a><span class="nf">Когда клиент собирает attestation и отправляет его</span>
+</code></pre></div>
+<p>Заодно sonnet добавил новый степ <code>ответ содержит непустое JSON-поле &lt;field&gt;</code> — для проверки динамических полей (JWT с меняющимся <code>iat</code>/<code>exp</code>, opaque refresh-token).</p>
+<p><strong>Это и есть тот самый «остановись и сообщи» из промпт-шаблона</strong>, только sonnet вместо «сообщить» сразу починил, потому что починка была локальная и понятная. Опус-в-ревью одобрил подход.</p>
+<h3 id="sonnet">Решения, которые sonnet принял по ходу</h3>
+<p>Из его devlog:</p>
+<p><strong>Разные handle на каждый сценарий (alice / bob / carol).</strong> SQLite volume общий на весь прогон (не пересоздаётся между сценариями). Если все сценарии регистрируют одного пользователя — UNIQUE constraint ломает тесты после первого успешного. Простейшее решение без инфраструктурных изменений.</p>
+<p><strong><code>пользователь "X" зарегистрирован и залогинен</code> как Given для <code>sessions.feature</code>.</strong> <code>sendAssertion()</code> требует <code>w.credential</code> и <code>w.authenticator</code> в World — они устанавливаются только через <code>sendAttestation()</code>. Единственный путь подготовить их через существующие степы — макрошаг <code>userIsLoggedIn</code>. Пользователь регистрируется как precondition; сам тест проверяет только sessions-контракт.</p>
+<p><strong>Для <code>db_locked</code> — лок ПОСЛЕ phase 1, ПЕРЕД phase 2.</strong> Phase 1 тоже пишет в БД (сохраняет challenge). Если заблокировать БД до phase 1, сценарий упадёт раньше нужного. Правильный порядок: phase 1 завершена → <code>БД заблокирована</code> → phase 2 проверяет 503.</p>
+<p><strong>Для <code>db_disk_full</code> — junk ПОСЛЕ phase 1, ПЕРЕД phase 2.</strong> Та же логика: phase 1 регистрации пишет challenge на диск. Junk заполняет место после phase 1, чтобы именно attestation (более тяжёлая запись: user + credential) получила <code>SQLITE_FULL</code>.</p>
+<p><strong><code>ответ 200</code> + <code>непустое JSON-поле</code> вместо точного значения JWT.</strong> Приватный ключ Ed25519 генерируется при старте процесса (не персистится), <code>iat</code>/<code>exp</code> меняется каждый раз — JWT принципиально динамичен. Новый степ <code>responseJSONFieldNonEmpty</code> проверяет присутствие токенов без проверки значения.</p>
+<p>Каждое из этих решений — <strong>продуманный отклик на реальные ограничения раннера</strong>, не «как пришло в голову». Шаблон прошёл первое настоящее испытание.</p>
+<h3 id="sonnet-">Промпты sonnet-сессии</h3>
+<p>На вход пришли три слова: «начинаем T2.0.14 + T2.1». Никакого промпт-шаблона — только <code>CLAUDE.md</code>, <code>AGENTS.md</code>, <code>backlog.md</code> и то, что я прочитал сам. Перед каждым тикетом — явный список файлов для чтения из backlog: <code>AGENTS.md</code>, <code>CLAUDE.md</code>, <code>SKILL.md</code>, <code>openapi.yaml</code>, README раздел «Карта режимов отказа», <code>component-tests/README.md</code>, <code>component-tests/HOW-TO.md</code>, список степов в <code>component-tests/steps/</code>.</p>
+<p><strong>Где было трудно.</strong> Разрыв в WebAuthn-степах я поймал до того, как написал первую строчку Gherkin — именно потому, что прочитал степы до начала работы. Степ <code>sendAttestation(challengeID string)</code> принимал UUID аргументом из текста шага, но UUID генерируется сервером динамически: в feature-файл его не вписать. Поле <code>phase1.ID</code> уже парсилось из <code>w.lastBody</code>, но игнорировалось. Это была дыра в дизайне — opus при написании степов думал о вызове из Go (макрошаг <code>userIsLoggedIn</code>), а не из Gherkin.</p>
+<p><strong>Фикс vs остановиться-спросить.</strong> Я остановился и объяснил проблему, предложил минимальный фикс. Пользователь сказал «да» — я применил. Это правильная граница: рефакторинг аргумента функции — локальный и понятный; решение применять — не моё в одностороннем порядке. Другой случай: отсутствие степа <code>ответ содержит непустое JSON-поле</code> — здесь тоже остановился и спросил (JWT динамичен, значение не зафиксировать). Пользователь одобрил — добавил.</p>
+<p><strong>Что ощутил изнутри.</strong> Шаблон степов рассчитан на Go-вызовы (макрошаг), а не на Gherkin-строки с динамическими данными. Это системная проблема: когда opus проектировал степы, он тестировал их в голове через <code>userIsLoggedIn</code>, а не через <code>.feature</code>-файлы. Первый же сценарий выявил зазор.</p>
+<p>Второй зазор — нет степа для «поле присутствует». <code>responseJSONField</code> требует точное значение, но JWT динамичен по природе. Этот степ должен был быть в шаблоне изначально: любой сервис с токенами столкнётся с той же задачей.</p>
+<p><strong>Что улучшить в шаблоне.</strong> Для следующего сервиса — добавить в шаблон степы <code>responseJSONFieldNonEmpty</code> и <code>responseJSONFieldPresent</code> сразу. И протестировать все WebAuthn-степы через <code>.feature</code>-файл (не только через Go-вызов) ещё в Шаге 2.0, до хендоффа.</p>
+<h3 id="2">Итог Шага 2</h3>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a>component-tests/features/
+<a id="__codelineno-6-2" name="__codelineno-6-2" href="#__codelineno-6-2"></a>├── registrations.feature      # 3 сценария: challenge, attestation, db_disk_full
+<a id="__codelineno-6-3" name="__codelineno-6-3" href="#__codelineno-6-3"></a>├── sessions.feature           # 3 сценария: challenge, assertion, db_locked
+<a id="__codelineno-6-4" name="__codelineno-6-4" href="#__codelineno-6-4"></a>├── sessions-current.feature   # 1 сценарий: DELETE /sessions/current → 204
+<a id="__codelineno-6-5" name="__codelineno-6-5" href="#__codelineno-6-5"></a>└── users.feature              # 1 сценарий: GET /users/me → 200 + handle
+</code></pre></div>
+<p>8 сценариев = 6 happy-path + 2 отказа SQLite. Формула SKILL: <code>6 эндпоинтов + 2 режима = 8</code>. ✅</p>
+<p>Smoke зелёный на каждом прогоне. Все 8 новых сценариев красные — placeholder отдаёт 501. Это и есть TDD-red фаза, точно как описано в SKILL: тесты ждут реализации в Шаге 3.</p>
+<p><strong>Статистика sonnet-сессии (<code>/usage</code> по завершении):</strong></p>
+<table>
+<thead>
+<tr>
+<th>Показатель</th>
+<th>Значение</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Чистое время генерации (без ожидания)</td>
+<td><strong>15 минут 34 секунды</strong></td>
+</tr>
+<tr>
+<td>Wall-time (включая паузы)</td>
+<td>8 часов 59 минут</td>
+</tr>
+<tr>
+<td>Стоимость</td>
+<td><strong>$4.07</strong></td>
+</tr>
+<tr>
+<td>Output tokens</td>
+<td>52 300</td>
+</tr>
+<tr>
+<td>Cache read tokens</td>
+<td>7 800 000</td>
+</tr>
+<tr>
+<td>Cache write tokens</td>
+<td>251 300</td>
+</tr>
+<tr>
+<td>Строк кода: добавлено / удалено</td>
+<td>190 / 26</td>
+</tr>
+</tbody>
+</table>
+<p>97% wall-time — паузы между сообщениями. Почти вся стоимость — cache read: длинные файлы (<code>AGENTS.md</code>, <code>openapi.yaml</code>, <code>backlog.md</code>) загружались из кэша на каждом ходу, а не перечитывались с нуля. Восемь сценариев контракта + два фикса степов — за 15 минут чистой генерации.</p>
+<h2 id="uroki">Уроки сессии</h2>
+<h3 id="1">1. Скилл — рамка, не алгоритм</h3>
+<p>Скилл из статьи 04 не сработал «из коробки» с первого касания. Спека была пустая, формула давала число тестов на режимы, которых в контракте не существовало. Скилл нужно было <strong>прикручивать осознанно</strong>, проверяя предусловия каждого шага.</p>
+<p>В скилл попали два новых правила:</p>
+<ul>
+<li><strong>Шаг 0 расширен:</strong> прежде чем читать OpenAPI, проверь, что в нём есть 5xx с <code>error.code</code>; если нет — спроектируй режимы отказа.</li>
+<li><strong>Правило различимости:</strong> режим — отдельный, если различается хотя бы одно из четырёх (HTTP, заголовки, действие клиента, действие оператора).</li>
+</ul>
+<h3 id="2_1">2. Контракт первичен — буквально</h3>
+<p>Если сценарий компонентного теста ссылается на <code>error.code: db_locked</code>, эта строка должна <strong>существовать в OpenAPI</strong>. Не «было сказано в статье», не «договорились в чате», не «реализуем в коде». Спека — единственный источник истины. Если её нет — сначала пишем, потом тестируем.</p>
+<h3 id="3">3. Только воспроизводимые режимы</h3>
+<p>В контракт идут режимы, которые <strong>реально воспроизводятся в тесте</strong>. <code>db_unavailable</code> для встроенной SQLite — синтетический, его невозможно поставить чисто, не ломая архитектуру сервиса. Спека не должна обещать клиенту того, что сервис не способен обещание выполнить детерминированно.</p>
+<h3 id="4-">4. Тимлид-ревью обязателен перед хендоффом</h3>
+<p>ИИ-агент, который пишет код по контракту, нуждается в готовом окружении: раннер, фикстуры, базовые степы. Без них агент выдаст несовместимые формулировки в каждом файле. Опытный взгляд — на пять минут, экономия — на дни Шага 3.</p>
+<h3 id="5">5. Раннер — артефакт первого класса</h3>
+<p>Шаблон тестов на godog в Docker — это не «технические детали». Это решение, влияющее на каждый сценарий, на CI, на то, как разработчик видит проект. Раннер достоин Шага 2.0 — отдельной итерации до того, как начнётся написание <code>.feature</code>-файлов.</p>
+<h3 id="6-q-by-q">6. Q-by-Q дисциплина в архитектурных решениях</h3>
+<p>Семь вопросов от opus к человеку, по одному, с ясными альтернативами и аргументами. Никаких «сделал на авось». Это не бюрократия — это инвестиция: каждое решение продумано, объяснено и зафиксировано в <code>devlog</code>. Через год их можно перечитать и понять, почему всё именно так.</p>
+<h3 id="7-backlog">7. Backlog обновлять по тикетно</h3>
+<p>Правило, которое мы записали в <code>AGENTS.md §10</code> прямо по ходу сессии: галочки <code>[x]</code> в <code>backlog.md</code> после каждого тикета, не одним батчем в конце PR. Backlog — единственный источник истины о статусе. Разрыв между ним и реальностью ломает план для следующей сессии и для других агентов.</p>
+<h3 id="8-sonnet">8. Sonnet чинит локальное, останавливается на стратегическом</h3>
+<p>Шаблон не был идеальным — sonnet поймал две дыры в первый час: статический challenge id в WebAuthn-степе и отсутствие степа для непустого JSON-поля. Обе починил сам, не ожидая разрешения. <strong>И это было правильно</strong> — починки локальные, понятные, в духе шаблона. Останавливать его и спрашивать «можно ли поправить аргументы степа» — потеря времени с обеих сторон.</p>
+<p>Линия проходит здесь: <strong>sonnet чинит то, что не меняет архитектурных границ; останавливается на том, что эти границы потенциально меняет</strong>. Если бы шаблону потребовался новый файл степов, или новый профиль compose, или поменялась семантика существующего шага — sonnet остановился бы. А «прочитать id из контекста вместо аргумента» — это не архитектура, это локальный рефакторинг внутри уже принятого подхода.</p>
+<h2 id="_1">Резюме</h2>
+<table>
+<thead>
+<tr>
+<th>Артефакт</th>
+<th>До сессии</th>
+<th>После opus + sonnet</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>OpenAPI</td>
+<td>без 5xx-ответов</td>
+<td>503 <code>db_locked</code> (с Retry-After) + 507 <code>db_disk_full</code> на write-эндпоинтах</td>
+</tr>
+<tr>
+<td>README раздел «Карта режимов отказа»</td>
+<td>одна строка без обоснования</td>
+<td>двухстрочная таблица + блок «чем определяется набор режимов» с правилом различимости</td>
+</tr>
+<tr>
+<td>Скилл</td>
+<td>три источника режимов отказа, формула</td>
+<td>+ Шаг 0 «спроектируй и подготовь раннер», + правило различимости, + замечание про синтетические режимы</td>
+</tr>
+<tr>
+<td>Шаблон компонентных тестов</td>
+<td>отсутствовал</td>
+<td><code>component-tests/</code> — отдельный модуль, godog в Docker, шесть файлов степов, smoke зелёный</td>
+</tr>
+<tr>
+<td><code>.feature</code>-файлы</td>
+<td>отсутствовали</td>
+<td>4 файла, 8 сценариев — sonnet за 5,5 часов</td>
+</tr>
+<tr>
+<td>Placeholder-сервис</td>
+<td>отсутствовал</td>
+<td><code>cmd/api/main.go</code> — 501 на всё, <code>/health</code> 200; постепенно вытесняется в Шаге 3</td>
+</tr>
+<tr>
+<td><code>AGENTS.md §10</code></td>
+<td>без правила обновления backlog</td>
+<td>+ «обновляем после каждого тикета, не одним батчем в конце PR»</td>
+</tr>
+</tbody>
+</table>
+<p>После двух смежных сессий passkey-demo-api имеет красные компонентные тесты, готовые принять реализацию. Шаг 2 закрыт.</p>
+<h2 id="_2">Что дальше</h2>
+<p>В следующей статье — <strong>Шаг 3</strong>: TDD-цикл по модулям, постепенное вытеснение placeholder в <code>cmd/api/main.go</code> реальной логикой. Каждый модуль — один цикл «красный тест → зелёный тест → рефакторинг». Sonnet или другой агент берёт модуль, пишет юниты, дописывает реализацию, проверяет, что соответствующий компонентный сценарий стал зелёным, мержит. И так до полной замены placeholder.</p>
+<p>После Шага 3 — Шаг 4 (CI на PR через GitHub Actions): валидация OpenAPI, сборка, прогон компонентных тестов на каждом PR. Отдельная история про автоматизацию защиты от регрессий.</p>
+<h2 id="_3">Источники</h2>
+<ol>
+<li>Morev M. <a href="https://codemonsters.team/blog/2026/04/25/testing-mythology-component-tests/"><em>Сколько компонентных тестов нужно сервису. Логический вывод.</em></a> codemonsters.team, 2026.</li>
+<li>Morev M. <a href="https://codemonsters.team/blog/2026/04/26/component-tests-skill-passkey-demo/"><em>Компонентные тесты на практике. Скилл для агента и разбор passkey-demo-api.</em></a> codemonsters.team, 2026.</li>
+<li><a href="https://github.com/ubik-life/passkey-demo-api"><code>ubik-life/passkey-demo-api</code></a> — учебный сервис, ветки сессии: <code>feat/failure-modes-analysis</code>, <code>feat/component-tests-template</code>, <code>feat/gherkin-registrations</code>, <code>feat/gherkin-sessions</code>, <code>feat/gherkin-users-logout</code>.</li>
+<li><a href="https://github.com/codemonstersteam/mq-rest-sync-adapter/tree/main/component-tests"><code>codemonstersteam/mq-rest-sync-adapter/component-tests</code></a> — JVM-аналог шаблона компонентных тестов.</li>
+<li><a href="https://github.com/descope/virtualwebauthn"><code>descope/virtualwebauthn</code></a> — Go-библиотека виртуального WebAuthn-аутентификатора.</li>
+<li><a href="https://github.com/cucumber/godog"><code>cucumber/godog</code></a> — Cucumber для Go.</li>
+<li>SKILL.md — открытый стандарт для агентских скиллов (Anthropic).</li>
+<li>AGENTS.md — открытый стандарт для агентских инструкций (OpenAI / Linux Foundation).</li>
+</ol>
+
+
+
+
+
+
+
+  
+  
+
+
+
+  
+
+
+  
+
+
+
+      
+    </article>
+  </div>
+
+          
+  <script>var tabs=__md_get("__tabs");if(Array.isArray(tabs))e:for(var set of document.querySelectorAll(".tabbed-set")){var labels=set.querySelector(".tabbed-labels");for(var tab of tabs)for(var label of labels.getElementsByTagName("label"))if(label.innerText.trim()===tab){var input=document.getElementById(label.htmlFor);input.checked=!0;continue e}}</script>
+
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+          <button type="button" class="md-top md-icon" data-md-component="top" hidden>
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8z"/></svg>
+  Back to top
+</button>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+    <div class="md-copyright__highlight">
+      &copy; 2023 <a href="https://git.codemonsters.team/guides/web-book"  target="_blank" rel="noopener">CodeMonsters.team</a>
+    </div>
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+        
+<div class="md-social">
+  
+    
+    
+    
+    
+      
+      
+    
+    <a href="https://git.codemonsters.team/guides/web-book" target="_blank" rel="noopener" title="git.codemonsters.team" class="md-social__link">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M202.1 328.7c0 20.9-10.9 55.1-36.7 55.1s-36.7-34.2-36.7-55.1 10.9-55.1 36.7-55.1 36.7 34.2 36.7 55.1M496 278.2c0 31.9-3.2 65.7-17.5 95-37.9 76.6-142.1 74.8-216.7 74.8-75.8 0-186.2 2.7-225.6-74.8-14.6-29-20.2-63.1-20.2-95 0-41.9 13.9-81.5 41.5-113.6-5.2-15.8-7.7-32.4-7.7-48.8 0-21.5 4.9-32.3 14.6-51.8 45.3 0 74.3 9 108.8 36 29-6.9 58.8-10 88.7-10 27 0 54.2 2.9 80.4 9.2 34-26.7 63-35.2 107.8-35.2 9.8 19.5 14.6 30.3 14.6 51.8 0 16.4-2.6 32.7-7.7 48.2 27.5 32.4 39 72.3 39 114.2m-64.3 50.5c0-43.9-26.7-82.6-73.5-82.6-18.9 0-37 3.4-56 6-14.9 2.3-29.8 3.2-45.1 3.2-15.2 0-30.1-.9-45.1-3.2-18.7-2.6-37-6-56-6-46.8 0-73.5 38.7-73.5 82.6 0 87.8 80.4 101.3 150.4 101.3h48.2c70.3 0 150.6-13.4 150.6-101.3m-82.6-55.1c-25.8 0-36.7 34.2-36.7 55.1s10.9 55.1 36.7 55.1 36.7-34.2 36.7-55.1-10.9-55.1-36.7-55.1"/></svg>
+    </a>
+  
+    
+    
+    
+    
+      
+      
+    
+    <a href="https://t.me/codemonsterslogs" target="_blank" rel="noopener" title="t.me" class="md-social__link">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M256 8a248 248 0 1 0 0 496 248 248 0 1 0 0-496m115 168.7c-3.7 39.2-19.9 134.4-28.1 178.3-3.5 18.6-10.3 24.8-16.9 25.4-14.4 1.3-25.3-9.5-39.3-18.7-21.8-14.3-34.2-23.2-55.3-37.2-24.5-16.1-8.6-25 5.3-39.5 3.7-3.8 67.1-61.5 68.3-66.7.2-.7.3-3.1-1.2-4.4s-3.6-.8-5.1-.5c-2.2.5-37.1 23.5-104.6 69.1-9.9 6.8-18.9 10.1-26.9 9.9-8.9-.2-25.9-5-38.6-9.1-15.5-5-27.9-7.7-26.8-16.3.6-4.5 6.7-9 18.4-13.7 72.3-31.5 120.5-52.3 144.6-62.3 68.9-28.6 83.2-33.6 92.5-33.8 2.1 0 6.6.5 9.6 2.9 2 1.7 3.2 4.1 3.5 6.7.5 3.2.6 6.5.4 9.8z"/></svg>
+    </a>
+  
+    
+    
+    
+    
+      
+      
+    
+    <a href="https://www.linkedin.com/in/maximmorev/" target="_blank" rel="noopener" title="www.linkedin.com" class="md-social__link">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M416 32H31.9C14.3 32 0 46.5 0 64.3v383.4C0 465.5 14.3 480 31.9 480H416c17.6 0 32-14.5 32-32.3V64.3c0-17.8-14.4-32.3-32-32.3M135.4 416H69V202.2h66.5V416zM102.2 96a38.5 38.5 0 1 1 0 77 38.5 38.5 0 1 1 0-77m282.1 320h-66.4V312c0-24.8-.5-56.7-34.5-56.7-34.6 0-39.9 27-39.9 54.9V416h-66.4V202.2h63.7v29.2h.9c8.9-16.8 30.6-34.5 62.9-34.5 67.2 0 79.7 44.3 79.7 101.9z"/></svg>
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    
+      
+      
+      <script id="__config" type="application/json">{"annotate": null, "base": "../../../../..", "features": ["navigation.tabs", "navigation.sections", "navigation.indexes", "toc.integrate", "navigation.top", "search.suggest", "search.highlight", "content.tabs.link", "content.code.annotation", "content.code.copy"], "search": "../../../../../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
+    
+    
+      <script src="../../../../../assets/javascripts/bundle.79ae519e.min.js"></script>
+      
+    
+  </body>
+</html>

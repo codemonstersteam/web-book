@@ -1,0 +1,3530 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+        <meta name="description" content="От теории к практике. Берём реальный сервис из платформы Ubik, открываем OpenAPI, считаем тесты по формуле — получаем семь. Скилл для агента, который автоматизирует эту процедуру для любого сервиса.">
+      
+      
+      
+        <link rel="canonical" href="https://codemonsters.team/blog/2026/04/26/component-tests-skill-passkey-demo/">
+      
+      
+        <link rel="prev" href="../../25/testing-mythology-component-tests/">
+      
+      
+        <link rel="next" href="../../28/component-tests-skill-application/">
+      
+      
+        
+      
+      
+      <link rel="icon" href="../../../../../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.6">
+    
+    
+      
+        <title>Компонентные тесты на практике. Скилл для агента и разбор passkey-demo-api - CodeMonsters.team</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../../../../assets/stylesheets/main.484c7ddc.min.css">
+      
+        
+        <link rel="stylesheet" href="../../../../../assets/stylesheets/palette.ab4e12ef.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+    <script>__md_scope=new URL("../../../../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+  
+
+
+  <!-- Yandex.Metrika counter -->
+<script type="text/javascript" >
+   (function(m,e,t,r,i,k,a){m[i]=m[i]||function(){(m[i].a=m[i].a||[]).push(arguments)};
+   m[i].l=1*new Date();
+   for (var j = 0; j < document.scripts.length; j++) {if (document.scripts[j].src === r) { return; }}
+   k=e.createElement(t),a=e.getElementsByTagName(t)[0],k.async=1,k.src=r,a.parentNode.insertBefore(k,a)})
+   (window, document, "script", "https://mc.yandex.ru/metrika/tag.js", "ym");
+
+   ym(92584192, "init", {
+        clickmap:true,
+        trackLinks:true,
+        accurateTrackBounce:true,
+        webvisor:true
+   });
+</script>
+<noscript><div><img src="https://mc.yandex.ru/watch/92584192" style="position:absolute; left:-9999px;" alt="" /></div></noscript>
+<!-- /Yandex.Metrika counter -->
+  
+    <script>"undefined"!=typeof __md_analytics&&__md_analytics()</script>
+  
+
+    
+    
+  </head>
+  
+  
+    
+    
+      
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="blue-grey" data-md-color-accent="purple">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#passkey-demo-api" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+<header class="md-header" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href="../../../../.." title="CodeMonsters.team" class="md-header__button md-logo" aria-label="CodeMonsters.team" data-md-component="logo">
+      
+  <img src="/cm-logo-header.png" alt="logo">
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            CodeMonsters.team
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              Компонентные тесты на практике. Скилл для агента и разбор passkey-demo-api
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+        <form class="md-header__option" data-md-component="palette">
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="default" data-md-color-primary="blue-grey" data-md-color-accent="purple"  aria-label="Switch to dark mode"  type="radio" name="__palette" id="__palette_0">
+    
+      <label class="md-header__button md-icon" title="Switch to dark mode" for="__palette_1" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M17 6H7c-3.31 0-6 2.69-6 6s2.69 6 6 6h10c3.31 0 6-2.69 6-6s-2.69-6-6-6m0 10H7c-2.21 0-4-1.79-4-4s1.79-4 4-4h10c2.21 0 4 1.79 4 4s-1.79 4-4 4M7 9c-1.66 0-3 1.34-3 3s1.34 3 3 3 3-1.34 3-3-1.34-3-3-3"/></svg>
+      </label>
+    
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="slate" data-md-color-primary="teal" data-md-color-accent="lime"  aria-label="Switch to light mode"  type="radio" name="__palette" id="__palette_1">
+    
+      <label class="md-header__button md-icon" title="Switch to light mode" for="__palette_0" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M17 7H7a5 5 0 0 0-5 5 5 5 0 0 0 5 5h10a5 5 0 0 0 5-5 5 5 0 0 0-5-5m0 8a3 3 0 0 1-3-3 3 3 0 0 1 3-3 3 3 0 0 1 3 3 3 3 0 0 1-3 3"/></svg>
+      </label>
+    
+  
+</form>
+      
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+            
+<nav class="md-tabs" aria-label="Tabs" data-md-component="tabs">
+  <div class="md-grid">
+    <ul class="md-tabs__list">
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../../../../.." class="md-tabs__link">
+        
+  
+  
+    
+  
+  Начало
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../../../../../overview/" class="md-tabs__link">
+        
+  
+  
+    
+  
+  Об авторе
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+    
+  
+  
+    
+    
+      <li class="md-tabs__item md-tabs__item--active">
+        <a href="../../../../" class="md-tabs__link">
+          
+  
+  
+    
+  
+  Blog
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../../../../codebook/" class="md-tabs__link">
+          
+  
+  
+    
+  
+  Codebook
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../../../../effective-developer/" class="md-tabs__link">
+          
+  
+  
+    
+  
+  Effective developer
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../../../../resources/" class="md-tabs__link">
+          
+  
+  
+    
+  
+  Resources
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../../../../tutorials/" class="md-tabs__link">
+          
+  
+  
+    
+  
+  Tutorials
+
+        </a>
+      </li>
+    
+  
+
+      
+    </ul>
+  </div>
+</nav>
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+                
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" hidden>
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+  
+
+
+  
+
+<nav class="md-nav md-nav--primary md-nav--lifted md-nav--integrated" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../../../../.." title="CodeMonsters.team" class="md-nav__button md-logo" aria-label="CodeMonsters.team" data-md-component="logo">
+      
+  <img src="/cm-logo-header.png" alt="logo">
+
+    </a>
+    CodeMonsters.team
+  </label>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../.." class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Начало
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../../overview/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Об авторе
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+        
+        
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3" checked>
+        
+          
+          <div class="md-nav__link md-nav__container">
+            <a href="../../../../" class="md-nav__link ">
+              
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Blog
+  
+
+    
+  </span>
+  
+  
+
+            </a>
+            
+              
+              <label class="md-nav__link " for="__nav_3" id="__nav_3_label" tabindex="">
+                <span class="md-nav__icon md-icon"></span>
+              </label>
+            
+          </div>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_3_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_3">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Blog
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+        
+          
+          
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3_2" >
+        
+          
+          <label class="md-nav__link" for="__nav_3_2" id="__nav_3_2_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Archive
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_3_2_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_3_2">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Archive
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+    
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../archive/2026/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    2026
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../archive/2025/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    2025
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+        
+          
+          
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3_3" >
+        
+          
+          <label class="md-nav__link" for="__nav_3_3" id="__nav_3_3_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Categories
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_3_3_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_3_3">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Categories
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+    
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../category/agents/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    agents
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../category/ai/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    ai
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../category/api/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    api
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../category/claude/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    claude
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../category/code/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    code
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../category/codebook/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    codebook
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../category/communication/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    communication
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../category/component-tests/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    component-tests
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../category/container-driven-approach/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    container driven approach
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../category/contract-tests/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    contract-tests
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../category/coreos/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    coreos
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../category/devops/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    devops
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../category/documentation/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    documentation
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../category/git/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    git
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../category/gitlab/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    gitlab
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../category/gitlab-runner/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    gitlab runner
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../category/go/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    go
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../category/howtocode/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    howtocode
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../category/linux/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    linux
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../category/process/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    process
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../category/tests/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    tests
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../category/ubik/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    ubik
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../category/webauthn/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    webauthn
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4" >
+        
+          
+          <div class="md-nav__link md-nav__container">
+            <a href="../../../../../codebook/" class="md-nav__link ">
+              
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Codebook
+  
+
+    
+  </span>
+  
+  
+
+            </a>
+            
+              
+              <label class="md-nav__link " for="__nav_4" id="__nav_4_label" tabindex="0">
+                <span class="md-nav__icon md-icon"></span>
+              </label>
+            
+          </div>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_4_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Codebook
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../../codebook/1-codegen-machine/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    1 Заклинателю приложений
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_5" >
+        
+          
+          <div class="md-nav__link md-nav__container">
+            <a href="../../../../../effective-developer/" class="md-nav__link ">
+              
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Effective developer
+  
+
+    
+  </span>
+  
+  
+
+            </a>
+            
+              
+              <label class="md-nav__link " for="__nav_5" id="__nav_5_label" tabindex="0">
+                <span class="md-nav__icon md-icon"></span>
+              </label>
+            
+          </div>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_5_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_5">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Effective developer
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../../effective-developer/life/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Life
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../../effective-developer/rules/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Rules
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+      
+        
+      
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_5_4" >
+        
+          
+          <label class="md-nav__link" for="__nav_5_4" id="__nav_5_4_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Code
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_5_4_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_5_4">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Code
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_5_4_1" >
+        
+          
+          <label class="md-nav__link" for="__nav_5_4_1" id="__nav_5_4_1_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Clean code
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="3" aria-labelledby="__nav_5_4_1_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_5_4_1">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Clean code
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../../effective-developer/code/clean-code/how-not-to-write-code/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Как не стоит писать код: разбираем ошибки
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../../effective-developer/code/clean-code/how-to-integration-test/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Гайд по чистому коду. Учимся писать тесты.
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../../effective-developer/code/clean-code/how-to/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Как написать чистый код и сделать жизнь проще
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_5_5" >
+        
+          
+          <div class="md-nav__link md-nav__container">
+            <a href="../../../../../effective-developer/devops/" class="md-nav__link ">
+              
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Devops
+  
+
+    
+  </span>
+  
+  
+
+            </a>
+            
+              
+              <label class="md-nav__link " for="__nav_5_5" id="__nav_5_5_label" tabindex="0">
+                <span class="md-nav__icon md-icon"></span>
+              </label>
+            
+          </div>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_5_5_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_5_5">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Devops
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_5_5_2" >
+        
+          
+          <div class="md-nav__link md-nav__container">
+            <a href="../../../../../effective-developer/devops/free-ipa/" class="md-nav__link ">
+              
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Free ipa
+  
+
+    
+  </span>
+  
+  
+
+            </a>
+            
+          </div>
+        
+        <nav class="md-nav" data-md-level="3" aria-labelledby="__nav_5_5_2_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_5_5_2">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Free ipa
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_5_6" >
+        
+          
+          <div class="md-nav__link md-nav__container">
+            <a href="../../../../../effective-developer/newbie-roadmap/" class="md-nav__link ">
+              
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Newbie roadmap
+  
+
+    
+  </span>
+  
+  
+
+            </a>
+            
+          </div>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_5_6_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_5_6">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Newbie roadmap
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_6" >
+        
+          
+          <div class="md-nav__link md-nav__container">
+            <a href="../../../../../resources/" class="md-nav__link ">
+              
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Resources
+  
+
+    
+  </span>
+  
+  
+
+            </a>
+            
+              
+              <label class="md-nav__link " for="__nav_6" id="__nav_6_label" tabindex="0">
+                <span class="md-nav__icon md-icon"></span>
+              </label>
+            
+          </div>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_6_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_6">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Resources
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../../resources/videos/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Видео
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../../resources/web-links/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Полезные ссылки
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_6_4" >
+        
+          
+          <label class="md-nav__link" for="__nav_6_4" id="__nav_6_4_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Books
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_6_4_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_6_4">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Books
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../../resources/books/advanced-web/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Подборка Эффективных книг > Веб-разработка
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../../resources/books/essential/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Подборка Эффективных книг > новичку
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_7" >
+        
+          
+          <div class="md-nav__link md-nav__container">
+            <a href="../../../../../tutorials/" class="md-nav__link ">
+              
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Tutorials
+  
+
+    
+  </span>
+  
+  
+
+            </a>
+            
+              
+              <label class="md-nav__link " for="__nav_7" id="__nav_7_label" tabindex="0">
+                <span class="md-nav__icon md-icon"></span>
+              </label>
+            
+          </div>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_7_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_7">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Tutorials
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+      
+        
+      
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_7_2" >
+        
+          
+          <label class="md-nav__link" for="__nav_7_2" id="__nav_7_2_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Server
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_7_2_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_7_2">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Server
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../../tutorials/server/ddd-in-action/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Руководства
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+          
+          
+  <div class="md-content md-content--post" data-md-component="content">
+    <div class="md-sidebar md-sidebar--post" data-md-component="sidebar" data-md-type="navigation">
+      <div class="md-sidebar__scrollwrap">
+        <div class="md-sidebar__inner md-post">
+          <nav class="md-nav md-nav--primary">
+            <div class="md-post__back">
+              <div class="md-nav__title md-nav__container">
+                <a href="../../../../" class="md-nav__link">
+                  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+                  <span class="md-ellipsis">
+                    Back to index
+                  </span>
+                </a>
+              </div>
+            </div>
+            
+              <div class="md-post__authors md-typeset">
+                
+                  <div class="md-profile md-post__profile">
+                    <span class="md-author md-author--long">
+                      <img src="https://avatars.githubusercontent.com/u/45400275" alt="Max Morev">
+                    </span>
+                    <span class="md-profile__description">
+                      <strong>
+                        
+                          <a href="https://github.com/codemonstersteam">Max Morev</a>
+                        
+                      </strong>
+                      <br>
+                      Creator
+                    </span>
+                  </div>
+                
+              </div>
+            
+            <ul class="md-post__meta md-nav__list">
+              <li class="md-nav__item md-nav__item--section">
+                <div class="md-post__title">
+                  <span class="md-ellipsis">
+                    Metadata
+                  </span>
+                </div>
+                <nav class="md-nav">
+                  <ul class="md-nav__list">
+                    <li class="md-nav__item">
+                      <div class="md-nav__link">
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 19H5V8h14m-3-7v2H8V1H6v2H5c-1.11 0-2 .89-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V5a2 2 0 0 0-2-2h-1V1m-1 11h-5v5h5z"/></svg>
+                        <time datetime="2026-04-26 00:00:00+00:00" class="md-ellipsis">April 26, 2026</time>
+                      </div>
+                    </li>
+                    
+                    
+                      <li class="md-nav__item">
+                        <div class="md-nav__link">
+                          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9 3v15h3V3zm3 2 4 13 3-1-4-13zM5 5v13h3V5zM3 19v2h18v-2z"/></svg>
+                          <span class="md-ellipsis">
+                            in
+                            
+                              <a href="../../../../category/code/">code</a>, 
+                              <a href="../../../../category/tests/">tests</a>, 
+                              <a href="../../../../category/component-tests/">component-tests</a>, 
+                              <a href="../../../../category/howtocode/">howtocode</a>, 
+                              <a href="../../../../category/agents/">agents</a></span>
+                        </div>
+                      </li>
+                    
+                    
+                      
+                      <li class="md-nav__item">
+                        <div class="md-nav__link">
+                          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 20a8 8 0 0 0 8-8 8 8 0 0 0-8-8 8 8 0 0 0-8 8 8 8 0 0 0 8 8m0-18a10 10 0 0 1 10 10 10 10 0 0 1-10 10C6.47 22 2 17.5 2 12A10 10 0 0 1 12 2m.5 5v5.25l4.5 2.67-.75 1.23L11 13V7z"/></svg>
+                          <span class="md-ellipsis">
+                            
+                              11 min read
+                            
+                          </span>
+                        </div>
+                      </li>
+                    
+                  </ul>
+                </nav>
+              </li>
+            </ul>
+            
+          </nav>
+          
+            
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#chto-stroim" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Что мы строим
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Что мы строим">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Порядок: контракт первичен
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#formula" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Формула в практической форме
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#gde-zhivut" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Где живут режимы отказа
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Где живут режимы отказа">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#_2" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Где живёт контракт между сервисами и где — карта инфраструктурных отказов
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#openapi" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        OpenAPI — для синхронных эндпоинтов
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#readme" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        README — для асинхронных интеграций и общей картины
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#fallback" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Fallback: код адаптера
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#algoritm" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Алгоритм вывода числа тестов
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#razbor" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Разбор passkey-demo-api
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Разбор passkey-demo-api">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#1-openapi" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Шаг 1. Эндпоинты по OpenAPI
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#2-happy-path" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Шаг 2. Happy-path сценарии
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#3" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Шаг 3. Определить режимы отказа
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#4" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Шаг 4. Сценарий отказа
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#5" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Шаг 5. Итог
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_3" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Раскладка по файлам
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#asyncapi" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Если бы у сервиса был AsyncAPI
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#7" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Что НЕ попало в эти 7 тестов
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#skill" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Скилл для агента
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#gde-zhivet" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Где скилл живёт в репозитории
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#kak-menyaetsya" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Что меняется в работе с агентом
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_4" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Резюме
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_5" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Что дальше
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_6" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Источники
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+          
+        </div>
+      </div>
+    </div>
+    <article class="md-content__inner md-typeset">
+      
+        
+  
+
+
+
+
+<h1 id="passkey-demo-api">Компонентные тесты на практике. Скилл для агента и разбор passkey-demo-api</h1>
+<p>В <a href="https://codemonsters.team/blog/2026/04/25/testing-mythology-component-tests/">предыдущей статье</a> мы вывели формулу:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a>N_тестов = 1 + Σ (число различимых веток в адаптере i)
+</code></pre></div>
+<p>Теория готова. Время превратить её в инструмент, который работает каждый день — на любом сервисе, в руках любого вайб-инженера, в связке с ИИ-агентом.</p>
+<!-- more -->
+
+<p>В этой главе рассмотрим:</p>
+<ul>
+<li><a href="#chto-stroim">Что мы строим</a></li>
+<li><a href="#formula">Формула в практической форме</a></li>
+<li><a href="#gde-zhivut">Где живут режимы отказа</a></li>
+<li><a href="#algoritm">Алгоритм вывода числа тестов</a></li>
+<li><a href="#razbor">Разбор passkey-demo-api</a></li>
+<li><a href="#skill">Скилл для агента</a></li>
+<li><a href="#gde-zhivet">Где скилл живёт в репозитории</a></li>
+<li><a href="#kak-menyaetsya">Что меняется в работе с агентом</a></li>
+</ul>
+<h2 id="chto-stroim">Что мы строим</h2>
+<p>Цель — сделать так, чтобы вайб-инженер не пересказывал агенту правила компонентных тестов перед каждой задачей. Один раз положить в репозиторий <strong>скилл</strong> — и агент будет применять его автоматически каждый раз, когда нужно сгенерировать или дополнить компонентные тесты.</p>
+<p>Скилл это:</p>
+<ul>
+<li>короткий markdown-файл с YAML-фронтматтером;</li>
+<li>содержит процедуру: пошаговый алгоритм для агента;</li>
+<li>живёт в репозитории сервиса, версионируется вместе с кодом;</li>
+<li>открытый стандарт SKILL.md от Anthropic, поддерживаемый Claude Code, Cursor, GitHub Copilot, OpenAI Codex и другими агентами.</li>
+</ul>
+<p>В паре с AGENTS.md (открытый стандарт OpenAI / Linux Foundation для инструкций уровня проекта) скилл становится частью контракта между разработчиком и ИИ. AGENTS.md — обзор правил. Скиллы — конкретные процедуры.</p>
+<p>Это согласуется с <a href="https://codemonsters.team/blog/2026/04/07/documentation-as-product-jtbd/">принципом из статьи о документации как продукте</a>: документация делается под потребителя. Один из потребителей — ИИ-агент. Скилл — это документация, написанная специально для него.</p>
+<h3 id="_1">Порядок: контракт первичен</h3>
+<p>Важная деталь, без которой алгоритм не работает. По флоу разработки в <a href="https://github.com/ubik-life/service-template/blob/main/AGENTS.md">AGENTS.md шаблона сервиса Ubik</a> (правило 9):</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a>backlog.md → API-контракт → README → 
+<a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a>Компонентные тесты (красные) → 
+<a id="__codelineno-1-3" name="__codelineno-1-3" href="#__codelineno-1-3"></a>TDD-цикл по модулям
+</code></pre></div>
+<p>Компонентные тесты пишутся <strong>до кода сервиса</strong>. Значит, режимы отказа интеграций должны быть зафиксированы <strong>в контрактах</strong>, не выведены из кода адаптеров. Код — следствие контракта, не источник.</p>
+<p>Это меняет всё. Скилл и алгоритм построены вокруг чтения контракта, не кода.</p>
+<h2 id="formula">Формула в практической форме</h2>
+<p>В теоретической статье формула выводилась для канонического случая — сервиса с одним эндпоинтом:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a>N_тестов = 1 + Σ (число различимых веток в адаптере i)
+</code></pre></div>
+<p>Реальный сервис обычно имеет несколько ресурсов и действий. Каждый эндпоинт API — отдельное утверждение в спецификации, отдельный happy-path сценарий.</p>
+<p>Практическая форма формулы:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a>N_тестов = N_эндпоинтов_API + Σ (число различимых режимов отказа интеграции i)
+</code></pre></div>
+<p>Логика та же. Один эндпоинт = одно утверждение спецификации = один happy-path сценарий. Один режим отказа = одно отдельное утверждение в контракте = один сценарий.</p>
+<p>В учебном случае N_эндпоинтов = 1, в реальном — обычно от 3 до 10.</p>
+<p>Для AsyncAPI каждое событие (publish или subscribe) даёт +1 к N_эндпоинтов: это тоже отдельное утверждение контракта.</p>
+<h2 id="gde-zhivut">Где живут режимы отказа</h2>
+<p>Это главный практический вопрос. Если контракт первичен, <strong>где именно</strong> в контракте лежат режимы отказа интеграций?</p>
+<h3 id="_2">Где живёт контракт между сервисами и где — карта инфраструктурных отказов</h3>
+<p>OpenAPI и AsyncAPI описывают контракт <strong>между сервисами</strong>: какие запросы и сообщения ходят, какие ответы возвращаются.</p>
+<p>5xx-ошибки в OpenAPI описывают, потому что клиент их видит и должен на них реагировать — это часть HTTP-протокола. Это часть контракта между двумя сервисами.</p>
+<p>А вот «брокер упал, и мы не смогли опубликовать сообщение» — это <strong>не часть контракта между сервисами</strong>. Это поведение конкретного сервиса при отказе <strong>его собственной инфраструктуры</strong>. Соседний сервис, который читает из брокера, ничего об этом не знает: для него либо сообщение пришло, либо нет.</p>
+<p>То же касается «БД недоступна на стороне адаптера» — это не контракт между клиентом API и сервисом (хотя клиент увидит 5xx), а <strong>поведение сервиса в инфраструктурной проблеме</strong>, описанное на двух языках: на языке HTTP-контракта (5xx в OpenAPI) и на языке внутренней карты режимов (в README).</p>
+<p>Этот жанр информации — карта инфраструктурных отказов — правильно лежит в README, а не в AsyncAPI. AsyncAPI не «недоделан» в части ошибок: он просто не должен описывать отказы инфраструктуры, это не его жанр.</p>
+<h3 id="openapi">OpenAPI — для синхронных эндпоинтов</h3>
+<p>Для каждого эндпоинта в <code>responses</code> описаны все коды ответа. 5xx-ответы с разбивкой по <code>error.code</code> — это и есть режимы отказа интеграций.</p>
+<p>Пример:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a><span class="nt">paths</span><span class="p">:</span>
+<a id="__codelineno-4-2" name="__codelineno-4-2" href="#__codelineno-4-2"></a><span class="w">  </span><span class="nt">/v1/registrations</span><span class="p">:</span>
+<a id="__codelineno-4-3" name="__codelineno-4-3" href="#__codelineno-4-3"></a><span class="w">    </span><span class="nt">post</span><span class="p">:</span>
+<a id="__codelineno-4-4" name="__codelineno-4-4" href="#__codelineno-4-4"></a><span class="w">      </span><span class="nt">responses</span><span class="p">:</span>
+<a id="__codelineno-4-5" name="__codelineno-4-5" href="#__codelineno-4-5"></a><span class="w">        </span><span class="s">&#39;201&#39;</span><span class="p p-Indicator">:</span>
+<a id="__codelineno-4-6" name="__codelineno-4-6" href="#__codelineno-4-6"></a><span class="w">          </span><span class="nt">description</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Challenge создан</span>
+<a id="__codelineno-4-7" name="__codelineno-4-7" href="#__codelineno-4-7"></a><span class="w">        </span><span class="s">&#39;422&#39;</span><span class="p p-Indicator">:</span>
+<a id="__codelineno-4-8" name="__codelineno-4-8" href="#__codelineno-4-8"></a><span class="w">          </span><span class="nt">description</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Невалидный handle</span>
+<a id="__codelineno-4-9" name="__codelineno-4-9" href="#__codelineno-4-9"></a><span class="w">        </span><span class="s">&#39;503&#39;</span><span class="p p-Indicator">:</span>
+<a id="__codelineno-4-10" name="__codelineno-4-10" href="#__codelineno-4-10"></a><span class="w">          </span><span class="nt">description</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">БД недоступна</span>
+<a id="__codelineno-4-11" name="__codelineno-4-11" href="#__codelineno-4-11"></a><span class="w">          </span><span class="nt">content</span><span class="p">:</span>
+<a id="__codelineno-4-12" name="__codelineno-4-12" href="#__codelineno-4-12"></a><span class="w">            </span><span class="nt">application/json</span><span class="p">:</span>
+<a id="__codelineno-4-13" name="__codelineno-4-13" href="#__codelineno-4-13"></a><span class="w">              </span><span class="nt">schema</span><span class="p">:</span>
+<a id="__codelineno-4-14" name="__codelineno-4-14" href="#__codelineno-4-14"></a><span class="w">                </span><span class="nt">$ref</span><span class="p">:</span><span class="w"> </span><span class="s">&#39;#/components/schemas/Error&#39;</span>
+<a id="__codelineno-4-15" name="__codelineno-4-15" href="#__codelineno-4-15"></a><span class="w">              </span><span class="nt">example</span><span class="p">:</span>
+<a id="__codelineno-4-16" name="__codelineno-4-16" href="#__codelineno-4-16"></a><span class="w">                </span><span class="nt">code</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">db_unavailable</span>
+<a id="__codelineno-4-17" name="__codelineno-4-17" href="#__codelineno-4-17"></a><span class="w">                </span><span class="nt">message</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Database is unavailable</span>
+</code></pre></div>
+<p>Один <code>error.code: db_unavailable</code> под 503 = один режим отказа = один компонентный сценарий.</p>
+<p>Если бы под 503 было два разных <code>error.code</code> (<code>db_unavailable</code> и <code>db_timeout</code>) — это два режима, два сценария.</p>
+<p>Клиентские ошибки (4xx) в OpenAPI описываем тоже, но компонентные сценарии под них <strong>не пишем</strong>: проверка валидации полей — юнит-уровень.</p>
+<h3 id="readme">README — для асинхронных интеграций и общей картины</h3>
+<p>AsyncAPI описывает контракт сообщения, но «коды отказа» в стиле HTTP в нём не нативны. Поэтому режимы отказа для брокеров, очередей и любых интеграций, не описанных через HTTP-коды, фиксируются в <strong>README, в отдельном разделе «Карта режимов отказа»</strong>.</p>
+<p>Это операционный документ текущего состояния — что сервис обещает делать в режиме отказа. Видимый всем потребителям сервиса (соседним командам, разработчикам, агентам).</p>
+<p>Формат — простая таблица. В README раздел <code>## Карта режимов отказа</code> содержит:</p>
+<table>
+<thead>
+<tr>
+<th>Интеграция</th>
+<th>Тип</th>
+<th>Режим отказа</th>
+<th>Поведение сервиса наружу</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>PostgreSQL</td>
+<td>sync</td>
+<td>Недоступна</td>
+<td>503, <code>error.code=db_unavailable</code></td>
+</tr>
+<tr>
+<td>Kafka</td>
+<td>publish</td>
+<td>Брокер недоступен</td>
+<td>retry с backoff, DLQ после 3 попыток</td>
+</tr>
+<tr>
+<td>Kafka</td>
+<td>subscribe</td>
+<td>Сообщение не парсится</td>
+<td>DLQ</td>
+</tr>
+</tbody>
+</table>
+<p>Каждая строка таблицы = один компонентный сценарий.</p>
+<p>«Почему именно так» (например, «почему не различаем таймаут и недоступность БД») — это уже архитектурное решение, оно лежит в <code>/docs/adr</code> как ADR. Карта в README говорит <strong>что есть</strong>, ADR — <strong>почему так</strong>.</p>
+<h3 id="fallback">Fallback: код адаптера</h3>
+<p>Если ни в OpenAPI, ни в карте режимов отказы не детализированы (например, легаси-сервис, контракт не приведён в порядок) — скилл может прочитать код адаптера как fallback. Но при этом обязательно создаёт TODO в backlog: «зафиксировать режимы отказа в контракте».</p>
+<p>Это компенсация недостаточной проработки контракта, не норма.</p>
+<h2 id="algoritm">Алгоритм вывода числа тестов</h2>
+<p>Пять шагов. Ровно столько нужно агенту или человеку, чтобы получить детерминированный результат.</p>
+<p><strong>Шаг 1. Прочитать API-контракты.</strong>
+Открыть <code>api-specification/openapi.yaml</code>. Перечислить все эндпоинты (метод + путь). Если есть <code>api-specification/asyncapi.yaml</code> — перечислить все события.</p>
+<p><strong>Шаг 2. Сгенерировать happy-path сценарии.</strong>
+На каждый эндпоинт и каждое событие — один сценарий с заголовком, описывающим штатное поведение.</p>
+<p><strong>Шаг 3. Определить режимы отказа из контрактов.</strong></p>
+<ul>
+<li>Для синхронных эндпоинтов — из OpenAPI: все 5xx с разбивкой по <code>error.code</code>.</li>
+<li>Для асинхронных интеграций и общей картины — из README раздел «Карта режимов отказа».</li>
+<li>Если контракт не детализирован — fallback на код адаптера и TODO в backlog.</li>
+</ul>
+<p><strong>Шаг 4. Сгенерировать сценарии отказа.</strong>
+На каждый режим отказа — один сценарий «отказ интеграции X с конкретным типом ошибки».</p>
+<p><strong>Шаг 5. Сложить и сверить.</strong>
+N_сценариев = N_эндпоинтов + N_событий + Σ режимы отказа. Расхождение — сигнал ошибки в подсчёте.</p>
+<p>Это не художественная процедура. Это алгоритм, который можно прогнать руками или дать агенту.</p>
+<h2 id="razbor">Разбор passkey-demo-api</h2>
+<p><a href="https://github.com/ubik-life/passkey-demo-api">passkey-demo-api</a> — реальный сервис платформы Ubik. WebAuthn-авторизация без паролей, JWT с подписью Ed25519, SQLite как хранилище. Прогоним по нему алгоритм.</p>
+<h3 id="1-openapi">Шаг 1. Эндпоинты по OpenAPI</h3>
+<p>Открываем <code>api-specification/openapi.yaml</code>. Получаем шесть эндпоинтов:</p>
+<table>
+<thead>
+<tr>
+<th>Метод</th>
+<th>Путь</th>
+<th>Что делает</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>POST</code></td>
+<td><code>/v1/registrations</code></td>
+<td>Создать challenge регистрации</td>
+</tr>
+<tr>
+<td><code>POST</code></td>
+<td><code>/v1/registrations/{id}/attestation</code></td>
+<td>Завершить регистрацию, выдать JWT</td>
+</tr>
+<tr>
+<td><code>POST</code></td>
+<td><code>/v1/sessions</code></td>
+<td>Создать challenge входа</td>
+</tr>
+<tr>
+<td><code>POST</code></td>
+<td><code>/v1/sessions/{id}/assertion</code></td>
+<td>Завершить вход, выдать JWT</td>
+</tr>
+<tr>
+<td><code>DELETE</code></td>
+<td><code>/v1/sessions/current</code></td>
+<td>Выход — инвалидация refresh token</td>
+</tr>
+<tr>
+<td><code>GET</code></td>
+<td><code>/v1/users/me</code></td>
+<td>Получить текущего пользователя</td>
+</tr>
+</tbody>
+</table>
+<p>AsyncAPI у этого сервиса нет — он чисто синхронный.</p>
+<p><strong>N_эндпоинтов = 6.</strong></p>
+<h3 id="2-happy-path">Шаг 2. Happy-path сценарии</h3>
+<p>Каждый эндпоинт получает свой сценарий. Главное правило — <strong>не склеивать фазы двухфазного протокола в один сценарий</strong>. Регистрация состоит из двух шагов: создать challenge, потом подтвердить. Это два отдельных эндпоинта, два отдельных контракта наружу. Если их склеить, при поломке одной фазы будут падать оба сценария — и регистрации, и входа, который тоже двухфазный — и непонятно, где именно ошибка.</p>
+<p>Кроме того, каждый эндпоинт имеет независимый контракт: некорректный вызов второго шага без первого должен вернуть свою ошибку, и это часть спецификации второго эндпоинта, не «общего протокола».</p>
+<p>Получается шесть happy-path сценариев — по одному на эндпоинт.</p>
+<h3 id="3">Шаг 3. Определить режимы отказа</h3>
+<p>Открываем README, раздел «Стек»:</p>
+<table>
+<thead>
+<tr>
+<th>Компонент</th>
+<th>Технология</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Язык</td>
+<td>Go</td>
+</tr>
+<tr>
+<td>Аутентификация</td>
+<td>WebAuthn (FIDO2)</td>
+</tr>
+<tr>
+<td>Токены</td>
+<td>JWT, подпись Ed25519</td>
+</tr>
+<tr>
+<td>База данных</td>
+<td>SQLite</td>
+</tr>
+</tbody>
+</table>
+<p>Применяем правило: интеграция = выход за процесс сервиса.</p>
+<ul>
+<li><strong>SQLite</strong> — внешнее хранилище через драйвер. Это интеграция (файловая система через драйвер БД).</li>
+<li><strong>WebAuthn-библиотека</strong> — Go-пакет, локальный код в памяти процесса. Это модуль, не интеграция.</li>
+<li><strong>Ed25519</strong> — криптографическая библиотека, чистая функция от ключа и данных. Модуль.</li>
+<li><strong>JWT</strong> — формирование токена в памяти. Модуль.</li>
+</ul>
+<p><strong>Интеграция одна — SQLite.</strong></p>
+<p>Теперь читаем OpenAPI для каждого эндпоинта. В секции <code>responses</code> у всех шести эндпоинтов есть один общий 5xx-ответ:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a><span class="s">&#39;503&#39;</span><span class="p p-Indicator">:</span>
+<a id="__codelineno-5-2" name="__codelineno-5-2" href="#__codelineno-5-2"></a><span class="w">  </span><span class="nt">description</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Database unavailable</span>
+<a id="__codelineno-5-3" name="__codelineno-5-3" href="#__codelineno-5-3"></a><span class="w">  </span><span class="nt">content</span><span class="p">:</span>
+<a id="__codelineno-5-4" name="__codelineno-5-4" href="#__codelineno-5-4"></a><span class="w">    </span><span class="nt">application/json</span><span class="p">:</span>
+<a id="__codelineno-5-5" name="__codelineno-5-5" href="#__codelineno-5-5"></a><span class="w">      </span><span class="nt">example</span><span class="p">:</span>
+<a id="__codelineno-5-6" name="__codelineno-5-6" href="#__codelineno-5-6"></a><span class="w">        </span><span class="nt">code</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">db_unavailable</span>
+</code></pre></div>
+<p>Один <code>error.code</code> на всех — <code>db_unavailable</code>. Это проектное решение: сервис не различает типы отказов БД (таймаут, недоступность, нарушение целостности) — все они мапятся в одну ошибку наружу.</p>
+<p>Если бы в OpenAPI было два <code>error.code</code> (например, <code>db_unavailable</code> и <code>db_timeout</code>) — было бы два режима отказа. Один — один.</p>
+<p>В README карта режимов отказа должна содержать строку:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a>| SQLite | sync | Недоступна | 503, error.code=db_unavailable |
+</code></pre></div>
+<p>Если карты в README нет — TODO в backlog: «дополнить README картой режимов».</p>
+<p><strong>Различимых режимов отказа — 1.</strong></p>
+<h3 id="4">Шаг 4. Сценарий отказа</h3>
+<p>На один режим — один сценарий: «БД недоступна → клиент получает 503 с error.code=db_unavailable».</p>
+<p>Сценарий привязывается к одному из эндпоинтов (логично — к <code>POST /v1/registrations</code>, первой точке входа протокола). Дублировать «БД недоступна» для всех шести эндпоинтов не нужно — мы уже доказали, что сервис корректно обрабатывает реальный отказ контейнера. Логика дальнейшего поведения на других эндпоинтах — юнит-тест.</p>
+<h3 id="5">Шаг 5. Итог</h3>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-7-1" name="__codelineno-7-1" href="#__codelineno-7-1"></a>6 happy-path сценариев (по одному на эндпоинт)
+<a id="__codelineno-7-2" name="__codelineno-7-2" href="#__codelineno-7-2"></a>+ 1 сценарий отказа БД (один режим из OpenAPI)
+<a id="__codelineno-7-3" name="__codelineno-7-3" href="#__codelineno-7-3"></a>= 7 компонентных тестов
+</code></pre></div>
+<p>Это <strong>полная спецификация passkey-demo-api как чёрного ящика</strong>. Ни одного теста больше, ни одного меньше.</p>
+<h3 id="_3">Раскладка по файлам</h3>
+<p>Один <code>.feature</code> файл на ресурс. Получается четыре файла:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-8-1" name="__codelineno-8-1" href="#__codelineno-8-1"></a>component-tests/
+<a id="__codelineno-8-2" name="__codelineno-8-2" href="#__codelineno-8-2"></a>├── registrations.feature       # 2 happy-path + 1 отказ БД
+<a id="__codelineno-8-3" name="__codelineno-8-3" href="#__codelineno-8-3"></a>├── sessions.feature            # 2 happy-path
+<a id="__codelineno-8-4" name="__codelineno-8-4" href="#__codelineno-8-4"></a>├── sessions-current.feature    # 1 happy-path (DELETE /v1/sessions/current)
+<a id="__codelineno-8-5" name="__codelineno-8-5" href="#__codelineno-8-5"></a>└── users.feature               # 1 happy-path (GET /v1/users/me)
+</code></pre></div>
+<p>Пример <code>registrations.feature</code>:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-9-1" name="__codelineno-9-1" href="#__codelineno-9-1"></a><span class="k">Feature:</span><span class="nf"> Регистрация пользователя</span>
+<a id="__codelineno-9-2" name="__codelineno-9-2" href="#__codelineno-9-2"></a>
+<a id="__codelineno-9-3" name="__codelineno-9-3" href="#__codelineno-9-3"></a><span class="nf">  </span><span class="k">Scenario:</span><span class="nf"> Создание challenge регистрации</span>
+<a id="__codelineno-9-4" name="__codelineno-9-4" href="#__codelineno-9-4"></a><span class="k">    Given </span><span class="nf">сервис запущен</span>
+<a id="__codelineno-9-5" name="__codelineno-9-5" href="#__codelineno-9-5"></a><span class="nf">      </span><span class="k">And </span><span class="nf">БД доступна</span>
+<a id="__codelineno-9-6" name="__codelineno-9-6" href="#__codelineno-9-6"></a><span class="nf">    </span><span class="k">When </span><span class="nf">клиент отправляет POST /v</span><span class="s">1</span><span class="nf">/registrations с валидным handle</span>
+<a id="__codelineno-9-7" name="__codelineno-9-7" href="#__codelineno-9-7"></a><span class="nf">    </span><span class="k">Then </span><span class="nf">ответ </span><span class="s">201</span><span class="nf"> Created с полями id и options</span>
+<a id="__codelineno-9-8" name="__codelineno-9-8" href="#__codelineno-9-8"></a><span class="nf">      </span><span class="k">And </span><span class="nf">запись challenge сохранена в БД</span>
+<a id="__codelineno-9-9" name="__codelineno-9-9" href="#__codelineno-9-9"></a>
+<a id="__codelineno-9-10" name="__codelineno-9-10" href="#__codelineno-9-10"></a><span class="nf">  </span><span class="k">Scenario:</span><span class="nf"> Завершение регистрации с валидной подписью</span>
+<a id="__codelineno-9-11" name="__codelineno-9-11" href="#__codelineno-9-11"></a><span class="k">    Given </span><span class="nf">сервис запущен</span>
+<a id="__codelineno-9-12" name="__codelineno-9-12" href="#__codelineno-9-12"></a><span class="nf">      </span><span class="k">And </span><span class="nf">БД доступна</span>
+<a id="__codelineno-9-13" name="__codelineno-9-13" href="#__codelineno-9-13"></a><span class="nf">      </span><span class="k">And </span><span class="nf">в БД есть действующий challenge с id &quot;</span><span class="s">abc-123</span><span class="nf">&quot;</span>
+<a id="__codelineno-9-14" name="__codelineno-9-14" href="#__codelineno-9-14"></a><span class="nf">    </span><span class="k">When </span><span class="nf">клиент отправляет POST /v</span><span class="s">1</span><span class="nf">/registrations/abc-</span><span class="s">123</span><span class="nf">/attestation</span>
+<a id="__codelineno-9-15" name="__codelineno-9-15" href="#__codelineno-9-15"></a><span class="nf">         с валидной WebAuthn-подписью</span>
+<a id="__codelineno-9-16" name="__codelineno-9-16" href="#__codelineno-9-16"></a><span class="nf">    </span><span class="k">Then </span><span class="nf">ответ </span><span class="s">200</span><span class="nf"> OK с JWT-токеном</span>
+<a id="__codelineno-9-17" name="__codelineno-9-17" href="#__codelineno-9-17"></a><span class="nf">      </span><span class="k">And </span><span class="nf">пользователь сохранён в БД</span>
+<a id="__codelineno-9-18" name="__codelineno-9-18" href="#__codelineno-9-18"></a><span class="nf">      </span><span class="k">And </span><span class="nf">challenge помечен как использованный</span>
+<a id="__codelineno-9-19" name="__codelineno-9-19" href="#__codelineno-9-19"></a>
+<a id="__codelineno-9-20" name="__codelineno-9-20" href="#__codelineno-9-20"></a><span class="nf">  </span><span class="k">Scenario:</span><span class="nf"> Отказ БД при создании challenge</span>
+<a id="__codelineno-9-21" name="__codelineno-9-21" href="#__codelineno-9-21"></a><span class="k">    Given </span><span class="nf">сервис запущен</span>
+<a id="__codelineno-9-22" name="__codelineno-9-22" href="#__codelineno-9-22"></a><span class="nf">      </span><span class="k">And </span><span class="nf">БД недоступна</span>
+<a id="__codelineno-9-23" name="__codelineno-9-23" href="#__codelineno-9-23"></a><span class="nf">    </span><span class="k">When </span><span class="nf">клиент отправляет POST /v</span><span class="s">1</span><span class="nf">/registrations с валидным handle</span>
+<a id="__codelineno-9-24" name="__codelineno-9-24" href="#__codelineno-9-24"></a><span class="nf">    </span><span class="k">Then </span><span class="nf">ответ </span><span class="s">503</span><span class="nf"> Service Unavailable с error.code=db_unavailable</span>
+<a id="__codelineno-9-25" name="__codelineno-9-25" href="#__codelineno-9-25"></a><span class="nf">      </span><span class="k">And </span><span class="nf">challenge не создан</span>
+</code></pre></div>
+<p>Три сценария в файле. Читается как русский текст. Прогоняется машиной — реальный сервис в Docker Compose, реальный SQLite, реальные HTTP-запросы.</p>
+<h3 id="asyncapi">Если бы у сервиса был AsyncAPI</h3>
+<p>passkey-demo-api синхронный, но рассмотрим гипотетический случай. Допустим, после регистрации сервис публикует событие <code>user_registered</code> в Kafka.</p>
+<p>Тогда:</p>
+<ul>
+<li>AsyncAPI описывает контракт сообщения <code>user_registered</code> (схему, канал, операцию publish).</li>
+<li>В README в карте режимов отказа добавляется строка для Kafka.</li>
+</ul>
+<p>Расчёт меняется так:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-10-1" name="__codelineno-10-1" href="#__codelineno-10-1"></a>N_тестов = (6 эндпоинтов + 1 событие) + 1 режим SQLite + 1 режим Kafka
+<a id="__codelineno-10-2" name="__codelineno-10-2" href="#__codelineno-10-2"></a>        = 7 + 2 = 9 тестов
+</code></pre></div>
+<p>Семь happy-path: шесть от эндпоинтов и один на публикацию события <code>user_registered</code> в брокер. И два сценария отказа: БД недоступна и брокер недоступен.</p>
+<h3 id="7">Что НЕ попало в эти 7 тестов</h3>
+<p>И что <strong>не должно</strong> туда попасть:</p>
+<ul>
+<li><strong>Валидация формата handle</strong> — длина, допустимые символы. Юнит-уровень, модуль валидации.</li>
+<li><strong>Проверка подписи Ed25519</strong> — юнит модуля криптографии.</li>
+<li><strong>Истечение challenge по таймауту</strong> — юнит модуля управления challenge.</li>
+<li><strong>Корректность JWT</strong> — юнит модуля выдачи токенов.</li>
+<li><strong>Двухфазная логика связи между эндпоинтами</strong> — юниты головных модулей.</li>
+<li><strong>Сборка и запуск Go-приложения</strong> — контролирует <code>go build</code>.</li>
+</ul>
+<p>Если возникает соблазн добавить что-то из этого списка в <code>.feature</code> файл — это сигнал, что юнит-тесты не покрывают логику. Лечится не компонентным тестом, а возвращением к проектированию.</p>
+<h2 id="skill">Скилл для агента</h2>
+<p>Теперь превращаем процедуру в скилл, который агент применит автоматически.</p>
+<p>Скилл — это директория с файлом <code>SKILL.md</code>. YAML-фронтматтер с <code>name</code> и <code>description</code> сообщает агенту, когда применять. Тело — markdown-инструкции.</p>
+<p>Полный текст <code>skills/component-tests/SKILL.md</code>:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-11-1" name="__codelineno-11-1" href="#__codelineno-11-1"></a>---
+<a id="__codelineno-11-2" name="__codelineno-11-2" href="#__codelineno-11-2"></a>name: component-tests
+<a id="__codelineno-11-3" name="__codelineno-11-3" href="#__codelineno-11-3"></a><span class="gu">description: Генерация компонентных тестов для сервиса с OpenAPI или AsyncAPI контрактом. Применять, когда нужно создать или дополнить .feature файлы в директории component-tests на основе спецификации API. Не применять для юнит-тестов или контрактных тестов между сервисами.</span>
+<a id="__codelineno-11-4" name="__codelineno-11-4" href="#__codelineno-11-4"></a><span class="gu">---</span>
+<a id="__codelineno-11-5" name="__codelineno-11-5" href="#__codelineno-11-5"></a>
+<a id="__codelineno-11-6" name="__codelineno-11-6" href="#__codelineno-11-6"></a><span class="gh"># Компонентные тесты — спецификация чёрного ящика</span>
+<a id="__codelineno-11-7" name="__codelineno-11-7" href="#__codelineno-11-7"></a>
+<a id="__codelineno-11-8" name="__codelineno-11-8" href="#__codelineno-11-8"></a>Skill для генерации компонентных тестов сервиса. Тест — это исполняемая
+<a id="__codelineno-11-9" name="__codelineno-11-9" href="#__codelineno-11-9"></a>спецификация: что сервис обещает делать на штатном пути и при отказе
+<a id="__codelineno-11-10" name="__codelineno-11-10" href="#__codelineno-11-10"></a>каждой внешней связи. Не охота за багами и не покрытие кода.
+<a id="__codelineno-11-11" name="__codelineno-11-11" href="#__codelineno-11-11"></a>
+<a id="__codelineno-11-12" name="__codelineno-11-12" href="#__codelineno-11-12"></a><span class="gu">## Принцип: контракт первичен</span>
+<a id="__codelineno-11-13" name="__codelineno-11-13" href="#__codelineno-11-13"></a>
+<a id="__codelineno-11-14" name="__codelineno-11-14" href="#__codelineno-11-14"></a>Компонентные тесты пишутся до кода сервиса (TDD-цикл). Значит, режимы
+<a id="__codelineno-11-15" name="__codelineno-11-15" href="#__codelineno-11-15"></a>отказа интеграций должны быть зафиксированы в контрактах, не выведены
+<a id="__codelineno-11-16" name="__codelineno-11-16" href="#__codelineno-11-16"></a>из кода адаптеров. Код — следствие контракта, не источник.
+<a id="__codelineno-11-17" name="__codelineno-11-17" href="#__codelineno-11-17"></a>
+<a id="__codelineno-11-18" name="__codelineno-11-18" href="#__codelineno-11-18"></a>Источники режимов отказа в порядке приоритета:
+<a id="__codelineno-11-19" name="__codelineno-11-19" href="#__codelineno-11-19"></a>
+<a id="__codelineno-11-20" name="__codelineno-11-20" href="#__codelineno-11-20"></a><span class="k">1.</span> OpenAPI (api-specification/openapi.yaml) — для синхронных эндпоинтов.
+<a id="__codelineno-11-21" name="__codelineno-11-21" href="#__codelineno-11-21"></a>   Все 5xx-ответы с разбиением по error.code.
+<a id="__codelineno-11-22" name="__codelineno-11-22" href="#__codelineno-11-22"></a>
+<a id="__codelineno-11-23" name="__codelineno-11-23" href="#__codelineno-11-23"></a><span class="k">2.</span> README раздел «Карта режимов отказа» — для асинхронных интеграций
+<a id="__codelineno-11-24" name="__codelineno-11-24" href="#__codelineno-11-24"></a>   и любых интеграций, не описанных через коды HTTP.
+<a id="__codelineno-11-25" name="__codelineno-11-25" href="#__codelineno-11-25"></a>
+<a id="__codelineno-11-26" name="__codelineno-11-26" href="#__codelineno-11-26"></a><span class="k">3.</span> Fallback: код адаптера — если контракт ещё не детализирован.
+<a id="__codelineno-11-27" name="__codelineno-11-27" href="#__codelineno-11-27"></a>   Создать TODO в backlog: «зафиксировать режимы отказа в контракте».
+<a id="__codelineno-11-28" name="__codelineno-11-28" href="#__codelineno-11-28"></a>
+<a id="__codelineno-11-29" name="__codelineno-11-29" href="#__codelineno-11-29"></a><span class="gu">## Формула</span>
+<a id="__codelineno-11-30" name="__codelineno-11-30" href="#__codelineno-11-30"></a>
+<a id="__codelineno-11-31" name="__codelineno-11-31" href="#__codelineno-11-31"></a>    N<span class="ge">_тестов = N_</span>эндпоинтов_API + Σ (число различимых режимов отказа интеграции i)
+<a id="__codelineno-11-32" name="__codelineno-11-32" href="#__codelineno-11-32"></a>
+<a id="__codelineno-11-33" name="__codelineno-11-33" href="#__codelineno-11-33"></a><span class="k">*</span><span class="w"> </span>N<span class="ge">_эндпоинтов_</span>API — количество эндпоинтов в OpenAPI плюс количество
+<a id="__codelineno-11-34" name="__codelineno-11-34" href="#__codelineno-11-34"></a>  событий (publish и subscribe) в AsyncAPI.
+<a id="__codelineno-11-35" name="__codelineno-11-35" href="#__codelineno-11-35"></a>
+<a id="__codelineno-11-36" name="__codelineno-11-36" href="#__codelineno-11-36"></a><span class="k">*</span><span class="w"> </span>Различимый режим отказа — каждый отдельный тип ошибки, который сервис
+<a id="__codelineno-11-37" name="__codelineno-11-37" href="#__codelineno-11-37"></a>  обещает наружу для данной интеграции.
+<a id="__codelineno-11-38" name="__codelineno-11-38" href="#__codelineno-11-38"></a>
+<a id="__codelineno-11-39" name="__codelineno-11-39" href="#__codelineno-11-39"></a><span class="gu">## Что считать интеграцией</span>
+<a id="__codelineno-11-40" name="__codelineno-11-40" href="#__codelineno-11-40"></a>
+<a id="__codelineno-11-41" name="__codelineno-11-41" href="#__codelineno-11-41"></a>Интеграция — это выход за процесс сервиса:
+<a id="__codelineno-11-42" name="__codelineno-11-42" href="#__codelineno-11-42"></a><span class="k">*</span><span class="w"> </span>сеть (HTTP, gRPC, очереди, БД через драйвер);
+<a id="__codelineno-11-43" name="__codelineno-11-43" href="#__codelineno-11-43"></a><span class="k">*</span><span class="w"> </span>файловая система;
+<a id="__codelineno-11-44" name="__codelineno-11-44" href="#__codelineno-11-44"></a><span class="k">*</span><span class="w"> </span>IPC (Inter-Process Communication, межпроцессное взаимодействие).
+<a id="__codelineno-11-45" name="__codelineno-11-45" href="#__codelineno-11-45"></a>
+<a id="__codelineno-11-46" name="__codelineno-11-46" href="#__codelineno-11-46"></a>Локальные библиотеки в памяти процесса — модули, не интеграции.
+<a id="__codelineno-11-47" name="__codelineno-11-47" href="#__codelineno-11-47"></a>
+<a id="__codelineno-11-48" name="__codelineno-11-48" href="#__codelineno-11-48"></a><span class="gu">## Алгоритм генерации тестов</span>
+<a id="__codelineno-11-49" name="__codelineno-11-49" href="#__codelineno-11-49"></a>
+<a id="__codelineno-11-50" name="__codelineno-11-50" href="#__codelineno-11-50"></a>Шаг 1. Прочитать api-specification/openapi.yaml. Перечислить эндпоинты.
+<a id="__codelineno-11-51" name="__codelineno-11-51" href="#__codelineno-11-51"></a>       Если есть asyncapi.yaml — перечислить события.
+<a id="__codelineno-11-52" name="__codelineno-11-52" href="#__codelineno-11-52"></a>
+<a id="__codelineno-11-53" name="__codelineno-11-53" href="#__codelineno-11-53"></a>Шаг 2. На каждый эндпоинт и каждое событие — один happy-path сценарий.
+<a id="__codelineno-11-54" name="__codelineno-11-54" href="#__codelineno-11-54"></a>
+<a id="__codelineno-11-55" name="__codelineno-11-55" href="#__codelineno-11-55"></a>Шаг 3. Определить режимы отказа из контрактов:
+<a id="__codelineno-11-56" name="__codelineno-11-56" href="#__codelineno-11-56"></a>       — синхронные: все 5xx из OpenAPI с разбивкой по error.code;
+<a id="__codelineno-11-57" name="__codelineno-11-57" href="#__codelineno-11-57"></a>       — асинхронные: строки таблицы «Карта режимов отказа» из README;
+<a id="__codelineno-11-58" name="__codelineno-11-58" href="#__codelineno-11-58"></a>       — fallback: код адаптера + TODO в backlog.
+<a id="__codelineno-11-59" name="__codelineno-11-59" href="#__codelineno-11-59"></a>
+<a id="__codelineno-11-60" name="__codelineno-11-60" href="#__codelineno-11-60"></a>Шаг 4. На каждый режим отказа — один сценарий.
+<a id="__codelineno-11-61" name="__codelineno-11-61" href="#__codelineno-11-61"></a>
+<a id="__codelineno-11-62" name="__codelineno-11-62" href="#__codelineno-11-62"></a>Шаг 5. Сверить: N = N<span class="ge">_эндпоинтов + N_</span>событий + Σ режимы отказа.
+<a id="__codelineno-11-63" name="__codelineno-11-63" href="#__codelineno-11-63"></a>
+<a id="__codelineno-11-64" name="__codelineno-11-64" href="#__codelineno-11-64"></a><span class="gu">## Структура файлов</span>
+<a id="__codelineno-11-65" name="__codelineno-11-65" href="#__codelineno-11-65"></a>
+<a id="__codelineno-11-66" name="__codelineno-11-66" href="#__codelineno-11-66"></a><span class="k">*</span><span class="w"> </span>Один .feature файл на ресурс API.
+<a id="__codelineno-11-67" name="__codelineno-11-67" href="#__codelineno-11-67"></a><span class="k">*</span><span class="w"> </span>Имя файла = имя ресурса в нижнем регистре.
+<a id="__codelineno-11-68" name="__codelineno-11-68" href="#__codelineno-11-68"></a><span class="k">*</span><span class="w"> </span>Расположение: component-tests/&lt;resource&gt;.feature.
+<a id="__codelineno-11-69" name="__codelineno-11-69" href="#__codelineno-11-69"></a>
+<a id="__codelineno-11-70" name="__codelineno-11-70" href="#__codelineno-11-70"></a><span class="gu">## Что НЕ делать</span>
+<a id="__codelineno-11-71" name="__codelineno-11-71" href="#__codelineno-11-71"></a>
+<a id="__codelineno-11-72" name="__codelineno-11-72" href="#__codelineno-11-72"></a><span class="k">*</span><span class="w"> </span>Не выводить режимы отказа из кода как основной путь.
+<a id="__codelineno-11-73" name="__codelineno-11-73" href="#__codelineno-11-73"></a><span class="k">*</span><span class="w"> </span>Не генерировать сценарии валидации полей запроса (юнит-уровень).
+<a id="__codelineno-11-74" name="__codelineno-11-74" href="#__codelineno-11-74"></a><span class="k">*</span><span class="w"> </span>Не повторять бизнес-логику (доказана юнитами).
+<a id="__codelineno-11-75" name="__codelineno-11-75" href="#__codelineno-11-75"></a><span class="k">*</span><span class="w"> </span>Не писать smoke-test на запуск (контролирует компилятор).
+<a id="__codelineno-11-76" name="__codelineno-11-76" href="#__codelineno-11-76"></a><span class="k">*</span><span class="w"> </span>Не добавлять сценарии «на всякий случай».
+<a id="__codelineno-11-77" name="__codelineno-11-77" href="#__codelineno-11-77"></a><span class="k">*</span><span class="w"> </span>Не склеивать фазы протокола в один сценарий.
+<a id="__codelineno-11-78" name="__codelineno-11-78" href="#__codelineno-11-78"></a>
+<a id="__codelineno-11-79" name="__codelineno-11-79" href="#__codelineno-11-79"></a><span class="gu">## Запуск</span>
+<a id="__codelineno-11-80" name="__codelineno-11-80" href="#__codelineno-11-80"></a>
+<a id="__codelineno-11-81" name="__codelineno-11-81" href="#__codelineno-11-81"></a>Все компонентные тесты запускаются в Docker Compose с реальными
+<a id="__codelineno-11-82" name="__codelineno-11-82" href="#__codelineno-11-82"></a>зависимостями. Тест дёргает настоящий API сервиса. Никаких моков.
+<a id="__codelineno-11-83" name="__codelineno-11-83" href="#__codelineno-11-83"></a>
+<a id="__codelineno-11-84" name="__codelineno-11-84" href="#__codelineno-11-84"></a><span class="gu">## Чек-лист перед коммитом</span>
+<a id="__codelineno-11-85" name="__codelineno-11-85" href="#__codelineno-11-85"></a>
+<a id="__codelineno-11-86" name="__codelineno-11-86" href="#__codelineno-11-86"></a><span class="k">1.</span> Карта режимов отказа в README заполнена и актуальна.
+<a id="__codelineno-11-87" name="__codelineno-11-87" href="#__codelineno-11-87"></a><span class="k">2.</span> Число .feature файлов = число ресурсов в API.
+<a id="__codelineno-11-88" name="__codelineno-11-88" href="#__codelineno-11-88"></a><span class="k">3.</span> Число happy-path сценариев = число эндпоинтов + число событий.
+<a id="__codelineno-11-89" name="__codelineno-11-89" href="#__codelineno-11-89"></a><span class="k">4.</span> Число сценариев отказа = сумма режимов отказа из OpenAPI и README.
+<a id="__codelineno-11-90" name="__codelineno-11-90" href="#__codelineno-11-90"></a><span class="k">5.</span> Все сценарии запускаются в Docker Compose с реальными зависимостями.
+<a id="__codelineno-11-91" name="__codelineno-11-91" href="#__codelineno-11-91"></a><span class="k">6.</span> Нет валидации полей, бизнес-логики, smoke-тестов.
+</code></pre></div>
+<p>В YAML-фронтматтере критическая строка — <code>description</code>. Именно по ней агент решает применять скилл или нет. Описание начинается с условия «когда применять» и явно перечисляет случаи, когда <strong>не</strong> применять. Это не косметика — это контракт активации.</p>
+<h2 id="gde-zhivet">Где скилл живёт в репозитории</h2>
+<p>Структура шаблона сервиса Ubik:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-12-1" name="__codelineno-12-1" href="#__codelineno-12-1"></a>service-template/
+<a id="__codelineno-12-2" name="__codelineno-12-2" href="#__codelineno-12-2"></a>├── AGENTS.md
+<a id="__codelineno-12-3" name="__codelineno-12-3" href="#__codelineno-12-3"></a>├── README.md                      # включает раздел «Карта режимов отказа»
+<a id="__codelineno-12-4" name="__codelineno-12-4" href="#__codelineno-12-4"></a>├── api-specification/
+<a id="__codelineno-12-5" name="__codelineno-12-5" href="#__codelineno-12-5"></a>│   ├── openapi.yaml
+<a id="__codelineno-12-6" name="__codelineno-12-6" href="#__codelineno-12-6"></a>│   └── asyncapi.yaml
+<a id="__codelineno-12-7" name="__codelineno-12-7" href="#__codelineno-12-7"></a>├── component-tests/
+<a id="__codelineno-12-8" name="__codelineno-12-8" href="#__codelineno-12-8"></a>│   └── *.feature
+<a id="__codelineno-12-9" name="__codelineno-12-9" href="#__codelineno-12-9"></a>├── docs/
+<a id="__codelineno-12-10" name="__codelineno-12-10" href="#__codelineno-12-10"></a>│   └── adr/                       # обоснование решений по картe режимов
+<a id="__codelineno-12-11" name="__codelineno-12-11" href="#__codelineno-12-11"></a>└── skills/
+<a id="__codelineno-12-12" name="__codelineno-12-12" href="#__codelineno-12-12"></a>    └── component-tests/
+<a id="__codelineno-12-13" name="__codelineno-12-13" href="#__codelineno-12-13"></a>        └── SKILL.md
+</code></pre></div>
+<p>Директория <code>skills/</code> — на верхнем уровне репозитория. Это согласуется с практикой Anthropic в публичных репозиториях skills и конвенцией открытого стандарта SKILL.md.</p>
+<p>В AGENTS.md раздел про компонентные тесты остаётся коротким — несколько строк принципа и ссылка на скилл:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-13-1" name="__codelineno-13-1" href="#__codelineno-13-1"></a><span class="gu">### Компонентные тесты</span>
+<a id="__codelineno-13-2" name="__codelineno-13-2" href="#__codelineno-13-2"></a>
+<a id="__codelineno-13-3" name="__codelineno-13-3" href="#__codelineno-13-3"></a><span class="k">*</span><span class="w"> </span>Тест = исполняемая спецификация чёрного ящика.
+<a id="__codelineno-13-4" name="__codelineno-13-4" href="#__codelineno-13-4"></a><span class="k">*</span><span class="w"> </span>Контракт первичен: режимы отказа — в OpenAPI и в README раздел «Карта режимов отказа».
+<a id="__codelineno-13-5" name="__codelineno-13-5" href="#__codelineno-13-5"></a><span class="k">*</span><span class="w"> </span>Формат: Gherkin (Given / When / Then).
+<a id="__codelineno-13-6" name="__codelineno-13-6" href="#__codelineno-13-6"></a><span class="k">*</span><span class="w"> </span>Запуск: Docker Compose с реальными зависимостями.
+<a id="__codelineno-13-7" name="__codelineno-13-7" href="#__codelineno-13-7"></a><span class="k">*</span><span class="w"> </span>Полная процедура генерации: skills/component-tests/SKILL.md
+</code></pre></div>
+<p>Жанровое разделение: AGENTS.md — обзор правил, скиллы — процедуры. Будущие скиллы (миграции БД, ADR, observability) лягут в ту же <code>skills/</code> рядом с <code>component-tests/</code>.</p>
+<h2 id="kak-menyaetsya">Что меняется в работе с агентом</h2>
+<p>До скилла. Каждый раз нужно объяснять агенту: «компонентные тесты — это спецификация, считай по формуле, не дублируй валидацию, используй Gherkin, читай OpenAPI, не код». Агент забывает между сессиями, забывает в середине задачи, генерирует «ещё на всякий случай».</p>
+<p>Со скиллом. Кладём <code>SKILL.md</code> в репозиторий один раз. При любой задаче, связанной с компонентными тестами, агент:</p>
+<ol>
+<li>Видит описание скилла в активных правилах проекта.</li>
+<li>Загружает полный текст в контекст.</li>
+<li>Применяет процедуру шаг за шагом, читая контракты, не код.</li>
+<li>Возвращает результат, который соответствует формуле и конвенциям.</li>
+</ol>
+<p>Это и есть рациональная разработка: правила формализованы, агент применяет их детерминированно, человек контролирует результат.</p>
+<p>И главное — скилл становится <strong>общим знанием команды</strong>. Не «у Серёжи в голове правильное понимание тестов, а у Лены другое». Скилл лежит в репозитории, версионируется, ревьюится. Если правило меняется — меняется скилл, и все следующие задачи идут уже по новому.</p>
+<h2 id="_4">Резюме</h2>
+<ul>
+<li><strong>Контракт первичен.</strong> Режимы отказа фиксируются в OpenAPI (синхронные) и в README раздел «Карта режимов отказа» (асинхронные и общая картина). Код — следствие, не источник.</li>
+<li><strong>Формула в практической форме:</strong> <code>N_тестов = N_эндпоинтов_API + Σ (число различимых режимов отказа интеграции i)</code>.</li>
+<li><strong>Алгоритм</strong> из пяти шагов даёт детерминированный результат для любого сервиса.</li>
+<li><strong>passkey-demo-api</strong>: 6 эндпоинтов + 1 режим отказа SQLite = <strong>7 компонентных тестов</strong>.</li>
+<li><strong>Скилл</strong> <code>skills/component-tests/SKILL.md</code> автоматизирует процедуру для агента.</li>
+</ul>
+<h2 id="_5">Что дальше</h2>
+<p>Следующая статья — <strong>менеджерская</strong>. Возьмём типовой сервис на фиксированных ресурсах, замерим время прогона набора тестов, экстраполируем на масштаб организации (50 команд × 50 сервисов). Цифры, которых не хватало в этой и предыдущей статьях.</p>
+<p>После — серия про правильное проектирование модулей: контроль диапазонов значений, возврат ошибки как данных, композиция через результат.</p>
+<h2 id="_6">Источники</h2>
+<ol>
+<li>Morev M. <a href="https://codemonsters.team/blog/2026/04/25/testing-mythology-component-tests/"><em>Сколько компонентных тестов нужно сервису. Логический вывод.</em></a> codemonsters.team, 2026.</li>
+<li>Morev M. <a href="https://codemonsters.team/blog/2025/12/30/program-correctness/"><em>Правильность программы.</em></a> codemonsters.team, 2025.</li>
+<li>Morev M. <a href="https://codemonsters.team/blog/2025/12/15/program-modules/"><em>Модульность программы.</em></a> codemonsters.team, 2025.</li>
+<li>Morev M. <a href="https://codemonsters.team/blog/2026/04/07/documentation-as-product-jtbd/"><em>README — это продукт.</em></a> codemonsters.team, 2026.</li>
+<li>Adzic G. <em>Specification by Example.</em> Manning, 2011.</li>
+<li><a href="https://github.com/ubik-life/passkey-demo-api"><code>ubik-life/passkey-demo-api</code></a> — учебный сервис для разбора.</li>
+<li><a href="https://github.com/ubik-life/service-template"><code>ubik-life/service-template</code></a> — шаблон сервиса с AGENTS.md.</li>
+<li>AGENTS.md — открытый стандарт для агентских инструкций (OpenAI / Linux Foundation).</li>
+<li>SKILL.md — открытый стандарт для агентских скиллов (Anthropic).</li>
+</ol>
+
+
+
+
+
+
+
+  
+  
+
+
+
+  
+
+
+  
+
+
+
+      
+    </article>
+  </div>
+
+          
+  <script>var tabs=__md_get("__tabs");if(Array.isArray(tabs))e:for(var set of document.querySelectorAll(".tabbed-set")){var labels=set.querySelector(".tabbed-labels");for(var tab of tabs)for(var label of labels.getElementsByTagName("label"))if(label.innerText.trim()===tab){var input=document.getElementById(label.htmlFor);input.checked=!0;continue e}}</script>
+
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+          <button type="button" class="md-top md-icon" data-md-component="top" hidden>
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8z"/></svg>
+  Back to top
+</button>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+    <div class="md-copyright__highlight">
+      &copy; 2023 <a href="https://git.codemonsters.team/guides/web-book"  target="_blank" rel="noopener">CodeMonsters.team</a>
+    </div>
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+        
+<div class="md-social">
+  
+    
+    
+    
+    
+      
+      
+    
+    <a href="https://git.codemonsters.team/guides/web-book" target="_blank" rel="noopener" title="git.codemonsters.team" class="md-social__link">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M202.1 328.7c0 20.9-10.9 55.1-36.7 55.1s-36.7-34.2-36.7-55.1 10.9-55.1 36.7-55.1 36.7 34.2 36.7 55.1M496 278.2c0 31.9-3.2 65.7-17.5 95-37.9 76.6-142.1 74.8-216.7 74.8-75.8 0-186.2 2.7-225.6-74.8-14.6-29-20.2-63.1-20.2-95 0-41.9 13.9-81.5 41.5-113.6-5.2-15.8-7.7-32.4-7.7-48.8 0-21.5 4.9-32.3 14.6-51.8 45.3 0 74.3 9 108.8 36 29-6.9 58.8-10 88.7-10 27 0 54.2 2.9 80.4 9.2 34-26.7 63-35.2 107.8-35.2 9.8 19.5 14.6 30.3 14.6 51.8 0 16.4-2.6 32.7-7.7 48.2 27.5 32.4 39 72.3 39 114.2m-64.3 50.5c0-43.9-26.7-82.6-73.5-82.6-18.9 0-37 3.4-56 6-14.9 2.3-29.8 3.2-45.1 3.2-15.2 0-30.1-.9-45.1-3.2-18.7-2.6-37-6-56-6-46.8 0-73.5 38.7-73.5 82.6 0 87.8 80.4 101.3 150.4 101.3h48.2c70.3 0 150.6-13.4 150.6-101.3m-82.6-55.1c-25.8 0-36.7 34.2-36.7 55.1s10.9 55.1 36.7 55.1 36.7-34.2 36.7-55.1-10.9-55.1-36.7-55.1"/></svg>
+    </a>
+  
+    
+    
+    
+    
+      
+      
+    
+    <a href="https://t.me/codemonsterslogs" target="_blank" rel="noopener" title="t.me" class="md-social__link">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M256 8a248 248 0 1 0 0 496 248 248 0 1 0 0-496m115 168.7c-3.7 39.2-19.9 134.4-28.1 178.3-3.5 18.6-10.3 24.8-16.9 25.4-14.4 1.3-25.3-9.5-39.3-18.7-21.8-14.3-34.2-23.2-55.3-37.2-24.5-16.1-8.6-25 5.3-39.5 3.7-3.8 67.1-61.5 68.3-66.7.2-.7.3-3.1-1.2-4.4s-3.6-.8-5.1-.5c-2.2.5-37.1 23.5-104.6 69.1-9.9 6.8-18.9 10.1-26.9 9.9-8.9-.2-25.9-5-38.6-9.1-15.5-5-27.9-7.7-26.8-16.3.6-4.5 6.7-9 18.4-13.7 72.3-31.5 120.5-52.3 144.6-62.3 68.9-28.6 83.2-33.6 92.5-33.8 2.1 0 6.6.5 9.6 2.9 2 1.7 3.2 4.1 3.5 6.7.5 3.2.6 6.5.4 9.8z"/></svg>
+    </a>
+  
+    
+    
+    
+    
+      
+      
+    
+    <a href="https://www.linkedin.com/in/maximmorev/" target="_blank" rel="noopener" title="www.linkedin.com" class="md-social__link">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M416 32H31.9C14.3 32 0 46.5 0 64.3v383.4C0 465.5 14.3 480 31.9 480H416c17.6 0 32-14.5 32-32.3V64.3c0-17.8-14.4-32.3-32-32.3M135.4 416H69V202.2h66.5V416zM102.2 96a38.5 38.5 0 1 1 0 77 38.5 38.5 0 1 1 0-77m282.1 320h-66.4V312c0-24.8-.5-56.7-34.5-56.7-34.6 0-39.9 27-39.9 54.9V416h-66.4V202.2h63.7v29.2h.9c8.9-16.8 30.6-34.5 62.9-34.5 67.2 0 79.7 44.3 79.7 101.9z"/></svg>
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    
+      
+      
+      <script id="__config" type="application/json">{"annotate": null, "base": "../../../../..", "features": ["navigation.tabs", "navigation.sections", "navigation.indexes", "toc.integrate", "navigation.top", "search.suggest", "search.highlight", "content.tabs.link", "content.code.annotation", "content.code.copy"], "search": "../../../../../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
+    
+    
+      <script src="../../../../../assets/javascripts/bundle.79ae519e.min.js"></script>
+      
+    
+  </body>
+</html>
