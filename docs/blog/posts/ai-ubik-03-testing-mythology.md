@@ -10,6 +10,7 @@ categories:
   - tests
   - component-tests
   - howtocode
+  - ubik
 ---
 
 # Сколько компонентных тестов нужно сервису. Логический вывод
