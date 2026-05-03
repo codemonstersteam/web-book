@@ -11,6 +11,7 @@ categories:
   - component-tests
   - howtocode
   - agents
+  - ubik
 ---
 
 # Компонентные тесты на практике. Скилл для агента и разбор passkey-demo-api
