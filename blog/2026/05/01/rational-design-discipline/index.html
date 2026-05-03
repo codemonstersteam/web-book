@@ -1,0 +1,4003 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+        <meta name="description" content="Концентрат четырёх разборов трудов основателей программирования: структурного программирования, модульности, доказательной правильности, компонентных тестов. Одна дисциплина — от схемы иерархии модулей и контрактов до формулы юнит-тестов и шаблона тикета для Claude Code. Чтобы opus проектировал, sonnet реализовывал, а программа была правильной по построению.">
+      
+      
+      
+        <link rel="canonical" href="https://codemonsters.team/blog/2026/05/01/rational-design-discipline/">
+      
+      
+        <link rel="prev" href="../../../04/28/component-tests-skill-application/">
+      
+      
+        <link rel="next" href="../../02/rational-design-skills/">
+      
+      
+        
+      
+      
+      <link rel="icon" href="../../../../../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.6">
+    
+    
+      
+        <title>Дисциплина проектирования программ. Скилл для opus и бэклог для sonnet - CodeMonsters.team</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../../../../assets/stylesheets/main.484c7ddc.min.css">
+      
+        
+        <link rel="stylesheet" href="../../../../../assets/stylesheets/palette.ab4e12ef.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+    <script>__md_scope=new URL("../../../../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+  
+
+
+  <!-- Yandex.Metrika counter -->
+<script type="text/javascript" >
+   (function(m,e,t,r,i,k,a){m[i]=m[i]||function(){(m[i].a=m[i].a||[]).push(arguments)};
+   m[i].l=1*new Date();
+   for (var j = 0; j < document.scripts.length; j++) {if (document.scripts[j].src === r) { return; }}
+   k=e.createElement(t),a=e.getElementsByTagName(t)[0],k.async=1,k.src=r,a.parentNode.insertBefore(k,a)})
+   (window, document, "script", "https://mc.yandex.ru/metrika/tag.js", "ym");
+
+   ym(92584192, "init", {
+        clickmap:true,
+        trackLinks:true,
+        accurateTrackBounce:true,
+        webvisor:true
+   });
+</script>
+<noscript><div><img src="https://mc.yandex.ru/watch/92584192" style="position:absolute; left:-9999px;" alt="" /></div></noscript>
+<!-- /Yandex.Metrika counter -->
+  
+    <script>"undefined"!=typeof __md_analytics&&__md_analytics()</script>
+  
+
+    
+    
+  </head>
+  
+  
+    
+    
+      
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="blue-grey" data-md-color-accent="purple">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#opus-sonnet_1" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+<header class="md-header" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href="../../../../.." title="CodeMonsters.team" class="md-header__button md-logo" aria-label="CodeMonsters.team" data-md-component="logo">
+      
+  <img src="/cm-logo-header.png" alt="logo">
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            CodeMonsters.team
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              Дисциплина проектирования программ. Скилл для opus и бэклог для sonnet
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+        <form class="md-header__option" data-md-component="palette">
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="default" data-md-color-primary="blue-grey" data-md-color-accent="purple"  aria-label="Switch to dark mode"  type="radio" name="__palette" id="__palette_0">
+    
+      <label class="md-header__button md-icon" title="Switch to dark mode" for="__palette_1" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M17 6H7c-3.31 0-6 2.69-6 6s2.69 6 6 6h10c3.31 0 6-2.69 6-6s-2.69-6-6-6m0 10H7c-2.21 0-4-1.79-4-4s1.79-4 4-4h10c2.21 0 4 1.79 4 4s-1.79 4-4 4M7 9c-1.66 0-3 1.34-3 3s1.34 3 3 3 3-1.34 3-3-1.34-3-3-3"/></svg>
+      </label>
+    
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="slate" data-md-color-primary="teal" data-md-color-accent="lime"  aria-label="Switch to light mode"  type="radio" name="__palette" id="__palette_1">
+    
+      <label class="md-header__button md-icon" title="Switch to light mode" for="__palette_0" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M17 7H7a5 5 0 0 0-5 5 5 5 0 0 0 5 5h10a5 5 0 0 0 5-5 5 5 0 0 0-5-5m0 8a3 3 0 0 1-3-3 3 3 0 0 1 3-3 3 3 0 0 1 3 3 3 3 0 0 1-3 3"/></svg>
+      </label>
+    
+  
+</form>
+      
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+            
+<nav class="md-tabs" aria-label="Tabs" data-md-component="tabs">
+  <div class="md-grid">
+    <ul class="md-tabs__list">
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../../../../.." class="md-tabs__link">
+        
+  
+  
+    
+  
+  Начало
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../../../../../overview/" class="md-tabs__link">
+        
+  
+  
+    
+  
+  Об авторе
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+    
+  
+  
+    
+    
+      <li class="md-tabs__item md-tabs__item--active">
+        <a href="../../../../" class="md-tabs__link">
+          
+  
+  
+    
+  
+  Blog
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../../../../codebook/" class="md-tabs__link">
+          
+  
+  
+    
+  
+  Codebook
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../../../../effective-developer/" class="md-tabs__link">
+          
+  
+  
+    
+  
+  Effective developer
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../../../../resources/" class="md-tabs__link">
+          
+  
+  
+    
+  
+  Resources
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../../../../tutorials/" class="md-tabs__link">
+          
+  
+  
+    
+  
+  Tutorials
+
+        </a>
+      </li>
+    
+  
+
+      
+    </ul>
+  </div>
+</nav>
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+                
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" hidden>
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+  
+
+
+  
+
+<nav class="md-nav md-nav--primary md-nav--lifted md-nav--integrated" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../../../../.." title="CodeMonsters.team" class="md-nav__button md-logo" aria-label="CodeMonsters.team" data-md-component="logo">
+      
+  <img src="/cm-logo-header.png" alt="logo">
+
+    </a>
+    CodeMonsters.team
+  </label>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../.." class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Начало
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../../overview/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Об авторе
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+        
+        
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3" checked>
+        
+          
+          <div class="md-nav__link md-nav__container">
+            <a href="../../../../" class="md-nav__link ">
+              
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Blog
+  
+
+    
+  </span>
+  
+  
+
+            </a>
+            
+              
+              <label class="md-nav__link " for="__nav_3" id="__nav_3_label" tabindex="">
+                <span class="md-nav__icon md-icon"></span>
+              </label>
+            
+          </div>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_3_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_3">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Blog
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+        
+          
+          
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3_2" >
+        
+          
+          <label class="md-nav__link" for="__nav_3_2" id="__nav_3_2_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Archive
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_3_2_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_3_2">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Archive
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+    
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../archive/2026/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    2026
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../archive/2025/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    2025
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+        
+          
+          
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3_3" >
+        
+          
+          <label class="md-nav__link" for="__nav_3_3" id="__nav_3_3_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Categories
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_3_3_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_3_3">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Categories
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+    
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../category/agents/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    agents
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../category/ai/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    ai
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../category/api/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    api
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../category/architecture/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    architecture
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../category/claude/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    claude
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../category/code/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    code
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../category/codebook/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    codebook
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../category/communication/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    communication
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../category/component-tests/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    component-tests
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../category/container-driven-approach/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    container driven approach
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../category/contract-tests/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    contract-tests
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../category/coreos/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    coreos
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../category/devops/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    devops
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../category/documentation/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    documentation
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../category/git/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    git
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../category/gitlab/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    gitlab
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../category/gitlab-runner/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    gitlab runner
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../category/go/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    go
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../category/howtocode/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    howtocode
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../category/linux/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    linux
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../category/process/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    process
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../category/rational-development/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    rational-development
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../category/tests/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    tests
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../category/ubik/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    ubik
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../category/webauthn/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    webauthn
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4" >
+        
+          
+          <div class="md-nav__link md-nav__container">
+            <a href="../../../../../codebook/" class="md-nav__link ">
+              
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Codebook
+  
+
+    
+  </span>
+  
+  
+
+            </a>
+            
+              
+              <label class="md-nav__link " for="__nav_4" id="__nav_4_label" tabindex="0">
+                <span class="md-nav__icon md-icon"></span>
+              </label>
+            
+          </div>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_4_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Codebook
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../../codebook/1-codegen-machine/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    1 Заклинателю приложений
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_5" >
+        
+          
+          <div class="md-nav__link md-nav__container">
+            <a href="../../../../../effective-developer/" class="md-nav__link ">
+              
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Effective developer
+  
+
+    
+  </span>
+  
+  
+
+            </a>
+            
+              
+              <label class="md-nav__link " for="__nav_5" id="__nav_5_label" tabindex="0">
+                <span class="md-nav__icon md-icon"></span>
+              </label>
+            
+          </div>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_5_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_5">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Effective developer
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../../effective-developer/life/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Life
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../../effective-developer/rules/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Rules
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+      
+        
+      
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_5_4" >
+        
+          
+          <label class="md-nav__link" for="__nav_5_4" id="__nav_5_4_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Code
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_5_4_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_5_4">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Code
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_5_4_1" >
+        
+          
+          <label class="md-nav__link" for="__nav_5_4_1" id="__nav_5_4_1_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Clean code
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="3" aria-labelledby="__nav_5_4_1_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_5_4_1">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Clean code
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../../effective-developer/code/clean-code/how-not-to-write-code/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Как не стоит писать код: разбираем ошибки
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../../effective-developer/code/clean-code/how-to-integration-test/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Гайд по чистому коду. Учимся писать тесты.
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../../effective-developer/code/clean-code/how-to/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Как написать чистый код и сделать жизнь проще
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_5_5" >
+        
+          
+          <div class="md-nav__link md-nav__container">
+            <a href="../../../../../effective-developer/devops/" class="md-nav__link ">
+              
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Devops
+  
+
+    
+  </span>
+  
+  
+
+            </a>
+            
+              
+              <label class="md-nav__link " for="__nav_5_5" id="__nav_5_5_label" tabindex="0">
+                <span class="md-nav__icon md-icon"></span>
+              </label>
+            
+          </div>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_5_5_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_5_5">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Devops
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_5_5_2" >
+        
+          
+          <div class="md-nav__link md-nav__container">
+            <a href="../../../../../effective-developer/devops/free-ipa/" class="md-nav__link ">
+              
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Free ipa
+  
+
+    
+  </span>
+  
+  
+
+            </a>
+            
+          </div>
+        
+        <nav class="md-nav" data-md-level="3" aria-labelledby="__nav_5_5_2_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_5_5_2">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Free ipa
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_5_6" >
+        
+          
+          <div class="md-nav__link md-nav__container">
+            <a href="../../../../../effective-developer/newbie-roadmap/" class="md-nav__link ">
+              
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Newbie roadmap
+  
+
+    
+  </span>
+  
+  
+
+            </a>
+            
+          </div>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_5_6_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_5_6">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Newbie roadmap
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_6" >
+        
+          
+          <div class="md-nav__link md-nav__container">
+            <a href="../../../../../resources/" class="md-nav__link ">
+              
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Resources
+  
+
+    
+  </span>
+  
+  
+
+            </a>
+            
+              
+              <label class="md-nav__link " for="__nav_6" id="__nav_6_label" tabindex="0">
+                <span class="md-nav__icon md-icon"></span>
+              </label>
+            
+          </div>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_6_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_6">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Resources
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../../resources/videos/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Видео
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../../resources/web-links/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Полезные ссылки
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_6_4" >
+        
+          
+          <label class="md-nav__link" for="__nav_6_4" id="__nav_6_4_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Books
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_6_4_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_6_4">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Books
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../../resources/books/advanced-web/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Подборка Эффективных книг > Веб-разработка
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../../resources/books/essential/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Подборка Эффективных книг > новичку
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_7" >
+        
+          
+          <div class="md-nav__link md-nav__container">
+            <a href="../../../../../tutorials/" class="md-nav__link ">
+              
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Tutorials
+  
+
+    
+  </span>
+  
+  
+
+            </a>
+            
+              
+              <label class="md-nav__link " for="__nav_7" id="__nav_7_label" tabindex="0">
+                <span class="md-nav__icon md-icon"></span>
+              </label>
+            
+          </div>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_7_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_7">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Tutorials
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+      
+        
+      
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_7_2" >
+        
+          
+          <label class="md-nav__link" for="__nav_7_2" id="__nav_7_2_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Server
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_7_2_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_7_2">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Server
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../../tutorials/server/ddd-in-action/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Руководства
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+          
+          
+  <div class="md-content md-content--post" data-md-component="content">
+    <div class="md-sidebar md-sidebar--post" data-md-component="sidebar" data-md-type="navigation">
+      <div class="md-sidebar__scrollwrap">
+        <div class="md-sidebar__inner md-post">
+          <nav class="md-nav md-nav--primary">
+            <div class="md-post__back">
+              <div class="md-nav__title md-nav__container">
+                <a href="../../../../" class="md-nav__link">
+                  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+                  <span class="md-ellipsis">
+                    Back to index
+                  </span>
+                </a>
+              </div>
+            </div>
+            
+              <div class="md-post__authors md-typeset">
+                
+                  <div class="md-profile md-post__profile">
+                    <span class="md-author md-author--long">
+                      <img src="https://avatars.githubusercontent.com/u/45400275" alt="Max Morev">
+                    </span>
+                    <span class="md-profile__description">
+                      <strong>
+                        
+                          <a href="https://github.com/codemonstersteam">Max Morev</a>
+                        
+                      </strong>
+                      <br>
+                      Creator
+                    </span>
+                  </div>
+                
+              </div>
+            
+            <ul class="md-post__meta md-nav__list">
+              <li class="md-nav__item md-nav__item--section">
+                <div class="md-post__title">
+                  <span class="md-ellipsis">
+                    Metadata
+                  </span>
+                </div>
+                <nav class="md-nav">
+                  <ul class="md-nav__list">
+                    <li class="md-nav__item">
+                      <div class="md-nav__link">
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 19H5V8h14m-3-7v2H8V1H6v2H5c-1.11 0-2 .89-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V5a2 2 0 0 0-2-2h-1V1m-1 11h-5v5h5z"/></svg>
+                        <time datetime="2026-05-01 00:00:00+00:00" class="md-ellipsis">May 1, 2026</time>
+                      </div>
+                    </li>
+                    
+                    
+                      <li class="md-nav__item">
+                        <div class="md-nav__link">
+                          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9 3v15h3V3zm3 2 4 13 3-1-4-13zM5 5v13h3V5zM3 19v2h18v-2z"/></svg>
+                          <span class="md-ellipsis">
+                            in
+                            
+                              <a href="../../../../category/code/">code</a>, 
+                              <a href="../../../../category/architecture/">architecture</a>, 
+                              <a href="../../../../category/rational-development/">rational-development</a>, 
+                              <a href="../../../../category/howtocode/">howtocode</a>, 
+                              <a href="../../../../category/agents/">agents</a>, 
+                              <a href="../../../../category/ubik/">ubik</a></span>
+                        </div>
+                      </li>
+                    
+                    
+                      
+                      <li class="md-nav__item">
+                        <div class="md-nav__link">
+                          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 20a8 8 0 0 0 8-8 8 8 0 0 0-8-8 8 8 0 0 0-8 8 8 8 0 0 0 8 8m0-18a10 10 0 0 1 10 10 10 10 0 0 1-10 10C6.47 22 2 17.5 2 12A10 10 0 0 1 12 2m.5 5v5.25l4.5 2.67-.75 1.23L11 13V7z"/></svg>
+                          <span class="md-ellipsis">
+                            
+                              16 min read
+                            
+                          </span>
+                        </div>
+                      </li>
+                    
+                  </ul>
+                </nav>
+              </li>
+            </ul>
+            
+          </nav>
+          
+            
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#tldr" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        TL;DR — формула, которую надо запомнить
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#testing-myth" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1. Главное, что надо понять про тестирование
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#chto-takoe-modul" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2. Что такое модуль (без воды)
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="2. Что такое модуль (без воды)">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Жёсткие требования к модулю
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_2" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Контракт модуля — это структура данных
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#io-vs-logic" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3. Отделяй ввод-вывод от бизнес-логики
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="3. Отделяй ввод-вывод от бизнес-логики">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#io-" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Автономный I/O-объект: каждая интеграция — собственный тип
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_3" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Картинка
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#head-module" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4. Головной модуль — конспект всей программы
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#messages" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        5. Как модули общаются между собой. Сообщения
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="5. Как модули общаются между собой. Сообщения">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#_4" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Минимальный словарь типов сообщений
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#result" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Result как способ возвращать ошибку
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#range-control" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        6. Защищённое программирование. Контроль диапазонов
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="6. Защищённое программирование. Контроль диапазонов">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#_5" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Пример: безопасное деление
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_6" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Пример: валидация имени
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#guard-" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Конструктор подтипа вместо guard-функции
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#unit-test-formula" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        7. Юнит-тест модуля. Чёткая формула
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="7. Юнит-тест модуля. Чёткая формула">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#_7" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Что юнитами тестируется, а что — нет
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_8" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Формула — для модулей логики
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_9" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Никаких моков
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#-" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Что НЕ проверяет юнит-тест
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#100" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Покрытие 100% — это следствие, а не цель
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#component-tests" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        8. Компонентный тест. Сколько их нужно
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="8. Компонентный тест. Сколько их нужно">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#_10" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Формула
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#gherkin" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Формат — Gherkin
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#full-example" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        9. Полный пример. Регистрация клиента
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="9. Полный пример. Регистрация клиента">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#1-top-down" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Шаг 1. Схема иерархии модулей (top-down)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#2" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Шаг 2. Контракты модулей
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#3" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Шаг 3. Головной модуль (псевдокод)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#4-" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Шаг 4. Юнит-тесты по формуле
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#5" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Шаг 5. Компонентный тест
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#opus-sonnet" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        10. Дисциплина: проектируем с opus, реализуем с sonnet
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="10. Дисциплина: проектируем с opus, реализуем с sonnet">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#opus" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Этап А. Проектирование — делает opus
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#sonnet" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Этап Б. Бэклог для sonnet
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_11" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Порядок реализации в бэклоге
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#checklist" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        11. Памятка-чеклист для проектирования
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="11. Памятка-чеклист для проектирования">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#_12" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Структура
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_13" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Модули
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#io" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        I/O
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_14" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Контракты
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_15" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Тесты
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#logical-conclusion" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        12. Логика, которая держит всю конструкцию
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#sources" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Источники
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+          
+        </div>
+      </div>
+    </div>
+    <article class="md-content__inner md-typeset">
+      
+        
+  
+
+
+
+
+<h1 id="opus-sonnet_1">Дисциплина проектирования программ. Скилл для opus и бэклог для sonnet</h1>
+<blockquote>
+<p><em>«Тестирование программ может служить для доказательства наличия ошибок, но никогда не докажет их отсутствия.»</em></p>
+<p>— Edsger W. Dijkstra</p>
+</blockquote>
+<p>Это практическая статья для вайб-кодера и джуна. Без академической мути. Цель — дать одну дисциплину проектирования, по которой opus проектирует программу, а sonnet получает готовый бэклог и реализует его в Claude Code.</p>
+<p>Статья — концентрат четырёх разборов на codemonsters.team: <a href="https://codemonsters.team/blog/2025/12/12/structured-programming-essential/">структурное программирование</a>, <a href="https://codemonsters.team/blog/2025/12/15/program-modules/">модульность</a>, <a href="https://codemonsters.team/blog/2025/12/30/program-correctness/">правильность программы</a>, <a href="https://codemonsters.team/blog/2026/04/25/testing-mythology-component-tests/">компонентные тесты</a>.</p>
+<p>Если ты дисциплинированно выполнишь то, что описано ниже, у тебя будет программа, которая работает правильно по построению. Не потому что её тщательно тестировали — а потому что её правильно спроектировали.</p>
+<!-- more -->
+
+<p>В этой главе рассмотрим:</p>
+<ul>
+<li><a href="#tldr">TL;DR — формула, которую надо запомнить</a></li>
+<li><a href="#testing-myth">Главное, что надо понять про тестирование</a></li>
+<li><a href="#chto-takoe-modul">Что такое модуль (без воды)</a></li>
+<li><a href="#io-vs-logic">Отделяй ввод-вывод от бизнес-логики</a></li>
+<li><a href="#head-module">Головной модуль — конспект всей программы</a></li>
+<li><a href="#messages">Как модули общаются между собой. Сообщения</a></li>
+<li><a href="#range-control">Защищённое программирование. Контроль диапазонов</a></li>
+<li><a href="#unit-test-formula">Юнит-тест модуля. Чёткая формула</a></li>
+<li><a href="#component-tests">Компонентный тест. Сколько их нужно</a></li>
+<li><a href="#full-example">Полный пример. Регистрация клиента</a></li>
+<li><a href="#opus-sonnet">Дисциплина: проектируем с opus, реализуем с sonnet</a></li>
+<li><a href="#checklist">Памятка-чеклист для проектирования</a></li>
+<li><a href="#logical-conclusion">Логика, которая держит всю конструкцию</a></li>
+</ul>
+<h2 id="tldr">TL;DR — формула, которую надо запомнить</h2>
+<blockquote>
+<p><strong>Программа = дерево модулей. Каждый модуль — чёрный ящик с одним входом и одним выходом. На входе модуль проверяет диапазон допустимых значений. Модули логики (конструкторы доменных структур и чистые функции над ними) покрыты юнит-тестами, которые проверяют их контракт. Головной модуль, I/O-модули и ингресс-адаптеры — трубы, юнитами не тестируются: их корректность доказывает компонентный сценарий через реальный вход. Логика приложения покрыта юнит-тестами на 100%. Корректность доказана формально. Точка.</strong></p>
+</blockquote>
+<p>Всё остальное в статье — раскрытие этой формулы.</p>
+<h2 id="testing-myth">1. Главное, что надо понять про тестирование</h2>
+<p>Индустрия живёт в мифе: «больше тестов → надёжнее код». Это неправда. Доказано Дейкстрой ещё в 1972-м.</p>
+<p><strong>Тестирование показывает наличие ошибок. Никогда — их отсутствие.</strong></p>
+<p>Простая арифметика. Поле «возраст» типа <code>int8</code> — 128 значений. Уже многовато для одного поля. Поле «ФИО» длиной до 100 кириллических символов — это 33¹⁰⁰ ≈ 7 × 10¹⁵¹ комбинаций. Чтобы перебрать все варианты на машине со скоростью миллиард тестов в секунду, нужно примерно 10¹²⁵ возрастов Вселенной. На одно поле.</p>
+<p>Вывод: «протестировать всё» — невозможно физически. Значит цель тестирования — не «перебрать комбинации». Цель — проектировать так, чтобы корректность вытекала из конструкции, а тесты лишь фиксировали контракт.</p>
+<p>Из этого вытекают три практических следствия:</p>
+<ol>
+<li>Качество не достигается тестированием. Качество достигается <strong>проектированием</strong>.</li>
+<li>Тест — это не «ловушка для бага». Тест — это <strong>исполняемая спецификация контракта</strong>.</li>
+<li>Тестов нужно ровно столько, сколько утверждений в спецификации. Не больше.</li>
+</ol>
+<p>Запомни и не возвращайся.</p>
+<h2 id="chto-takoe-modul">2. Что такое модуль (без воды)</h2>
+<p><strong>Модуль — это часть программы, которая делает одну задачу и делает её хорошо.</strong></p>
+<p>Может быть функцией, классом, пакетом, сервисом — в зависимости от масштаба. На уровне кода — обычно функция или класс. На уровне распределённой системы — отдельный сервис.</p>
+<h3 id="_1">Жёсткие требования к модулю</h3>
+<p>Эти требования — не вкусовщина. Это то, без чего доказательство правильности рассыпается.</p>
+<ol>
+<li><strong>Один вход и один выход.</strong> Один способ вызвать. Один способ вернуть результат. Никаких боковых выходов через исключения, глобальные переменные, скрытые эффекты.</li>
+<li><strong>Одна функция.</strong> Преобразование исходных данных в результат. Если функцию модуля нельзя описать одной фразой — модуль слишком большой, делим.</li>
+<li><strong>Чёрный ящик.</strong> У модуля есть имя и контракт. Внешний мир не знает, как модуль устроен внутри. Можно поменять реализацию — контракт не сдвинется.</li>
+<li><strong>Контроль диапазона входных значений.</strong> Модуль обязан проверить, что вход допустим, до того как что-то делать. Невалидный вход → возврат ошибки как данных. Не упасть, не ронять процесс — вернуть ошибку.</li>
+<li><strong>Возврат управления вызвавшему.</strong> Модуль всегда возвращает управление туда, откуда его позвали. Не прыгает в сторону, не делает «exit», не вызывает модули своего или верхнего уровня.</li>
+<li><strong>Невелик.</strong> Ориентир — десятки строк, редко сотни. Если модуль разросся до 500 строк — там сидит несколько модулей, надо разделить.</li>
+<li><strong>Без памяти о вызовах.</strong> Модуль не помнит, сколько раз его вызывали. Состояние — внешний параметр, а не скрытое внутреннее свойство.</li>
+<li><strong>Жёсткое правило одного data-аргумента.</strong> На вход модуля приходит <strong>ровно одна доменная структура</strong> (<code>Command</code>, <code>Entity</code>, <code>Request</code> DTO) — либо ничего. Зависимости (<code>*sql.DB</code>, клиент брокера, часы, конфиг) — это <strong>не data</strong>, они инжектятся сбоку и в спецификации описываются отдельной строкой <code>Dependencies:</code>. Если data-аргументов два или больше — стоп: завести доменную сущность, которая объединит эти аргументы, и добавить отдельный узел-конструктор <code>NewT(...)</code> для её сборки выше по пайпу.</li>
+</ol>
+<h3 id="_2">Контракт модуля — это структура данных</h3>
+<p>Это ключевая мысль. Контракт — не «список параметров и возвращаемых значений в произвольной форме». Контракт — это <strong>именованная структура на входе и именованная структура на выходе</strong>.</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a>[ Вход: структура Request ]
+<a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a>            |
+<a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a>            V
+<a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a>+-----------------------------+
+<a id="__codelineno-0-5" name="__codelineno-0-5" href="#__codelineno-0-5"></a>|       Module: createClient  |
+<a id="__codelineno-0-6" name="__codelineno-0-6" href="#__codelineno-0-6"></a>| 1. Проверить диапазон Req   |
+<a id="__codelineno-0-7" name="__codelineno-0-7" href="#__codelineno-0-7"></a>| 2. Преобразовать Req → Cli  |
+<a id="__codelineno-0-8" name="__codelineno-0-8" href="#__codelineno-0-8"></a>| 3. Вернуть Cli или Error    |
+<a id="__codelineno-0-9" name="__codelineno-0-9" href="#__codelineno-0-9"></a>+-----------------------------+
+<a id="__codelineno-0-10" name="__codelineno-0-10" href="#__codelineno-0-10"></a>            |
+<a id="__codelineno-0-11" name="__codelineno-0-11" href="#__codelineno-0-11"></a>            V
+<a id="__codelineno-0-12" name="__codelineno-0-12" href="#__codelineno-0-12"></a>[ Выход: структура Result&lt;Client, Error&gt; ]
+</code></pre></div>
+<p>На псевдокоде:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a>Request {
+<a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a>  lastName: String
+<a id="__codelineno-1-3" name="__codelineno-1-3" href="#__codelineno-1-3"></a>  firstName: String
+<a id="__codelineno-1-4" name="__codelineno-1-4" href="#__codelineno-1-4"></a>  patronymic: String
+<a id="__codelineno-1-5" name="__codelineno-1-5" href="#__codelineno-1-5"></a>  email: String
+<a id="__codelineno-1-6" name="__codelineno-1-6" href="#__codelineno-1-6"></a>  birthDateString: String
+<a id="__codelineno-1-7" name="__codelineno-1-7" href="#__codelineno-1-7"></a>}
+<a id="__codelineno-1-8" name="__codelineno-1-8" href="#__codelineno-1-8"></a>
+<a id="__codelineno-1-9" name="__codelineno-1-9" href="#__codelineno-1-9"></a>Client {
+<a id="__codelineno-1-10" name="__codelineno-1-10" href="#__codelineno-1-10"></a>  fullName: String
+<a id="__codelineno-1-11" name="__codelineno-1-11" href="#__codelineno-1-11"></a>  email: String
+<a id="__codelineno-1-12" name="__codelineno-1-12" href="#__codelineno-1-12"></a>  isEmailConfirmed: Boolean
+<a id="__codelineno-1-13" name="__codelineno-1-13" href="#__codelineno-1-13"></a>  birthDate: Date
+<a id="__codelineno-1-14" name="__codelineno-1-14" href="#__codelineno-1-14"></a>}
+<a id="__codelineno-1-15" name="__codelineno-1-15" href="#__codelineno-1-15"></a>
+<a id="__codelineno-1-16" name="__codelineno-1-16" href="#__codelineno-1-16"></a>createClient(req: Request) -&gt; Result&lt;Client, Error&gt;
+</code></pre></div>
+<p>Тут уже видна вся пружина дисциплины: модуль <code>createClient</code> принимает <code>Request</code> (невалидированные данные снаружи), внутри проверяет диапазоны, возвращает либо валидированный <code>Client</code>, либо <code>Error</code>. Нет третьего пути.</p>
+<h2 id="io-vs-logic">3. Отделяй ввод-вывод от бизнес-логики</h2>
+<p>Это один из самых важных принципов. Без него ничего не работает.</p>
+<p><strong>В программе всегда есть три типа модулей:</strong></p>
+<ol>
+<li><strong>Адаптеры ввода-вывода.</strong> Разговаривают с внешним миром: HTTP-эндпоинты, БД, очереди, файловая система, консоль. Они <strong>только</strong> переносят байты туда-сюда, ничего не считают.</li>
+<li><strong>Бизнес-логика.</strong> Чистые функции. Принимают структуру, возвращают структуру. Не лезут в БД, не пишут в консоль, не читают файлы. Никакого I/O.</li>
+<li><strong>Головной модуль.</strong> Оркестрирует — принимает запрос от адаптера, прогоняет через цепочку бизнес-логики, отдаёт результат адаптеру.</li>
+</ol>
+<p>Зачем это нужно. Бизнес-логика без I/O тестируется юнит-тестом за миллисекунды и без всякой инфраструктуры. Адаптеры тестируются один раз компонентным тестом против реальной зависимости. Логика и инфраструктура не перемешаны — каждое тестируется на своём уровне.</p>
+<h3 id="io-">Автономный I/O-объект: каждая интеграция — собственный тип</h3>
+<p>Каждая внешняя зависимость заворачивается в <strong>автономный объект</strong>, который инкапсулирует свою зависимость. Головной модуль знает только методы объекта (его API), не его внутренние зависимости. Имя объекта по типу интеграции:</p>
+<table>
+<thead>
+<tr>
+<th>Интеграция</th>
+<th>Имя объекта</th>
+<th>Скрытая зависимость</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>База данных</td>
+<td><code>Store</code></td>
+<td><code>*sql.DB</code> / connection pool</td>
+</tr>
+<tr>
+<td>Внешний HTTP API</td>
+<td><code>Client</code></td>
+<td><code>*http.Client</code> + base URL</td>
+</tr>
+<tr>
+<td>Брокер сообщений</td>
+<td><code>Publisher</code> / <code>Consumer</code></td>
+<td>соединение брокера</td>
+</tr>
+<tr>
+<td>Файловая система</td>
+<td><code>FileStore</code></td>
+<td><code>*os.File</code> / <code>io.Writer</code></td>
+</tr>
+</tbody>
+</table>
+<p>В контракте I/O-модуля строка <code>Input (data):</code> — одно доменное сообщение, строка <code>Dependencies:</code> — прочерк (зависимость скрыта внутри объекта). В <code>Deps</code> головного модуля — поле типа <code>Store</code> / <code>Client</code> / <code>Publisher</code>, <strong>не</strong> сырой <code>*sql.DB</code> / <code>*http.Client</code>. Признак нарушения: сырая зависимость в зависимостях контракта или в head-модуле — значит, IO-объект не введён, надо вернуться и завести.</p>
+<p>Эти объекты — <strong>трубы</strong>: внутри метода «взять доменное сообщение → вызвать внешнюю систему → вернуть результат или ошибку». Никаких условных ветвлений по данным, никаких трансформаций. Единственное допустимое ветвление — маппинг кодов ошибок внешней системы на доменные ошибки (<code>SQLITE_BUSY → ErrDBLocked</code>). Вся бизнес-логика живёт в модулях логики, не в I/O.</p>
+<h3 id="_3">Картинка</h3>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a>                        +--------------------+
+<a id="__codelineno-2-2" name="__codelineno-2-2" href="#__codelineno-2-2"></a>                        |  HTTP Adapter (in) |   &lt;- I/O
+<a id="__codelineno-2-3" name="__codelineno-2-3" href="#__codelineno-2-3"></a>                        +---------+----------+
+<a id="__codelineno-2-4" name="__codelineno-2-4" href="#__codelineno-2-4"></a>                                  |
+<a id="__codelineno-2-5" name="__codelineno-2-5" href="#__codelineno-2-5"></a>                                  V
+<a id="__codelineno-2-6" name="__codelineno-2-6" href="#__codelineno-2-6"></a>                        +--------------------+
+<a id="__codelineno-2-7" name="__codelineno-2-7" href="#__codelineno-2-7"></a>                        |   Головной модуль  |   &lt;- оркестрация
+<a id="__codelineno-2-8" name="__codelineno-2-8" href="#__codelineno-2-8"></a>                        +---------+----------+
+<a id="__codelineno-2-9" name="__codelineno-2-9" href="#__codelineno-2-9"></a>                                  |
+<a id="__codelineno-2-10" name="__codelineno-2-10" href="#__codelineno-2-10"></a>            +---------------------+---------------------+
+<a id="__codelineno-2-11" name="__codelineno-2-11" href="#__codelineno-2-11"></a>            V                     V                     V
+<a id="__codelineno-2-12" name="__codelineno-2-12" href="#__codelineno-2-12"></a>   +----------------+   +-------------------+   +----------------+
+<a id="__codelineno-2-13" name="__codelineno-2-13" href="#__codelineno-2-13"></a>   | parseRequest   |   |  createClient     |   | registerClient |
+<a id="__codelineno-2-14" name="__codelineno-2-14" href="#__codelineno-2-14"></a>   |  (логика)      |   |   (логика)        |   |   (логика)     |
+<a id="__codelineno-2-15" name="__codelineno-2-15" href="#__codelineno-2-15"></a>   +----------------+   +-------------------+   +-------+--------+
+<a id="__codelineno-2-16" name="__codelineno-2-16" href="#__codelineno-2-16"></a>                                                        |
+<a id="__codelineno-2-17" name="__codelineno-2-17" href="#__codelineno-2-17"></a>                                                        V
+<a id="__codelineno-2-18" name="__codelineno-2-18" href="#__codelineno-2-18"></a>                                              +------------------+
+<a id="__codelineno-2-19" name="__codelineno-2-19" href="#__codelineno-2-19"></a>                                              |  DB Adapter      |   &lt;- I/O
+<a id="__codelineno-2-20" name="__codelineno-2-20" href="#__codelineno-2-20"></a>                                              +------------------+
+<a id="__codelineno-2-21" name="__codelineno-2-21" href="#__codelineno-2-21"></a>                                              |  Broker Adapter  |   &lt;- I/O
+<a id="__codelineno-2-22" name="__codelineno-2-22" href="#__codelineno-2-22"></a>                                              +------------------+
+</code></pre></div>
+<p>Бизнес-логика в центре. Адаптеры по краям. Головной модуль склеивает.</p>
+<h2 id="head-module">4. Головной модуль — конспект всей программы</h2>
+<p>Дисциплина проектирования: <strong>по головному модулю должно быть видно всю логику программы</strong>. Открыл — прочитал — понял, что программа делает.</p>
+<p>Псевдокод стиля «unix pipe» — самый компактный способ это записать:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a>| processRequest        // распарсить аргументы → Request
+<a id="__codelineno-3-2" name="__codelineno-3-2" href="#__codelineno-3-2"></a>| createClient          // валидация + сборка → Client
+<a id="__codelineno-3-3" name="__codelineno-3-3" href="#__codelineno-3-3"></a>| registerClient        // адаптер: записать в БД
+<a id="__codelineno-3-4" name="__codelineno-3-4" href="#__codelineno-3-4"></a>| publishEvent          // адаптер: опубликовать событие
+<a id="__codelineno-3-5" name="__codelineno-3-5" href="#__codelineno-3-5"></a>| printStatistics       // адаптер: вывод
+<a id="__codelineno-3-6" name="__codelineno-3-6" href="#__codelineno-3-6"></a>&gt; handleError           // выход на ошибку, единая точка
+</code></pre></div>
+<p>Все основные решения программы принимаются в головном модуле. Подчинённые модули <strong>не</strong> принимают решений за головной — они возвращают результат, головной решает, что делать дальше.</p>
+<p>Правила вертикального управления:</p>
+<ul>
+<li>Головной зовёт нижние. Нижние не зовут верхние и не зовут соседей.</li>
+<li>Нижний возвращает результат вверх. Верхний решает.</li>
+<li>Один уровень — одна высота абстракции. Не мешай в одном модуле «поднять HTTP-сервер» и «вычислить возраст».</li>
+</ul>
+<h2 id="messages">5. Как модули общаются между собой. Сообщения</h2>
+<p>Модули обмениваются <strong>структурами данных</strong>. Не объектами с поведением, не указателями на изменяемое состояние, не глобальными переменными — структурами.</p>
+<h3 id="_4">Минимальный словарь типов сообщений</h3>
+<p>Это базовая палитра, которую дальше можно расширять. Описывай каждое сообщение явно.</p>
+<table>
+<thead>
+<tr>
+<th>Тип сообщения</th>
+<th>Когда использовать</th>
+<th>Структура (псевдокод)</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>Request</code></td>
+<td>Невалидированный вход извне</td>
+<td>поля как пришли из адаптера</td>
+</tr>
+<tr>
+<td><code>Command</code></td>
+<td>Валидированный вход в бизнес-логику</td>
+<td>только допустимые значения</td>
+</tr>
+<tr>
+<td><code>Entity</code> / <code>DTO</code></td>
+<td>Валидированный объект предметной области</td>
+<td>поля + инварианты типа</td>
+</tr>
+<tr>
+<td><code>Result&lt;T, Error&gt;</code></td>
+<td>Возврат: успех с T или ошибка</td>
+<td><code>success: T</code> xor <code>failure: Error</code></td>
+</tr>
+<tr>
+<td><code>Event</code></td>
+<td>Факт, который произошёл (для брокера/наблюдателей)</td>
+<td>тип, время, полезная нагрузка</td>
+</tr>
+<tr>
+<td><code>Error</code></td>
+<td>Описание провала валидации/инфраструктуры</td>
+<td>код, человеко-читаемое сообщение, контекст</td>
+</tr>
+</tbody>
+</table>
+<p>Правило: <strong>на каждое сообщение — отдельная структура с именем</strong>. <code>Request</code>, <code>Client</code>, <code>RegistrationCommand</code>, <code>ClientRegisteredEvent</code> — у каждого своё лицо. Не передавай между модулями <code>Map&lt;String, Object&gt;</code> — это путь в ад.</p>
+<h3 id="result">Result как способ возвращать ошибку</h3>
+<p>Не выбрасывай исключение в бизнес-логике. Возвращай ошибку как данные:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a>Result&lt;T, Error&gt; {
+<a id="__codelineno-4-2" name="__codelineno-4-2" href="#__codelineno-4-2"></a>  case Success(value: T)
+<a id="__codelineno-4-3" name="__codelineno-4-3" href="#__codelineno-4-3"></a>  case Failure(error: Error)
+<a id="__codelineno-4-4" name="__codelineno-4-4" href="#__codelineno-4-4"></a>}
+<a id="__codelineno-4-5" name="__codelineno-4-5" href="#__codelineno-4-5"></a>
+<a id="__codelineno-4-6" name="__codelineno-4-6" href="#__codelineno-4-6"></a>createValidEmail(raw: String) -&gt; Result&lt;Email, Error&gt;
+<a id="__codelineno-4-7" name="__codelineno-4-7" href="#__codelineno-4-7"></a>parseBirthDate(raw: String)   -&gt; Result&lt;LocalDate, Error&gt;
+<a id="__codelineno-4-8" name="__codelineno-4-8" href="#__codelineno-4-8"></a>createClient(req: Request)    -&gt; Result&lt;Client, Error&gt;
+</code></pre></div>
+<p>Что это даёт. Сигнатура модуля становится самодокументирующейся: видно сразу, что метод может провалиться. Композиция модулей идёт через явный разбор результата — нет скрытых выходов.</p>
+<p><strong>Жёсткое правило записи контракта.</strong> В сигнатуре модуля <strong>всегда указываем оба типа-параметра</strong>: <code>Result&lt;ТипЗначения, ТипОшибки&gt;</code>. Не <code>Result&lt;Client&gt;</code>, а <code>Result&lt;Client, Error&gt;</code>. Не <code>Result&lt;String&gt;</code>, а <code>Result&lt;String, ValidationError&gt;</code>. Это не косметика — это часть контракта: читающий (человек, ИИ-агент, машина) сразу видит, <strong>чем именно</strong> модуль провалится, и у каждого Failure-пути в юнит-тестах появляется конкретное ожидаемое значение.</p>
+<p>Исключения оставь для случаев, когда продолжать выполнение в принципе нельзя и контракт модуля не должен описывать такой исход:</p>
+<ul>
+<li>нарушение инварианта самой программы (баг разработчика — например, недостижимая ветка <code>default</code>, в которую попали);</li>
+<li>порча конфигурации на старте, без которой запуск бессмысленен;</li>
+<li>ошибки времени выполнения языка, которые ты не контролируешь (StackOverflow, OutOfMemory) — их кидает рантайм, а не ты.</li>
+</ul>
+<p>Бизнес-сценарий «у клиента пустое имя», «БД недоступна», «дубликат email» — это <strong>не</strong> исключения. Это нормальные результаты типа <code>Failure</code>, описанные в контракте. Если их кидать исключениями — у вызывающего модуля исчезает информация о ветках в сигнатуре, и доказательство правильности рассыпается.</p>
+<h2 id="range-control">6. Защищённое программирование. Контроль диапазонов</h2>
+<p>Главная техника, благодаря которой программа становится правильной по построению.</p>
+<p><strong>Перед каждой операцией модуля — проверяем антецедент (что вход допустим). После операции — гарантируем консеквент (что выход в допустимом диапазоне).</strong></p>
+<p>Звучит академично, на практике — два простых правила:</p>
+<ol>
+<li><strong>Антецедент.</strong> Первое, что делает модуль, — проверяет вход. Не подходит → <code>Result.failure(...)</code>. До бизнес-логики.</li>
+<li><strong>Консеквент.</strong> Модуль возвращает только то, что соответствует контракту. Если по логике это невозможно гарантировать — модуль спроектирован неправильно, проектируй дальше.</li>
+</ol>
+<h3 id="_5">Пример: безопасное деление</h3>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a>divide(numerator: BigDecimal, denominator: BigDecimal) -&gt; Result&lt;BigDecimal, Error&gt;:
+<a id="__codelineno-5-2" name="__codelineno-5-2" href="#__codelineno-5-2"></a>    if denominator == 0:
+<a id="__codelineno-5-3" name="__codelineno-5-3" href="#__codelineno-5-3"></a>        return Failure(&quot;Деление на ноль невозможно&quot;)
+<a id="__codelineno-5-4" name="__codelineno-5-4" href="#__codelineno-5-4"></a>    return Success(numerator / denominator)
+</code></pre></div>
+<p>Здесь явно проверен диапазон допустимых значений знаменателя. Никаких <code>ArithmeticException</code>, никаких сюрпризов. Модуль защищён.</p>
+<h3 id="_6">Пример: валидация имени</h3>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a>createValidName(name: String, fieldName: String) -&gt; Result&lt;String, Error&gt;:
+<a id="__codelineno-6-2" name="__codelineno-6-2" href="#__codelineno-6-2"></a>    if name is null or trim(name) is empty:
+<a id="__codelineno-6-3" name="__codelineno-6-3" href="#__codelineno-6-3"></a>        return Failure(&quot;Ошибка: &quot; + fieldName + &quot; не может быть пустым&quot;)
+<a id="__codelineno-6-4" name="__codelineno-6-4" href="#__codelineno-6-4"></a>    if not name.matches(&quot;^[А-Я][а-яА-Я\-]*$&quot;):
+<a id="__codelineno-6-5" name="__codelineno-6-5" href="#__codelineno-6-5"></a>        return Failure(&quot;Ошибка: &quot; + fieldName + &quot; должно содержать только кириллицу и начинаться с заглавной буквы&quot;)
+<a id="__codelineno-6-6" name="__codelineno-6-6" href="#__codelineno-6-6"></a>    return Success(name)
+</code></pre></div>
+<p>Антецедент: непустая строка из кириллицы, начинающаяся с заглавной. Консеквент: на выходе всегда строка, удовлетворяющая антецеденту, или ошибка.</p>
+<p><strong>Если в каждом модуле логики программы антецедент и консеквент покрыты юнит-тестом — корректность программы доказана формально.</strong></p>
+<p>Это и есть тот самый формальный вывод, ради которого всё затевалось.</p>
+<h3 id="guard-">Конструктор подтипа вместо guard-функции</h3>
+<p>Когда инвариант проверяется не над сырым входом адаптера, а над <strong>уже валидной</strong> доменной сущностью с учётом внешнего факта (текущее время, подпись, статус другой сущности) — соблазн вставить в пайп guard-функцию вида <code>checkX(entity) -&gt; error</code>. Это путь в спячку.</p>
+<p>Guard ничего не закрепляет в типе: после <code>checkSessionFresh(session, now)</code> структура <code>session</code> не изменилась, и любой другой код может принять её без проверки. Шаг легко забыть, переставить или продублировать.</p>
+<p>Правильный приём — завести <strong>подтип</strong>, несущий инвариант в типе:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-7-1" name="__codelineno-7-1" href="#__codelineno-7-1"></a>loadSession(id)                       -&gt; Session
+<a id="__codelineno-7-2" name="__codelineno-7-2" href="#__codelineno-7-2"></a>NewFreshSession({session, now})       -&gt; FreshSession   &lt;-- конструктор подтипа
+<a id="__codelineno-7-3" name="__codelineno-7-3" href="#__codelineno-7-3"></a>doWork(fresh)                         -&gt; WorkResult
+</code></pre></div>
+<p><code>FreshSession</code> — отдельная доменная структура с неэкспортируемыми полями. <code>NewFreshSession</code> проверяет инвариант (<code>now &lt; session.ExpiresAt()</code>) и возвращает либо <code>FreshSession</code>, либо доменную ошибку. Дальше по пайпу проходит только <code>FreshSession</code>, и в <code>doWork</code> нельзя случайно передать просроченную сессию — код не скомпилируется.</p>
+<p>Это расширение «валидация — через конструкторы» с примитивов на доменные сущности. Любой инвариант над уже-валидной структурой, требующий учёта внешнего факта, оформляется как конструктор подтипа, а не как guard-функция. Эффект на формулу юнит-тестов — никакой: подтип считается так же, <code>1 happy + Σ ветки антецедента</code>. Зато исчезает «висящий» guard, который ничего не вычисляет.</p>
+<h2 id="unit-test-formula">7. Юнит-тест модуля. Чёткая формула</h2>
+<p>Юнит-тест — это <strong>проверка контракта модуля логики</strong>. Не «проверить кучу случаев», а проверить, что:</p>
+<ol>
+<li>На граничных и типичных допустимых входах модуль возвращает ожидаемый <code>Success</code>.</li>
+<li>На каждой явной ветке невалидного входа модуль возвращает соответствующую <code>Failure</code>.</li>
+</ol>
+<h3 id="_7">Что юнитами тестируется, а что — нет</h3>
+<table>
+<thead>
+<tr>
+<th>Артефакт</th>
+<th>Юнит-тест</th>
+<th>Компонентный (Gherkin)</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Конструктор доменной структуры</td>
+<td><strong>да</strong>, по формуле</td>
+<td>косвенно, через happy path</td>
+</tr>
+<tr>
+<td>Чистая функция логики</td>
+<td><strong>да</strong>, по формуле</td>
+<td>косвенно, через happy path</td>
+</tr>
+<tr>
+<td><strong>Головной модуль slice'а</strong></td>
+<td><strong>нет</strong> (труба; юнит = интеграционный тест)</td>
+<td><strong>да</strong>, happy path + все ветки ошибок I/O через сценарии отказа</td>
+</tr>
+<tr>
+<td><strong>I/O-модуль (Success-ветка)</strong></td>
+<td><strong>нет</strong></td>
+<td><strong>happy-path сценарий slice'а</strong> (если запись не дойдёт — Gherkin красный)</td>
+</tr>
+<tr>
+<td><strong>I/O-модуль (Failure-ветки)</strong></td>
+<td><strong>нет</strong></td>
+<td><strong>сценарий отказа</strong> того slice'а, к которому режим отказа привязан</td>
+</tr>
+<tr>
+<td><strong>Ингресс-адаптер (парсинг)</strong></td>
+<td><strong>нет</strong></td>
+<td><strong>happy + сценарии ошибок</strong> (через реальный HTTP/Broker/gRPC-вход)</td>
+</tr>
+</tbody>
+</table>
+<p>Жёсткое правило: <strong>головной модуль, I/O-модули и ингресс-адаптер юнитами не покрываются</strong>. Они трубы из уже протестированных частей. Юнит-тест над ними был бы интеграционным тестом (пайп собирает реальные зависимости), и сама попытка такой тест написать — сигнал, что их роль не понята. Их корректность доказывается компонентным сценарием через реальный вход slice'а.</p>
+<h3 id="_8">Формула — для модулей логики</h3>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-8-1" name="__codelineno-8-1" href="#__codelineno-8-1"></a>N_юнит_тестов(модуль логики) = 1 (happy path)
+<a id="__codelineno-8-2" name="__codelineno-8-2" href="#__codelineno-8-2"></a>                            + Σ (число явных веток в антецеденте)
+<a id="__codelineno-8-3" name="__codelineno-8-3" href="#__codelineno-8-3"></a>                            + Σ (число явных веток в консеквенте, если они есть)
+</code></pre></div>
+<p>Для <code>createValidName</code> это:</p>
+<ul>
+<li>1 happy path (валидное имя проходит)</li>
+<li>1 ветка: null/пустое</li>
+<li>1 ветка: нарушение паттерна</li>
+</ul>
+<p>Итого 3 юнит-теста. Не 30. Не 300. Три.</p>
+<h3 id="_9">Никаких моков</h3>
+<p>Юнит-тесты работают <strong>только с реальными объектами</strong>: чистыми функциями и доменными структурами. Никаких mock-функций, stub-интерфейсов, fake-БД или func-полей в <code>Deps</code> ради подмены. Если для теста нужна внешняя зависимость — это не юнит, это компонентный тест, и он пишется в Gherkin против реальной БД/брокера в Docker. Единственное допустимое исключение — детерминированная инъекция времени (<code>testClock</code>), это стандартная идиома языка, а не подмена.</p>
+<p>Признак, что модуль пытаются «по-юнитски» протестировать против I/O: в <code>Deps</code> появилось поле, которое в проде указывает на реальную зависимость, а в тесте — на заглушку. Это ловушка: даже если зависимость в тесте «честная» (in-memory SQLite), это уже не юнит, а маленький интеграционный тест. Удалять.</p>
+<h3 id="-">Что НЕ проверяет юнит-тест</h3>
+<ul>
+<li>Реализацию (какие циклы, какие if-ы внутри). Только контракт.</li>
+<li>Внешние зависимости. Никакой БД, никакого HTTP, никакого Kafka. Это не юнит — это уже компонентный.</li>
+<li>Производительность. Это отдельный вид теста.</li>
+</ul>
+<h3 id="100">Покрытие 100% — это следствие, а не цель</h3>
+<p>Если каждый модуль логики имеет тесты на все ветки антецедента и happy path — покрытие логики будет 100%. Не потому что мы гнались за метрикой, а потому что иначе модуль спроектирован неправильно (есть ветка без проверки). Покрытие в I/O-модулях, головном модуле и адаптерах меряется не юнит-тестами, а тем, <strong>проходит ли</strong> компонентный сценарий happy path и сценарии всех режимов отказа.</p>
+<h2 id="component-tests">8. Компонентный тест. Сколько их нужно</h2>
+<p><strong>Компонентный тест проверяет контракт сервиса с внешним миром.</strong> Не внутренности, не валидацию, не бизнес-логику — только то, что видно через API.</p>
+<p>Сценариев в компонентном тесте всего два класса:</p>
+<ol>
+<li><strong>Штатное поведение.</strong> Один сценарий: валидный запрос → корректный ответ + ожидаемые эффекты на интеграциях.</li>
+<li><strong>Отказ внешней связи.</strong> По сценарию на каждую различимую ветку обработки в адаптере. БД упала, брокер не отвечает — отдельный сценарий.</li>
+</ol>
+<h3 id="_10">Формула</h3>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-9-1" name="__codelineno-9-1" href="#__codelineno-9-1"></a>N_компонентных = 1 + Σ (число различимых веток в адаптере i)
+</code></pre></div>
+<p>Для типового сервиса с PostgreSQL и Kafka — это 3 теста: happy path, отказ БД, отказ брокера. Не 30 и не 300.</p>
+<h3 id="gherkin">Формат — Gherkin</h3>
+<p>Gherkin читают четверо: разработчик, аналитик, вайб-кодер, машина. Один артефакт — общий язык.</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-10-1" name="__codelineno-10-1" href="#__codelineno-10-1"></a>Feature: Регистрация клиента
+<a id="__codelineno-10-2" name="__codelineno-10-2" href="#__codelineno-10-2"></a>
+<a id="__codelineno-10-3" name="__codelineno-10-3" href="#__codelineno-10-3"></a>  Scenario: Успешная регистрация совершеннолетнего
+<a id="__codelineno-10-4" name="__codelineno-10-4" href="#__codelineno-10-4"></a>    Given сервис регистрации запущен
+<a id="__codelineno-10-5" name="__codelineno-10-5" href="#__codelineno-10-5"></a>      And БД доступна
+<a id="__codelineno-10-6" name="__codelineno-10-6" href="#__codelineno-10-6"></a>      And брокер сообщений доступен
+<a id="__codelineno-10-7" name="__codelineno-10-7" href="#__codelineno-10-7"></a>    When клиент отправляет POST /clients с валидными данными
+<a id="__codelineno-10-8" name="__codelineno-10-8" href="#__codelineno-10-8"></a>    Then ответ 201 Created с идентификатором клиента
+<a id="__codelineno-10-9" name="__codelineno-10-9" href="#__codelineno-10-9"></a>      And запись клиента сохранена в БД
+<a id="__codelineno-10-10" name="__codelineno-10-10" href="#__codelineno-10-10"></a>      And событие client_registered опубликовано в брокер
+<a id="__codelineno-10-11" name="__codelineno-10-11" href="#__codelineno-10-11"></a>
+<a id="__codelineno-10-12" name="__codelineno-10-12" href="#__codelineno-10-12"></a>  Scenario: Отказ БД при регистрации
+<a id="__codelineno-10-13" name="__codelineno-10-13" href="#__codelineno-10-13"></a>    Given сервис регистрации запущен
+<a id="__codelineno-10-14" name="__codelineno-10-14" href="#__codelineno-10-14"></a>      And БД недоступна
+<a id="__codelineno-10-15" name="__codelineno-10-15" href="#__codelineno-10-15"></a>      And брокер сообщений доступен
+<a id="__codelineno-10-16" name="__codelineno-10-16" href="#__codelineno-10-16"></a>    When клиент отправляет POST /clients с валидными данными
+<a id="__codelineno-10-17" name="__codelineno-10-17" href="#__codelineno-10-17"></a>    Then ответ 503 Service Unavailable
+<a id="__codelineno-10-18" name="__codelineno-10-18" href="#__codelineno-10-18"></a>      And событие client_registered не публиковалось
+</code></pre></div>
+<p>Это <strong>исполняемая спецификация</strong>. Прогоняется в Docker Compose с реальной БД и реальным брокером. Никаких моков на уровне компонента.</p>
+<h2 id="full-example">9. Полный пример. Регистрация клиента</h2>
+<p>Соберём всё в один сквозной пример. Задача: консольная программа, регистрирует клиента (ФИО, email, дата рождения), требует 18+, хранит в памяти.</p>
+<h3 id="1-top-down">Шаг 1. Схема иерархии модулей (top-down)</h3>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-11-1" name="__codelineno-11-1" href="#__codelineno-11-1"></a>                         +------------------------+
+<a id="__codelineno-11-2" name="__codelineno-11-2" href="#__codelineno-11-2"></a>                         |  processRegistration   |   &lt;-- головной модуль
+<a id="__codelineno-11-3" name="__codelineno-11-3" href="#__codelineno-11-3"></a>                         +-----------+------------+
+<a id="__codelineno-11-4" name="__codelineno-11-4" href="#__codelineno-11-4"></a>                                     |
+<a id="__codelineno-11-5" name="__codelineno-11-5" href="#__codelineno-11-5"></a>       +-----------------+-----------+-----------+----------------+
+<a id="__codelineno-11-6" name="__codelineno-11-6" href="#__codelineno-11-6"></a>       V                 V                       V                V
+<a id="__codelineno-11-7" name="__codelineno-11-7" href="#__codelineno-11-7"></a>+-------------+  +---------------+      +----------------+  +---------------+
+<a id="__codelineno-11-8" name="__codelineno-11-8" href="#__codelineno-11-8"></a>| processReq  |  | createClient  |      | registerClient |  | printStats    |
+<a id="__codelineno-11-9" name="__codelineno-11-9" href="#__codelineno-11-9"></a>| (логика)    |  | (логика)      |      | (адаптер: БД)  |  | (адаптер: io) |
+<a id="__codelineno-11-10" name="__codelineno-11-10" href="#__codelineno-11-10"></a>+-------------+  +-------+-------+      +----------------+  +---------------+
+<a id="__codelineno-11-11" name="__codelineno-11-11" href="#__codelineno-11-11"></a>                         |
+<a id="__codelineno-11-12" name="__codelineno-11-12" href="#__codelineno-11-12"></a>       +-----------------+-----------+----------------+
+<a id="__codelineno-11-13" name="__codelineno-11-13" href="#__codelineno-11-13"></a>       V                             V                V
+<a id="__codelineno-11-14" name="__codelineno-11-14" href="#__codelineno-11-14"></a>+----------------+        +-------------------+   +-----------------+
+<a id="__codelineno-11-15" name="__codelineno-11-15" href="#__codelineno-11-15"></a>| createFullName |        | createValidEmail  |   | createValidBday|
+<a id="__codelineno-11-16" name="__codelineno-11-16" href="#__codelineno-11-16"></a>+--------+-------+        +-------------------+   +--------+--------+
+<a id="__codelineno-11-17" name="__codelineno-11-17" href="#__codelineno-11-17"></a>         |                                                  |
+<a id="__codelineno-11-18" name="__codelineno-11-18" href="#__codelineno-11-18"></a>+--------V--------+                              +----------V----------+
+<a id="__codelineno-11-19" name="__codelineno-11-19" href="#__codelineno-11-19"></a>| createValidName |                              | parseBirthDate      |
+<a id="__codelineno-11-20" name="__codelineno-11-20" href="#__codelineno-11-20"></a>| (3 раза:        |                              | validateNotInFuture |
+<a id="__codelineno-11-21" name="__codelineno-11-21" href="#__codelineno-11-21"></a>|  ФИО)           |                              | calculateAge        |
+<a id="__codelineno-11-22" name="__codelineno-11-22" href="#__codelineno-11-22"></a>+-----------------+                              | createAdultAge      |
+<a id="__codelineno-11-23" name="__codelineno-11-23" href="#__codelineno-11-23"></a>                                                 +---------------------+
+</code></pre></div>
+<h3 id="2">Шаг 2. Контракты модулей</h3>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-12-1" name="__codelineno-12-1" href="#__codelineno-12-1"></a>Request {
+<a id="__codelineno-12-2" name="__codelineno-12-2" href="#__codelineno-12-2"></a>  lastName, firstName, patronymic, email, birthDateString : String
+<a id="__codelineno-12-3" name="__codelineno-12-3" href="#__codelineno-12-3"></a>}
+<a id="__codelineno-12-4" name="__codelineno-12-4" href="#__codelineno-12-4"></a>
+<a id="__codelineno-12-5" name="__codelineno-12-5" href="#__codelineno-12-5"></a>Client {
+<a id="__codelineno-12-6" name="__codelineno-12-6" href="#__codelineno-12-6"></a>  fullName: String, email: String, isEmailConfirmed: Boolean, birthDate: Date
+<a id="__codelineno-12-7" name="__codelineno-12-7" href="#__codelineno-12-7"></a>}
+<a id="__codelineno-12-8" name="__codelineno-12-8" href="#__codelineno-12-8"></a>
+<a id="__codelineno-12-9" name="__codelineno-12-9" href="#__codelineno-12-9"></a>Error {
+<a id="__codelineno-12-10" name="__codelineno-12-10" href="#__codelineno-12-10"></a>  message: String
+<a id="__codelineno-12-11" name="__codelineno-12-11" href="#__codelineno-12-11"></a>}
+<a id="__codelineno-12-12" name="__codelineno-12-12" href="#__codelineno-12-12"></a>
+<a id="__codelineno-12-13" name="__codelineno-12-13" href="#__codelineno-12-13"></a>Result&lt;T, Error&gt; = Success(T) | Failure(Error)
+<a id="__codelineno-12-14" name="__codelineno-12-14" href="#__codelineno-12-14"></a>
+<a id="__codelineno-12-15" name="__codelineno-12-15" href="#__codelineno-12-15"></a># логика
+<a id="__codelineno-12-16" name="__codelineno-12-16" href="#__codelineno-12-16"></a>processRequest(args: String[])              -&gt; Result&lt;Request, Error&gt;
+<a id="__codelineno-12-17" name="__codelineno-12-17" href="#__codelineno-12-17"></a>createValidName(name, fieldName)            -&gt; Result&lt;String, Error&gt;
+<a id="__codelineno-12-18" name="__codelineno-12-18" href="#__codelineno-12-18"></a>createFullName(last, first, patr)           -&gt; Result&lt;String, Error&gt;
+<a id="__codelineno-12-19" name="__codelineno-12-19" href="#__codelineno-12-19"></a>createValidEmail(email)                     -&gt; Result&lt;String, Error&gt;
+<a id="__codelineno-12-20" name="__codelineno-12-20" href="#__codelineno-12-20"></a>parseBirthDate(s)                           -&gt; Result&lt;Date, Error&gt;
+<a id="__codelineno-12-21" name="__codelineno-12-21" href="#__codelineno-12-21"></a>validateBirthDateNotInFuture(d, clock)      -&gt; Result&lt;Date, Error&gt;
+<a id="__codelineno-12-22" name="__codelineno-12-22" href="#__codelineno-12-22"></a>calculateAge(d, clock)                      -&gt; Int
+<a id="__codelineno-12-23" name="__codelineno-12-23" href="#__codelineno-12-23"></a>createAdultAge(age)                         -&gt; Result&lt;Int, Error&gt;
+<a id="__codelineno-12-24" name="__codelineno-12-24" href="#__codelineno-12-24"></a>createValidClientBirthDate(s, clock)        -&gt; Result&lt;Date, Error&gt;
+<a id="__codelineno-12-25" name="__codelineno-12-25" href="#__codelineno-12-25"></a>createClient(req: Request, clock)           -&gt; Result&lt;Client, Error&gt;
+<a id="__codelineno-12-26" name="__codelineno-12-26" href="#__codelineno-12-26"></a>
+<a id="__codelineno-12-27" name="__codelineno-12-27" href="#__codelineno-12-27"></a># адаптеры (I/O)
+<a id="__codelineno-12-28" name="__codelineno-12-28" href="#__codelineno-12-28"></a>registerClient(store, client)               -&gt; ()
+<a id="__codelineno-12-29" name="__codelineno-12-29" href="#__codelineno-12-29"></a>printStatistics(store)                      -&gt; ()
+<a id="__codelineno-12-30" name="__codelineno-12-30" href="#__codelineno-12-30"></a>printError(message)                         -&gt; ()
+<a id="__codelineno-12-31" name="__codelineno-12-31" href="#__codelineno-12-31"></a>
+<a id="__codelineno-12-32" name="__codelineno-12-32" href="#__codelineno-12-32"></a># головной
+<a id="__codelineno-12-33" name="__codelineno-12-33" href="#__codelineno-12-33"></a>processRegistration(args, store, clock)     -&gt; ()
+</code></pre></div>
+<h3 id="3">Шаг 3. Головной модуль (псевдокод)</h3>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-13-1" name="__codelineno-13-1" href="#__codelineno-13-1"></a>processRegistration(args, store, clock):
+<a id="__codelineno-13-2" name="__codelineno-13-2" href="#__codelineno-13-2"></a>    requestResult = processRequest(args)
+<a id="__codelineno-13-3" name="__codelineno-13-3" href="#__codelineno-13-3"></a>    if requestResult.isFailure: printError(requestResult.error); return
+<a id="__codelineno-13-4" name="__codelineno-13-4" href="#__codelineno-13-4"></a>
+<a id="__codelineno-13-5" name="__codelineno-13-5" href="#__codelineno-13-5"></a>    clientResult = createClient(requestResult.value, clock)
+<a id="__codelineno-13-6" name="__codelineno-13-6" href="#__codelineno-13-6"></a>    if clientResult.isFailure: printError(clientResult.error); return
+<a id="__codelineno-13-7" name="__codelineno-13-7" href="#__codelineno-13-7"></a>
+<a id="__codelineno-13-8" name="__codelineno-13-8" href="#__codelineno-13-8"></a>    registerClient(store, clientResult.value)
+<a id="__codelineno-13-9" name="__codelineno-13-9" href="#__codelineno-13-9"></a>    printStatistics(store)
+</code></pre></div>
+<p>Видно всю программу за пять строчек. Это и есть «головной модуль — конспект всей программы».</p>
+<h3 id="4-">Шаг 4. Юнит-тесты по формуле</h3>
+<p>Считаем только модули логики — конструкторы доменных структур и чистые функции. Адаптеры (<code>registerClient</code>, <code>printStatistics</code>, <code>printError</code>) и головной модуль (<code>processRegistration</code>) в таблицу юнит-тестов <strong>не попадают</strong>: они трубы, проверяются компонентным тестом.</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-14-1" name="__codelineno-14-1" href="#__codelineno-14-1"></a>createValidName:        3 теста (happy + null/empty + нарушение паттерна)
+<a id="__codelineno-14-2" name="__codelineno-14-2" href="#__codelineno-14-2"></a>createFullName:         1 теста (happy; невалидные ветки уже покрыты в createValidName)
+<a id="__codelineno-14-3" name="__codelineno-14-3" href="#__codelineno-14-3"></a>createValidEmail:       3 теста (happy + null/empty + нарушение паттерна)
+<a id="__codelineno-14-4" name="__codelineno-14-4" href="#__codelineno-14-4"></a>parseBirthDate:         3 теста (happy + null/empty + кривой формат)
+<a id="__codelineno-14-5" name="__codelineno-14-5" href="#__codelineno-14-5"></a>validateBirthDateNot..: 2 теста (happy + дата в будущем)
+<a id="__codelineno-14-6" name="__codelineno-14-6" href="#__codelineno-14-6"></a>calculateAge:           1 тест  (чистая функция от даты)
+<a id="__codelineno-14-7" name="__codelineno-14-7" href="#__codelineno-14-7"></a>createAdultAge:         2 теста (happy + младше 18)
+<a id="__codelineno-14-8" name="__codelineno-14-8" href="#__codelineno-14-8"></a>createValidClientBday:  1 тест  (склейка; ветки уже покрыты ниже)
+<a id="__codelineno-14-9" name="__codelineno-14-9" href="#__codelineno-14-9"></a>createClient:           1 тест  (склейка; ветки уже покрыты)
+<a id="__codelineno-14-10" name="__codelineno-14-10" href="#__codelineno-14-10"></a>processRequest:         2 теста (happy + мало аргументов)
+</code></pre></div>
+<p>Около 19 юнит-тестов на всю логику. Покрытие логики 100%.</p>
+<h3 id="5">Шаг 5. Компонентный тест</h3>
+<p>В этой консольной программе нет внешних зависимостей, поэтому компонентный тест один — happy path. Если бы появились БД и брокер — добавились бы по одному сценарию на отказ каждого.</p>
+<h2 id="opus-sonnet">10. Дисциплина: проектируем с opus, реализуем с sonnet</h2>
+<p>Теперь — самое практическое. Как это превратить в рабочий процесс с Claude.</p>
+<h3 id="opus">Этап А. Проектирование — делает opus</h3>
+<p>Opus отвечает за архитектурное мышление. Его работа — <strong>проектная документация</strong>, по которой sonnet потом пишет код. Ничего не кодим, пока не закончен этап А.</p>
+<p>Артефакты этапа А:</p>
+<ol>
+<li><strong>Описание задачи в одну фразу.</strong> Что программа делает. Если в одну фразу не получается — задача слишком большая, режем.</li>
+<li><strong>Псевдокод головного модуля каждого slice'а в стиле unix pipe.</strong> Главный сценарий — шагами. 5–10 строк, по строке на вызов модуля.</li>
+<li><strong>Схема иерархии модулей.</strong> Дерево: ингресс-адаптер → головной → конструкторы доменных структур → чистая логика → автономные I/O-объекты. На каждом узле — имя модуля и одна фраза «что делает».</li>
+<li><strong>Каталог сообщений.</strong> Все структуры данных, которыми обмениваются модули: <code>Request</code>, <code>Command</code>, <code>Entity</code>, <code>Event</code>, <code>Error</code>. Доменные структуры — с <strong>неэкспортируемыми полями и единственным конструктором</strong> <code>NewT(...) -&gt; (T, error)</code>.</li>
+<li><strong>Контракты модулей</strong> в жёстком шаблоне:<ul>
+<li><code>Сигнатура: имя(input: Type) -&gt; Result&lt;выход: Type, Error&gt;</code> (или <code>(T, error)</code> в Go)</li>
+<li><code>Input (data):</code> — одна доменная структура, или Request DTO, или void</li>
+<li><code>Dependencies:</code> — <code>Store</code> / <code>Client</code> / <code>Publisher</code>, <code>clock.Clock</code>, конфиг. <strong>Сырых <code>*sql.DB</code>, <code>*http.Client</code>, broker-conn — не должно быть</strong> (они инкапсулированы в автономный I/O-объект)</li>
+<li><code>Что делает:</code> — одна фраза</li>
+<li><code>Антецедент:</code> — условия на input</li>
+<li><code>Консеквент:</code> — что гарантирует на выходе (Success / Failure-классы)</li>
+</ul>
+</li>
+<li><strong>Карта автономных I/O-объектов.</strong> Каждая внешняя зависимость заворачивается в <code>Store</code>/<code>Client</code>/<code>Publisher</code>/<code>Consumer</code>/<code>FileStore</code>. Головной модуль знает только методы объекта.</li>
+<li><strong>Граф вызовов модулей slice'а.</strong> Стрелки несут имя структуры. Сверка согласованности контрактов: тип на стрелке существует, имена совпадают, консеквент отправителя ⊆ антецеденту получателя, классы ошибок согласованы.</li>
+<li><strong>Компонентные сценарии Gherkin</strong> для каждого slice'а (1 happy + по сценарию на каждый различимый режим отказа). <strong>Пишутся ДО проектирования модулей</strong> — это исполняемая спецификация, по которой сверяется дизайн.</li>
+<li><strong>Таблица <code>## Gherkin-mapping</code></strong> в карточке каждого slice'а: каждый Then-шаг каждого сценария явно привязан к узлу графа (модулю) или к маппингу в адаптере. Если Then не находит узла — дизайн неполон, возврат к схеме модулей.</li>
+<li><strong>План тестирования.</strong> Юнит-тесты по формуле для <strong>модулей логики</strong> (конструкторы и чистые функции). Головной модуль, I/O и адаптер юнитами не покрываются — их зеленят компонентные сценарии.</li>
+</ol>
+<h3 id="sonnet">Этап Б. Бэклог для sonnet</h3>
+<p>Из артефактов этапа А механически собирается бэклог тикетов для sonnet в Claude Code. Один тикет = один модуль + его юнит-тесты.</p>
+<p>Шаблон тикета:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-15-1" name="__codelineno-15-1" href="#__codelineno-15-1"></a>TICKET: реализовать модуль &lt;name&gt;
+<a id="__codelineno-15-2" name="__codelineno-15-2" href="#__codelineno-15-2"></a>
+<a id="__codelineno-15-3" name="__codelineno-15-3" href="#__codelineno-15-3"></a>Контракт:
+<a id="__codelineno-15-4" name="__codelineno-15-4" href="#__codelineno-15-4"></a>  &lt;name&gt;(&lt;input&gt;: &lt;Type&gt;) -&gt; Result&lt;&lt;output&gt;: &lt;Type&gt;, Error&gt;
+<a id="__codelineno-15-5" name="__codelineno-15-5" href="#__codelineno-15-5"></a>
+<a id="__codelineno-15-6" name="__codelineno-15-6" href="#__codelineno-15-6"></a>Антецедент (что модуль требует на входе):
+<a id="__codelineno-15-7" name="__codelineno-15-7" href="#__codelineno-15-7"></a>  - &lt;условие 1&gt;
+<a id="__codelineno-15-8" name="__codelineno-15-8" href="#__codelineno-15-8"></a>  - &lt;условие 2&gt;
+<a id="__codelineno-15-9" name="__codelineno-15-9" href="#__codelineno-15-9"></a>
+<a id="__codelineno-15-10" name="__codelineno-15-10" href="#__codelineno-15-10"></a>Консеквент (что модуль гарантирует на выходе):
+<a id="__codelineno-15-11" name="__codelineno-15-11" href="#__codelineno-15-11"></a>  - на Success: &lt;условие&gt;
+<a id="__codelineno-15-12" name="__codelineno-15-12" href="#__codelineno-15-12"></a>  - на Failure: &lt;классы ошибок&gt;
+<a id="__codelineno-15-13" name="__codelineno-15-13" href="#__codelineno-15-13"></a>
+<a id="__codelineno-15-14" name="__codelineno-15-14" href="#__codelineno-15-14"></a>Зависимости (какие модули вызывает):
+<a id="__codelineno-15-15" name="__codelineno-15-15" href="#__codelineno-15-15"></a>  - &lt;module A&gt;
+<a id="__codelineno-15-16" name="__codelineno-15-16" href="#__codelineno-15-16"></a>  - &lt;module B&gt;
+<a id="__codelineno-15-17" name="__codelineno-15-17" href="#__codelineno-15-17"></a>
+<a id="__codelineno-15-18" name="__codelineno-15-18" href="#__codelineno-15-18"></a>Юнит-тесты (по формуле 1 + ветки антецедента):
+<a id="__codelineno-15-19" name="__codelineno-15-19" href="#__codelineno-15-19"></a>  - happy path: &lt;вход&gt; -&gt; Success(&lt;выход&gt;)
+<a id="__codelineno-15-20" name="__codelineno-15-20" href="#__codelineno-15-20"></a>  - &lt;ветка 1&gt;: &lt;вход&gt; -&gt; Failure(&quot;&lt;сообщение&gt;&quot;)
+<a id="__codelineno-15-21" name="__codelineno-15-21" href="#__codelineno-15-21"></a>  - &lt;ветка 2&gt;: &lt;вход&gt; -&gt; Failure(&quot;&lt;сообщение&gt;&quot;)
+<a id="__codelineno-15-22" name="__codelineno-15-22" href="#__codelineno-15-22"></a>
+<a id="__codelineno-15-23" name="__codelineno-15-23" href="#__codelineno-15-23"></a>Definition of Done:
+<a id="__codelineno-15-24" name="__codelineno-15-24" href="#__codelineno-15-24"></a>  - модуль реализован согласно контракту
+<a id="__codelineno-15-25" name="__codelineno-15-25" href="#__codelineno-15-25"></a>  - все юнит-тесты зелёные
+<a id="__codelineno-15-26" name="__codelineno-15-26" href="#__codelineno-15-26"></a>  - покрытие модуля 100% по строкам и веткам
+<a id="__codelineno-15-27" name="__codelineno-15-27" href="#__codelineno-15-27"></a>  - модуль не лезет в I/O (если он логика) или изолирует I/O в одном месте (если он адаптер)
+</code></pre></div>
+<p>Sonnet читает тикет, пишет модуль, пишет тесты. Никакой «творческой свободы» — контракт жёстко задан, ветки заданы, тесты заданы. Sonnet делает то, что хорошо умеет: аккуратно превращает спецификацию в код.</p>
+<h3 id="_11">Порядок реализации в бэклоге</h3>
+<p>Нисходящий проект — восходящая реализация. Сначала листья (модули без зависимостей), потом узлы выше, в конце — головной модуль и компонентный тест.</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-16-1" name="__codelineno-16-1" href="#__codelineno-16-1"></a>1. createValidName        # лист
+<a id="__codelineno-16-2" name="__codelineno-16-2" href="#__codelineno-16-2"></a>2. createValidEmail       # лист
+<a id="__codelineno-16-3" name="__codelineno-16-3" href="#__codelineno-16-3"></a>3. parseBirthDate         # лист
+<a id="__codelineno-16-4" name="__codelineno-16-4" href="#__codelineno-16-4"></a>4. validateBirthDateNot.. # лист
+<a id="__codelineno-16-5" name="__codelineno-16-5" href="#__codelineno-16-5"></a>5. calculateAge           # лист
+<a id="__codelineno-16-6" name="__codelineno-16-6" href="#__codelineno-16-6"></a>6. createAdultAge         # лист
+<a id="__codelineno-16-7" name="__codelineno-16-7" href="#__codelineno-16-7"></a>7. createFullName         # узел: 3x createValidName
+<a id="__codelineno-16-8" name="__codelineno-16-8" href="#__codelineno-16-8"></a>8. createValidClientBday  # узел: parse + validate + adult
+<a id="__codelineno-16-9" name="__codelineno-16-9" href="#__codelineno-16-9"></a>9. processRequest         # узел: парсинг
+<a id="__codelineno-16-10" name="__codelineno-16-10" href="#__codelineno-16-10"></a>10. createClient          # узел: всё вместе
+<a id="__codelineno-16-11" name="__codelineno-16-11" href="#__codelineno-16-11"></a>11. registerClient (адап) # I/O
+<a id="__codelineno-16-12" name="__codelineno-16-12" href="#__codelineno-16-12"></a>12. printStatistics (адап)# I/O
+<a id="__codelineno-16-13" name="__codelineno-16-13" href="#__codelineno-16-13"></a>13. printError (адап)     # I/O
+<a id="__codelineno-16-14" name="__codelineno-16-14" href="#__codelineno-16-14"></a>14. processRegistration   # головной
+<a id="__codelineno-16-15" name="__codelineno-16-15" href="#__codelineno-16-15"></a>15. component test (Gherkin: 1 happy)
+</code></pre></div>
+<h2 id="checklist">11. Памятка-чеклист для проектирования</h2>
+<p>Когда садишься проектировать новую программу или сервис, прогоняй по списку. Это финальный фильтр перед тем, как отдавать бэклог в Claude Code.</p>
+<h3 id="_12">Структура</h3>
+<ul>
+<li>[ ] Задача формулируется в одну фразу</li>
+<li>[ ] Есть псевдокод головного сценария в стиле unix pipe (5–10 строк)</li>
+<li>[ ] Есть схема иерархии модулей нисходящим способом</li>
+<li>[ ] Есть блок-схема (или эквивалент) головного модуля</li>
+</ul>
+<h3 id="_13">Модули</h3>
+<ul>
+<li>[ ] Каждый модуль делает одну функцию, выражаемую одной фразой</li>
+<li>[ ] Каждый модуль имеет один вход и один выход</li>
+<li>[ ] Каждый модуль возвращает управление вызвавшему</li>
+<li>[ ] Модуль не вызывает свой уровень и выше (только ниже)</li>
+<li>[ ] Модуль не помнит истории своих вызовов</li>
+<li>[ ] Модуль невелик (десятки строк, редко сотни)</li>
+<li>[ ] <strong>На входе каждого модуля — ровно одна data-структура (доменная сущность / Request / void); зависимости вынесены отдельной строкой <code>Dependencies:</code></strong></li>
+<li>[ ] <strong>Доменные структуры с неэкспортируемыми полями и единственным конструктором <code>NewT(...) -&gt; (T, error)</code></strong></li>
+<li>[ ] Все основные решения принимает головной модуль</li>
+<li>[ ] <strong>Инварианты, требующие учёта внешнего факта (время, статус, подпись), несутся через подтип, а не через guard-функцию</strong></li>
+</ul>
+<h3 id="io">I/O</h3>
+<ul>
+<li>[ ] Бизнес-логика отделена от I/O</li>
+<li>[ ] <strong>Каждая внешняя зависимость инкапсулирована в автономный объект <code>Store</code>/<code>Client</code>/<code>Publisher</code>/<code>Consumer</code>/<code>FileStore</code></strong></li>
+<li>[ ] <strong>В <code>Dependencies:</code> контрактов и в <code>Deps</code> головного модуля нет сырых <code>*sql.DB</code>, <code>*http.Client</code>, broker-conn — только объекты-обёртки</strong></li>
+<li>[ ] I/O-модуль — труба: один внешний вызов, никаких ветвлений по данным, только маппинг кодов ошибок</li>
+<li>[ ] Один I/O-модуль = одна внешняя зависимость + один режим работы (чтение или запись, не «и-и»)</li>
+<li>[ ] Бизнес-логика не делает I/O напрямую</li>
+</ul>
+<h3 id="_14">Контракты</h3>
+<ul>
+<li>[ ] Все сообщения между модулями — именованные структуры</li>
+<li>[ ] У каждого модуля логики описан антецедент</li>
+<li>[ ] У каждого модуля логики описан консеквент</li>
+<li>[ ] Ошибки возвращаются как данные через Result, а не через исключения</li>
+<li>[ ] В каждой сигнатуре Result указаны <strong>оба</strong> типа-параметра: <code>Result&lt;ТипЗначения, ТипОшибки&gt;</code></li>
+</ul>
+<h3 id="_15">Тесты</h3>
+<ul>
+<li>[ ] <strong>Компонентные сценарии Gherkin для каждого slice'а написаны ДО проектирования модулей</strong> (1 happy + по сценарию на каждый различимый режим отказа)</li>
+<li>[ ] <strong>Таблица <code>## Gherkin-mapping</code> в карточке каждого slice'а: каждый Then-шаг привязан к узлу графа или маппингу адаптера</strong></li>
+<li>[ ] У каждого модуля логики есть юнит-тесты по формуле <code>1 + ветки антецедента</code></li>
+<li>[ ] Логика покрыта юнит-тестами на 100%</li>
+<li>[ ] <strong>Головной модуль, I/O-модули и ингресс-адаптер юнитами не тестируются — их зеленят компонентные сценарии</strong></li>
+<li>[ ] <strong>Никаких моков, stub-интерфейсов и func-полей в <code>Deps</code> ради подмены — только реальные объекты</strong></li>
+<li>[ ] Юнит-тест не использует БД/HTTP/брокеры (только чистые функции и доменные структуры)</li>
+<li>[ ] Компонентный тест поднимает реальные зависимости в Docker Compose</li>
+</ul>
+<h2 id="logical-conclusion">12. Логика, которая держит всю конструкцию</h2>
+<p>Если каждый из принципов выше выполнен, цепочка получается такая:</p>
+<ol>
+<li>Каждый модуль логики контролирует диапазон входных значений → его выход всегда в допустимом диапазоне.</li>
+<li>Каждый модуль логики покрыт юнит-тестом, проверяющим контракт → корректность модуля доказана.</li>
+<li>Доменные структуры создаются только через конструктор, инварианты несутся через подтипы → невалидное состояние неконструктивно (его нельзя создать).</li>
+<li>Программа — это композиция модулей, каждый из которых корректен → корректность программы вытекает из корректности модулей.</li>
+<li>I/O инкапсулирован в автономные объекты-трубы → бизнес-логика остаётся чистой, эффекты доказываются компонентным сценарием через реальный вход.</li>
+<li>Головной модуль виден целиком и состоит из вызовов корректных модулей → корректность головного очевидна и проверяется компонентным тестом контракта с внешним миром.</li>
+<li>Логика приложения покрыта юнит-тестами на 100% → <strong>формальное доказательство правильности программы построено</strong>.</li>
+</ol>
+<p>Это и есть «правильная программа по построению». Не магия, не мифология — скучная инженерная дисциплина.</p>
+<p>Вайб-кодеру и джуну с этим жить легко: правила жёсткие, шагов конкретное число, на каждом шаге понятно, что делать. Opus думает по этим правилам и проектирует. Sonnet читает спецификацию и реализует. Ты управляешь процессом, не путаясь в деталях.</p>
+<h2 id="sources">Источники</h2>
+<ol>
+<li>Linger R. C., Mills H. D., Witt B. I. <em>Structured Programming: Theory and Practice.</em> Addison-Wesley, 1979.</li>
+<li>Dijkstra E. W. <em>A Discipline of Programming.</em> Prentice-Hall, 1976.</li>
+<li>Wirth N. <em>Systematic Programming: An Introduction.</em> Prentice-Hall, 1973.</li>
+<li>Hughes J. K., Michtom J. I. <em>A Structured Approach to Programming.</em> Prentice-Hall.</li>
+<li>Meyer B. <em>Applying "Design by Contract".</em> IEEE Computer, 1992.</li>
+<li>Adzic G. <em>Specification by Example.</em> Manning, 2011.</li>
+<li>ISTQB Foundation Level Syllabus. Component Testing.</li>
+<li>Morev M. <a href="https://codemonsters.team/blog/2025/12/12/structured-programming-essential/"><em>Структурирование программ.</em></a> codemonsters.team, 2025.</li>
+<li>Morev M. <a href="https://codemonsters.team/blog/2025/12/15/program-modules/"><em>Модульность программы.</em></a> codemonsters.team, 2025.</li>
+<li>Morev M. <a href="https://codemonsters.team/blog/2025/12/30/program-correctness/"><em>Правильность программы.</em></a> codemonsters.team, 2025.</li>
+<li>Morev M. <a href="https://codemonsters.team/blog/2026/04/25/testing-mythology-component-tests/"><em>Сколько компонентных тестов нужно сервису. Логический вывод.</em></a> codemonsters.team, 2026.</li>
+</ol>
+
+
+
+
+
+
+
+  
+  
+
+
+
+  
+
+
+  
+
+
+
+      
+    </article>
+  </div>
+
+          
+  <script>var tabs=__md_get("__tabs");if(Array.isArray(tabs))e:for(var set of document.querySelectorAll(".tabbed-set")){var labels=set.querySelector(".tabbed-labels");for(var tab of tabs)for(var label of labels.getElementsByTagName("label"))if(label.innerText.trim()===tab){var input=document.getElementById(label.htmlFor);input.checked=!0;continue e}}</script>
+
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+          <button type="button" class="md-top md-icon" data-md-component="top" hidden>
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8z"/></svg>
+  Back to top
+</button>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+    <div class="md-copyright__highlight">
+      &copy; 2023 <a href="https://git.codemonsters.team/guides/web-book"  target="_blank" rel="noopener">CodeMonsters.team</a>
+    </div>
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+        
+<div class="md-social">
+  
+    
+    
+    
+    
+      
+      
+    
+    <a href="https://git.codemonsters.team/guides/web-book" target="_blank" rel="noopener" title="git.codemonsters.team" class="md-social__link">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M202.1 328.7c0 20.9-10.9 55.1-36.7 55.1s-36.7-34.2-36.7-55.1 10.9-55.1 36.7-55.1 36.7 34.2 36.7 55.1M496 278.2c0 31.9-3.2 65.7-17.5 95-37.9 76.6-142.1 74.8-216.7 74.8-75.8 0-186.2 2.7-225.6-74.8-14.6-29-20.2-63.1-20.2-95 0-41.9 13.9-81.5 41.5-113.6-5.2-15.8-7.7-32.4-7.7-48.8 0-21.5 4.9-32.3 14.6-51.8 45.3 0 74.3 9 108.8 36 29-6.9 58.8-10 88.7-10 27 0 54.2 2.9 80.4 9.2 34-26.7 63-35.2 107.8-35.2 9.8 19.5 14.6 30.3 14.6 51.8 0 16.4-2.6 32.7-7.7 48.2 27.5 32.4 39 72.3 39 114.2m-64.3 50.5c0-43.9-26.7-82.6-73.5-82.6-18.9 0-37 3.4-56 6-14.9 2.3-29.8 3.2-45.1 3.2-15.2 0-30.1-.9-45.1-3.2-18.7-2.6-37-6-56-6-46.8 0-73.5 38.7-73.5 82.6 0 87.8 80.4 101.3 150.4 101.3h48.2c70.3 0 150.6-13.4 150.6-101.3m-82.6-55.1c-25.8 0-36.7 34.2-36.7 55.1s10.9 55.1 36.7 55.1 36.7-34.2 36.7-55.1-10.9-55.1-36.7-55.1"/></svg>
+    </a>
+  
+    
+    
+    
+    
+      
+      
+    
+    <a href="https://t.me/codemonsterslogs" target="_blank" rel="noopener" title="t.me" class="md-social__link">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M256 8a248 248 0 1 0 0 496 248 248 0 1 0 0-496m115 168.7c-3.7 39.2-19.9 134.4-28.1 178.3-3.5 18.6-10.3 24.8-16.9 25.4-14.4 1.3-25.3-9.5-39.3-18.7-21.8-14.3-34.2-23.2-55.3-37.2-24.5-16.1-8.6-25 5.3-39.5 3.7-3.8 67.1-61.5 68.3-66.7.2-.7.3-3.1-1.2-4.4s-3.6-.8-5.1-.5c-2.2.5-37.1 23.5-104.6 69.1-9.9 6.8-18.9 10.1-26.9 9.9-8.9-.2-25.9-5-38.6-9.1-15.5-5-27.9-7.7-26.8-16.3.6-4.5 6.7-9 18.4-13.7 72.3-31.5 120.5-52.3 144.6-62.3 68.9-28.6 83.2-33.6 92.5-33.8 2.1 0 6.6.5 9.6 2.9 2 1.7 3.2 4.1 3.5 6.7.5 3.2.6 6.5.4 9.8z"/></svg>
+    </a>
+  
+    
+    
+    
+    
+      
+      
+    
+    <a href="https://www.linkedin.com/in/maximmorev/" target="_blank" rel="noopener" title="www.linkedin.com" class="md-social__link">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M416 32H31.9C14.3 32 0 46.5 0 64.3v383.4C0 465.5 14.3 480 31.9 480H416c17.6 0 32-14.5 32-32.3V64.3c0-17.8-14.4-32.3-32-32.3M135.4 416H69V202.2h66.5V416zM102.2 96a38.5 38.5 0 1 1 0 77 38.5 38.5 0 1 1 0-77m282.1 320h-66.4V312c0-24.8-.5-56.7-34.5-56.7-34.6 0-39.9 27-39.9 54.9V416h-66.4V202.2h63.7v29.2h.9c8.9-16.8 30.6-34.5 62.9-34.5 67.2 0 79.7 44.3 79.7 101.9z"/></svg>
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    
+      
+      
+      <script id="__config" type="application/json">{"annotate": null, "base": "../../../../..", "features": ["navigation.tabs", "navigation.sections", "navigation.indexes", "toc.integrate", "navigation.top", "search.suggest", "search.highlight", "content.tabs.link", "content.code.annotation", "content.code.copy"], "search": "../../../../../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
+    
+    
+      <script src="../../../../../assets/javascripts/bundle.79ae519e.min.js"></script>
+      
+    
+  </body>
+</html>

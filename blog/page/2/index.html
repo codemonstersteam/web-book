@@ -683,6 +683,10 @@
       
         
       
+        
+      
+        
+      
     
     
     
@@ -808,6 +812,36 @@
     
   
     api
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    
+  
+  
+    <li class="md-nav__item">
+      <a href="../../category/architecture/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    architecture
   
 
     
@@ -1318,6 +1352,36 @@
     
   
     process
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    
+  
+  
+    <li class="md-nav__item">
+      <a href="../../category/rational-development/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    rational-development
   
 
     
@@ -2553,6 +2617,135 @@
       <header class="md-typeset">
         <h1 id="blog">Blog</h1>
       </header>
+      
+        <article class="md-post md-post--excerpt">
+  <header class="md-post__header">
+    
+      <nav class="md-post__authors md-typeset">
+        
+          <span class="md-author">
+            <img src="https://avatars.githubusercontent.com/u/45400275" alt="Max Morev">
+          </span>
+        
+      </nav>
+    
+    <div class="md-post__meta md-meta">
+      <ul class="md-meta__list">
+        <li class="md-meta__item">
+          <time datetime="2025-09-14 00:00:00+00:00">September 14, 2025</time></li>
+        
+          <li class="md-meta__item">
+            in
+            
+              <a href="../../category/code/" class="md-meta__link">code</a>, 
+              <a href="../../category/claude/" class="md-meta__link">claude</a>, 
+              <a href="../../category/contract-tests/" class="md-meta__link">contract-tests</a>, 
+              <a href="../../category/tests/" class="md-meta__link">tests</a>, 
+              <a href="../../category/ai/" class="md-meta__link">ai</a></li>
+        
+        
+          
+          <li class="md-meta__item">
+            
+              31 min read
+            
+          </li>
+        
+        
+      </ul>
+      
+    </div>
+  </header>
+  <div class="md-post__content md-typeset">
+    <h2 id="-pact-asyncapi-30"><a class="toclink" href="../../2025/09/14/ai-contract-tests-example-go/">Эксперимент с ИИ-ассистентом: бег от Pact в сторону валидации AsyncAPI 3.0 спецификаций</a></h2>
+<p><img alt="ai-contract-tests-experiment.png" src="../../ai-contract-tests-experiment.jpg" /></p>
+<blockquote>
+<p>Перевод алгоритма на тот или иной машинный язык задача сама по себе сложная, но она легко поддается механизации. Поэтому возникает большое желание иметь средства автоматизации кодирования.</p>
+<p>1973 Никлаус Вирт. Systematic Programming. An introduction.</p>
+</blockquote>
+<p>Мы живем в невероятном срезе реальности, когда инженеры-программисты получили долгожданные эффективные средства автоматизации кодирования. Цитата вначале статьи - ничто иное как мое отношений к действительности в мире программирования, это не хайп и не илюзии. Это реальность меняющая нашу профессию к лучшему.</p>
+<p>Я с большим энтузиазмом смотрю на прогресс ИИ-ассистентов, провожу эксперименты с передовыми их проявлениями(по крайней мере известными и доступными мне), такими как Claude терминал, Cursor.</p>
+<p>Один из наиболее влиятельных сторонников структурного программирования профессор Э. В. Дейкстра написал </p>
+<blockquote>
+<p>«... Я думаю, мы научились столь многому, что в течение ближайших лет программирование может превратиться в деятельность, во многом отличающуюся от того, что имеется сегодня, настолько отличающуюся, что мы должны очень хорошо подготовить себя к ожидающему нас шоку». </p>
+</blockquote>
+<p>Он верил, что «семидесятые годы завершатся тем, что мы окажемся способны проектировать и реализовывать такие системы, которые в то время требовали напряжения всех инженерных способностей, причем расходы на них будут составлять лишь небольшой процент в человеко-годах от их сегодняшней стоимости, и, кроме того, эти системы будут фактически свободны от ошибок». Дейкстра смотрел позитивно и предвидел многое. Свободу от ошибок мы не приобрели, хотя отцы основатели нам оставили в наследство все инструменты для этого.</p>
+<p>В данной работе я кратко опишу процесс по созданию утилиты на Golang с ИИ-агентом в клод-терминале для валидации контрактов сервисов в ландшафте информационных систем, где у каждого сервиса есть спецификация Async API 3.0.</p>
+<p>Также опишу фундаментальные принципы проектирования программы, которые не меняются с течением времени и помогают в работе с ИИ-ассистентами создавать надежные продукты.</p>
+
+    
+      <nav class="md-post__action">
+        <a href="../../2025/09/14/ai-contract-tests-example-go/">
+          Continue reading
+        </a>
+      </nav>
+    
+    
+  </div>
+</article>
+      
+        <article class="md-post md-post--excerpt">
+  <header class="md-post__header">
+    
+      <nav class="md-post__authors md-typeset">
+        
+          <span class="md-author">
+            <img src="https://avatars.githubusercontent.com/u/45400275" alt="Max Morev">
+          </span>
+        
+      </nav>
+    
+    <div class="md-post__meta md-meta">
+      <ul class="md-meta__list">
+        <li class="md-meta__item">
+          <time datetime="2025-06-18 00:00:00+00:00">June 18, 2025</time></li>
+        
+          <li class="md-meta__item">
+            in
+            
+              <a href="../../category/code/" class="md-meta__link">code</a>, 
+              <a href="../../category/git/" class="md-meta__link">git</a>, 
+              <a href="../../category/component-tests/" class="md-meta__link">component-tests</a>, 
+              <a href="../../category/tests/" class="md-meta__link">tests</a>, 
+              <a href="../../category/ai/" class="md-meta__link">ai</a></li>
+        
+        
+          
+          <li class="md-meta__item">
+            
+              5 min read
+            
+          </li>
+        
+        
+      </ul>
+      
+    </div>
+  </header>
+  <div class="md-post__content md-typeset">
+    <h2 id="-"><a class="toclink" href="../../2025/06/18/ai-component-tests-example-go/">Со-творчество с машиной</a></h2>
+<p><img alt="img" src="../../ai-component-tests-example-go.png" />  </p>
+<p>Дорогая, работа с AI-агентом превратила меня в супермена. Или супер-мема — сейчас это почти одно и то же.</p>
+<p>Я учусь и создаю автоматизацию в разы быстрее. Это новый темп, новый стиль работы.</p>
+<p>Помнишь «Джонни-мнемоника»? Как главный герой перевозил информацию в чипе, встроенном в череп? История материализовалась. До нас доходят фрагменты через текстовые каналы.</p>
+<p>Где-то китайские специалисты везут 50 ТБ обученных моделей в самолёте из стран с более свободным интернетом. В неоновых лучах Токио якудза с лазерной нитью крадёт первоклассный датасет сверхновой нейросети и перепродаёт через даркнет военным подрядчикам. Проклятая Арасака.</p>
+<p>А я тут со своим Go и unit-тестами — как уличный самурай с клавиатурой вместо катаны.</p>
+<p>В отражениях небоскрёбов мегаполиса стильные корпораты в дизайнерских костюмах везут обученные модели в гоночных суперкарах. Машина улучшает машину. Recursive enhancement. БУМ.</p>
+<p>Я словно с вшитым нейроимплантом: расширенная память, ускоренное написание кода на максималках, прямая связь с матрицей целей. Мои синапсы работают в режиме overdrive.</p>
+<p>Быстрее тестирую гипотезы, исследую новые направления. Это прорыв. Digital awakening.</p>
+<p>Я не могу объяснить всё — слишком много переварить. Я на эмоциях.</p>
+<p>Даже читаю больше и быстрее.</p>
+
+    
+      <nav class="md-post__action">
+        <a href="../../2025/06/18/ai-component-tests-example-go/">
+          Continue reading
+        </a>
+      </nav>
+    
+    
+  </div>
+</article>
       
         <article class="md-post md-post--excerpt">
   <header class="md-post__header">
