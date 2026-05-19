@@ -6,33 +6,33 @@
       <meta charset="utf-8">
       <meta name="viewport" content="width=device-width,initial-scale=1">
       
+        <meta name="description" content="Финальная статья курса «Рациональная разработка». Корректность системы из N сервисов выводится из корректности каждого сервиса (подтверждена компонентными тестами в Docker Compose) и совместимости их контрактов (доказана статически сравнением OpenAPI/AsyncAPI через pinout — экосистему валидаторов consumer↔provider). Четыре уровня без дыр и дубляжа: юнит по формуле «1 + ветки», компонент по спецификации, контракт по распиновке, канарейка с SLO и автооткатом. Что выкидываем: интеграционные тесты «двух сервисов вместе», системные стенды, e2e через 5+ сервисов, стейджинг как окружение, Pact Broker и CDC, regression suites на UI, стабилизационные спринты, огромные QA-команды на регрессию. Не упрощение — устранение слоёв, которые были компенсацией отсутствия машиночитаемого контракта и канареечного деплоя.">
       
       
-        <link rel="canonical" href="https://codemonsters.team/blog/category/code/">
+      
+        <link rel="canonical" href="https://codemonsters.team/blog/2026/05/12/composition-of-correctness/">
       
       
-        <link rel="prev" href="../claude/">
+        <link rel="prev" href="../../02/rational-design-skills/">
       
-      
-        <link rel="next" href="../codebook/">
       
       
         
       
       
-      <link rel="icon" href="../../../assets/images/favicon.png">
+      <link rel="icon" href="../../../../../assets/images/favicon.png">
       <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.6">
     
     
       
-        <title>code - CodeMonsters.team</title>
+        <title>Композиция корректности. Как собрать рабочую систему из сервисов с подтверждённой спецификацией - CodeMonsters.team</title>
       
     
     
-      <link rel="stylesheet" href="../../../assets/stylesheets/main.484c7ddc.min.css">
+      <link rel="stylesheet" href="../../../../../assets/stylesheets/main.484c7ddc.min.css">
       
         
-        <link rel="stylesheet" href="../../../assets/stylesheets/palette.ab4e12ef.min.css">
+        <link rel="stylesheet" href="../../../../../assets/stylesheets/palette.ab4e12ef.min.css">
       
       
 
@@ -51,7 +51,7 @@
       
     
     
-    <script>__md_scope=new URL("../../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    <script>__md_scope=new URL("../../../../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
     
       
   
@@ -99,7 +99,7 @@
     <div data-md-component="skip">
       
         
-        <a href="#code" class="md-skip">
+        <a href="#_1" class="md-skip">
           Skip to content
         </a>
       
@@ -113,7 +113,7 @@
 
 <header class="md-header" data-md-component="header">
   <nav class="md-header__inner md-grid" aria-label="Header">
-    <a href="../../.." title="CodeMonsters.team" class="md-header__button md-logo" aria-label="CodeMonsters.team" data-md-component="logo">
+    <a href="../../../../.." title="CodeMonsters.team" class="md-header__button md-logo" aria-label="CodeMonsters.team" data-md-component="logo">
       
   <img src="/cm-logo-header.png" alt="logo">
 
@@ -132,7 +132,7 @@
         <div class="md-header__topic" data-md-component="header-topic">
           <span class="md-ellipsis">
             
-              code
+              Композиция корректности. Как собрать рабочую систему из сервисов с подтверждённой спецификацией
             
           </span>
         </div>
@@ -191,7 +191,7 @@
   
   
     <li class="md-tabs__item">
-      <a href="../../.." class="md-tabs__link">
+      <a href="../../../../.." class="md-tabs__link">
         
   
   
@@ -210,7 +210,7 @@
   
   
     <li class="md-tabs__item">
-      <a href="../../../overview/" class="md-tabs__link">
+      <a href="../../../../../overview/" class="md-tabs__link">
         
   
   
@@ -233,7 +233,7 @@
     
     
       <li class="md-tabs__item md-tabs__item--active">
-        <a href="../../" class="md-tabs__link">
+        <a href="../../../../" class="md-tabs__link">
           
   
   
@@ -255,7 +255,7 @@
     
     
       <li class="md-tabs__item">
-        <a href="../../../codebook/" class="md-tabs__link">
+        <a href="../../../../../codebook/" class="md-tabs__link">
           
   
   
@@ -277,7 +277,7 @@
     
     
       <li class="md-tabs__item">
-        <a href="../../../effective-developer/" class="md-tabs__link">
+        <a href="../../../../../effective-developer/" class="md-tabs__link">
           
   
   
@@ -299,7 +299,7 @@
     
     
       <li class="md-tabs__item">
-        <a href="../../../resources/" class="md-tabs__link">
+        <a href="../../../../../resources/" class="md-tabs__link">
           
   
   
@@ -321,7 +321,7 @@
     
     
       <li class="md-tabs__item">
-        <a href="../../../tutorials/" class="md-tabs__link">
+        <a href="../../../../../tutorials/" class="md-tabs__link">
           
   
   
@@ -346,7 +346,9 @@
           
             
               
-              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" hidden>
                 <div class="md-sidebar__scrollwrap">
                   <div class="md-sidebar__inner">
                     
@@ -359,7 +361,7 @@
 
 <nav class="md-nav md-nav--primary md-nav--lifted md-nav--integrated" aria-label="Navigation" data-md-level="0">
   <label class="md-nav__title" for="__drawer">
-    <a href="../../.." title="CodeMonsters.team" class="md-nav__button md-logo" aria-label="CodeMonsters.team" data-md-component="logo">
+    <a href="../../../../.." title="CodeMonsters.team" class="md-nav__button md-logo" aria-label="CodeMonsters.team" data-md-component="logo">
       
   <img src="/cm-logo-header.png" alt="logo">
 
@@ -376,7 +378,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../.." class="md-nav__link">
+      <a href="../../../../.." class="md-nav__link">
         
   
   
@@ -403,7 +405,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../overview/" class="md-nav__link">
+      <a href="../../../../../overview/" class="md-nav__link">
         
   
   
@@ -462,7 +464,7 @@
         
           
           <div class="md-nav__link md-nav__container">
-            <a href="../../" class="md-nav__link ">
+            <a href="../../../../" class="md-nav__link ">
               
   
   
@@ -569,7 +571,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../archive/2026/" class="md-nav__link">
+      <a href="../../../../archive/2026/" class="md-nav__link">
         
   
   
@@ -599,7 +601,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../archive/2025/" class="md-nav__link">
+      <a href="../../../../archive/2025/" class="md-nav__link">
         
   
   
@@ -632,8 +634,6 @@
                 
   
   
-    
-  
   
   
     
@@ -701,11 +701,11 @@
       
     
     
-    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3_3" checked>
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3_3" >
         
           
           <label class="md-nav__link" for="__nav_3_3" id="__nav_3_3_label" tabindex="">
@@ -726,7 +726,7 @@
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_3_3_label" aria-expanded="true">
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_3_3_label" aria-expanded="false">
           <label class="md-nav__title" for="__nav_3_3">
             <span class="md-nav__icon md-icon"></span>
             
@@ -746,7 +746,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../agents/" class="md-nav__link">
+      <a href="../../../../category/agents/" class="md-nav__link">
         
   
   
@@ -776,7 +776,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../ai/" class="md-nav__link">
+      <a href="../../../../category/ai/" class="md-nav__link">
         
   
   
@@ -806,7 +806,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../api/" class="md-nav__link">
+      <a href="../../../../category/api/" class="md-nav__link">
         
   
   
@@ -836,7 +836,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../architecture/" class="md-nav__link">
+      <a href="../../../../category/architecture/" class="md-nav__link">
         
   
   
@@ -866,7 +866,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../claude/" class="md-nav__link">
+      <a href="../../../../category/claude/" class="md-nav__link">
         
   
   
@@ -891,23 +891,12 @@
                 
   
   
-    
-  
   
     
-      
-    
   
   
-    <li class="md-nav__item md-nav__item--active">
-      
-      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
-      
-      
-        
-      
-      
-      <a href="./" class="md-nav__link md-nav__link--active">
+    <li class="md-nav__item">
+      <a href="../../../../category/code/" class="md-nav__link">
         
   
   
@@ -923,7 +912,6 @@
   
 
       </a>
-      
     </li>
   
 
@@ -938,7 +926,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../codebook/" class="md-nav__link">
+      <a href="../../../../category/codebook/" class="md-nav__link">
         
   
   
@@ -968,7 +956,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../communication/" class="md-nav__link">
+      <a href="../../../../category/communication/" class="md-nav__link">
         
   
   
@@ -998,7 +986,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../component-tests/" class="md-nav__link">
+      <a href="../../../../category/component-tests/" class="md-nav__link">
         
   
   
@@ -1028,7 +1016,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../container-driven-approach/" class="md-nav__link">
+      <a href="../../../../category/container-driven-approach/" class="md-nav__link">
         
   
   
@@ -1058,7 +1046,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../contract-tests/" class="md-nav__link">
+      <a href="../../../../category/contract-tests/" class="md-nav__link">
         
   
   
@@ -1088,7 +1076,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../coreos/" class="md-nav__link">
+      <a href="../../../../category/coreos/" class="md-nav__link">
         
   
   
@@ -1118,7 +1106,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../devops/" class="md-nav__link">
+      <a href="../../../../category/devops/" class="md-nav__link">
         
   
   
@@ -1148,7 +1136,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../documentation/" class="md-nav__link">
+      <a href="../../../../category/documentation/" class="md-nav__link">
         
   
   
@@ -1178,7 +1166,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../git/" class="md-nav__link">
+      <a href="../../../../category/git/" class="md-nav__link">
         
   
   
@@ -1208,7 +1196,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../gitlab/" class="md-nav__link">
+      <a href="../../../../category/gitlab/" class="md-nav__link">
         
   
   
@@ -1238,7 +1226,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../gitlab-runner/" class="md-nav__link">
+      <a href="../../../../category/gitlab-runner/" class="md-nav__link">
         
   
   
@@ -1268,7 +1256,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../go/" class="md-nav__link">
+      <a href="../../../../category/go/" class="md-nav__link">
         
   
   
@@ -1298,7 +1286,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../howtocode/" class="md-nav__link">
+      <a href="../../../../category/howtocode/" class="md-nav__link">
         
   
   
@@ -1328,7 +1316,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../linux/" class="md-nav__link">
+      <a href="../../../../category/linux/" class="md-nav__link">
         
   
   
@@ -1358,7 +1346,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../process/" class="md-nav__link">
+      <a href="../../../../category/process/" class="md-nav__link">
         
   
   
@@ -1388,7 +1376,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../rational-development/" class="md-nav__link">
+      <a href="../../../../category/rational-development/" class="md-nav__link">
         
   
   
@@ -1418,7 +1406,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../tests/" class="md-nav__link">
+      <a href="../../../../category/tests/" class="md-nav__link">
         
   
   
@@ -1448,7 +1436,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../ubik/" class="md-nav__link">
+      <a href="../../../../category/ubik/" class="md-nav__link">
         
   
   
@@ -1478,7 +1466,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../webauthn/" class="md-nav__link">
+      <a href="../../../../category/webauthn/" class="md-nav__link">
         
   
   
@@ -1546,7 +1534,7 @@
         
           
           <div class="md-nav__link md-nav__container">
-            <a href="../../../codebook/" class="md-nav__link ">
+            <a href="../../../../../codebook/" class="md-nav__link ">
               
   
   
@@ -1590,7 +1578,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../codebook/1-codegen-machine/" class="md-nav__link">
+      <a href="../../../../../codebook/1-codegen-machine/" class="md-nav__link">
         
   
   
@@ -1658,7 +1646,7 @@
         
           
           <div class="md-nav__link md-nav__container">
-            <a href="../../../effective-developer/" class="md-nav__link ">
+            <a href="../../../../../effective-developer/" class="md-nav__link ">
               
   
   
@@ -1702,7 +1690,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../effective-developer/life/" class="md-nav__link">
+      <a href="../../../../../effective-developer/life/" class="md-nav__link">
         
   
   
@@ -1730,7 +1718,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../effective-developer/rules/" class="md-nav__link">
+      <a href="../../../../../effective-developer/rules/" class="md-nav__link">
         
   
   
@@ -1874,7 +1862,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../effective-developer/code/clean-code/how-not-to-write-code/" class="md-nav__link">
+      <a href="../../../../../effective-developer/code/clean-code/how-not-to-write-code/" class="md-nav__link">
         
   
   
@@ -1902,7 +1890,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../effective-developer/code/clean-code/how-to-integration-test/" class="md-nav__link">
+      <a href="../../../../../effective-developer/code/clean-code/how-to-integration-test/" class="md-nav__link">
         
   
   
@@ -1930,7 +1918,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../effective-developer/code/clean-code/how-to/" class="md-nav__link">
+      <a href="../../../../../effective-developer/code/clean-code/how-to/" class="md-nav__link">
         
   
   
@@ -1999,7 +1987,7 @@
         
           
           <div class="md-nav__link md-nav__container">
-            <a href="../../../effective-developer/devops/" class="md-nav__link ">
+            <a href="../../../../../effective-developer/devops/" class="md-nav__link ">
               
   
   
@@ -2066,7 +2054,7 @@
         
           
           <div class="md-nav__link md-nav__container">
-            <a href="../../../effective-developer/devops/free-ipa/" class="md-nav__link ">
+            <a href="../../../../../effective-developer/devops/free-ipa/" class="md-nav__link ">
               
   
   
@@ -2144,7 +2132,7 @@
         
           
           <div class="md-nav__link md-nav__container">
-            <a href="../../../effective-developer/newbie-roadmap/" class="md-nav__link ">
+            <a href="../../../../../effective-developer/newbie-roadmap/" class="md-nav__link ">
               
   
   
@@ -2227,7 +2215,7 @@
         
           
           <div class="md-nav__link md-nav__container">
-            <a href="../../../resources/" class="md-nav__link ">
+            <a href="../../../../../resources/" class="md-nav__link ">
               
   
   
@@ -2271,7 +2259,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../resources/videos/" class="md-nav__link">
+      <a href="../../../../../resources/videos/" class="md-nav__link">
         
   
   
@@ -2299,7 +2287,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../resources/web-links/" class="md-nav__link">
+      <a href="../../../../../resources/web-links/" class="md-nav__link">
         
   
   
@@ -2385,7 +2373,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../resources/books/advanced-web/" class="md-nav__link">
+      <a href="../../../../../resources/books/advanced-web/" class="md-nav__link">
         
   
   
@@ -2413,7 +2401,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../resources/books/essential/" class="md-nav__link">
+      <a href="../../../../../resources/books/essential/" class="md-nav__link">
         
   
   
@@ -2481,7 +2469,7 @@
         
           
           <div class="md-nav__link md-nav__container">
-            <a href="../../../tutorials/" class="md-nav__link ">
+            <a href="../../../../../tutorials/" class="md-nav__link ">
               
   
   
@@ -2581,7 +2569,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../tutorials/server/ddd-in-action/" class="md-nav__link">
+      <a href="../../../../../tutorials/server/ddd-in-action/" class="md-nav__link">
         
   
   
@@ -2626,52 +2614,385 @@
             
           
           
-  <div class="md-content" data-md-component="content">
-    <div class="md-content__inner">
-      <header class="md-typeset">
-        <h1 id="code">code</h1>
-      </header>
-      
-        <article class="md-post md-post--excerpt">
-  <header class="md-post__header">
-    
-      <nav class="md-post__authors md-typeset">
-        
-          <span class="md-author">
-            <img src="https://avatars.githubusercontent.com/u/45400275" alt="Max Morev">
-          </span>
-        
-      </nav>
-    
-    <div class="md-post__meta md-meta">
-      <ul class="md-meta__list">
-        <li class="md-meta__item">
-          <time datetime="2026-05-12 00:00:00+00:00">May 12, 2026</time></li>
-        
-          <li class="md-meta__item">
-            in
+  <div class="md-content md-content--post" data-md-component="content">
+    <div class="md-sidebar md-sidebar--post" data-md-component="sidebar" data-md-type="navigation">
+      <div class="md-sidebar__scrollwrap">
+        <div class="md-sidebar__inner md-post">
+          <nav class="md-nav md-nav--primary">
+            <div class="md-post__back">
+              <div class="md-nav__title md-nav__container">
+                <a href="../../../../" class="md-nav__link">
+                  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+                  <span class="md-ellipsis">
+                    Back to index
+                  </span>
+                </a>
+              </div>
+            </div>
             
-              <a href="./" class="md-meta__link">code</a>, 
-              <a href="../tests/" class="md-meta__link">tests</a>, 
-              <a href="../rational-development/" class="md-meta__link">rational-development</a>, 
-              <a href="../architecture/" class="md-meta__link">architecture</a>, 
-              <a href="../contract-tests/" class="md-meta__link">contract-tests</a></li>
-        
-        
+              <div class="md-post__authors md-typeset">
+                
+                  <div class="md-profile md-post__profile">
+                    <span class="md-author md-author--long">
+                      <img src="https://avatars.githubusercontent.com/u/45400275" alt="Max Morev">
+                    </span>
+                    <span class="md-profile__description">
+                      <strong>
+                        
+                          <a href="https://github.com/codemonstersteam">Max Morev</a>
+                        
+                      </strong>
+                      <br>
+                      Creator
+                    </span>
+                  </div>
+                
+              </div>
+            
+            <ul class="md-post__meta md-nav__list">
+              <li class="md-nav__item md-nav__item--section">
+                <div class="md-post__title">
+                  <span class="md-ellipsis">
+                    Metadata
+                  </span>
+                </div>
+                <nav class="md-nav">
+                  <ul class="md-nav__list">
+                    <li class="md-nav__item">
+                      <div class="md-nav__link">
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 19H5V8h14m-3-7v2H8V1H6v2H5c-1.11 0-2 .89-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V5a2 2 0 0 0-2-2h-1V1m-1 11h-5v5h5z"/></svg>
+                        <time datetime="2026-05-12 00:00:00+00:00" class="md-ellipsis">May 12, 2026</time>
+                      </div>
+                    </li>
+                    
+                    
+                      <li class="md-nav__item">
+                        <div class="md-nav__link">
+                          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9 3v15h3V3zm3 2 4 13 3-1-4-13zM5 5v13h3V5zM3 19v2h18v-2z"/></svg>
+                          <span class="md-ellipsis">
+                            in
+                            
+                              <a href="../../../../category/code/">code</a>, 
+                              <a href="../../../../category/tests/">tests</a>, 
+                              <a href="../../../../category/rational-development/">rational-development</a>, 
+                              <a href="../../../../category/architecture/">architecture</a>, 
+                              <a href="../../../../category/contract-tests/">contract-tests</a>, 
+                              <a href="../../../../category/devops/">devops</a>, 
+                              <a href="../../../../category/ubik/">ubik</a></span>
+                        </div>
+                      </li>
+                    
+                    
+                      
+                      <li class="md-nav__item">
+                        <div class="md-nav__link">
+                          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 20a8 8 0 0 0 8-8 8 8 0 0 0-8-8 8 8 0 0 0-8 8 8 8 0 0 0 8 8m0-18a10 10 0 0 1 10 10 10 10 0 0 1-10 10C6.47 22 2 17.5 2 12A10 10 0 0 1 12 2m.5 5v5.25l4.5 2.67-.75 1.23L11 13V7z"/></svg>
+                          <span class="md-ellipsis">
+                            
+                              20 min read
+                            
+                          </span>
+                        </div>
+                      </li>
+                    
+                  </ul>
+                </nav>
+              </li>
+            </ul>
+            
+          </nav>
           
-          <li class="md-meta__item">
             
-              20 min read
-            
-          </li>
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#_2" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Что такое композиция корректности
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_3" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Сколько тестов нужно для одного сервиса. Возврат к формуле
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Сколько тестов нужно для одного сервиса. Возврат к формуле">
+      <ul class="md-nav__list">
         
+          <li class="md-nav__item">
+  <a href="#api" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Пример: сервис с одним API
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#api_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Пример: сервис с пятью API
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_4" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Что эта формула гарантирует
+      
+    </span>
+  </a>
+  
+</li>
         
       </ul>
+    </nav>
+  
+</li>
       
+        <li class="md-nav__item">
+  <a href="#_5" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Транзитивность корректности через контракт
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#pact" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Третий уровень — валидация контрактов, а не Pact
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Третий уровень — валидация контрактов, а не Pact">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#-" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Контракт-валидатор: что он делает
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#pinout" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Распиновка сервиса и pinout
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#pinout_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        pinout и индустриальный тулинг — разные классы проверок
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_6" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Сравнение в одной таблице
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_7" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Где валидатор живёт в репозитории
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#ci" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Эволюция контракта в CI провайдера
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_8" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Стейджинг как ритуал
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#slo" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Канарейка с SLO как настоящий тест
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Канарейка с SLO как настоящий тест">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#sli-slo-error-budget" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        SLI / SLO / error budget — критерии решения
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_9" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Инструменты, которые это делают
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_10" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Что осталось делать инженеру
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#10-20-100" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Дисциплина композиции на 10 / 20 / 100 сервисов
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_11" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Что мы выкинули
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_12" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Замыкание курса
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_13" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Источники
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+          
+        </div>
+      </div>
     </div>
-  </header>
-  <div class="md-post__content md-typeset">
-    <h2 id="_1"><a class="toclink" href="../../2026/05/12/composition-of-correctness/">Композиция корректности. Как собрать рабочую систему из сервисов с подтверждённой спецификацией</a></h2>
+    <article class="md-content__inner md-typeset">
+      
+        
+  
+
+
+
+
+<h1 id="_1">Композиция корректности. Как собрать рабочую систему из сервисов с подтверждённой спецификацией</h1>
 <blockquote>
 <p><em>«Программы должны быть написаны так, чтобы их корректность можно было доказать, а не угадать тестированием.»</em></p>
 <p>— Niklaus Wirth, <em>Systematic Programming</em></p>
@@ -2692,25 +3013,25 @@
 <p>В этой статье покажу, что весь этот этаж — компенсация отсутствия двух простых вещей: машиночитаемого контракта и канареечного деплоя. При наличии обоих корректность системы выводится из корректности сервисов и совместимости их контрактов. Без e2e, без стейджинга, без бесконечной регрессии.</p>
 <p>В этой главе рассмотрим:</p>
 <ul>
-<li><a href="../../2026/05/12/composition-of-correctness/#composition">Что такое композиция корректности</a></li>
-<li><a href="../../2026/05/12/composition-of-correctness/#formula-recap">Сколько тестов нужно для одного сервиса. Возврат к формуле</a></li>
-<li><a href="../../2026/05/12/composition-of-correctness/#transitivity">Транзитивность корректности через контракт</a></li>
-<li><a href="../../2026/05/12/composition-of-correctness/#contract-validation">Третий уровень — валидация контрактов, а не Pact</a></li>
-<li><a href="../../2026/05/12/composition-of-correctness/#contract-evolution">Эволюция контракта в CI провайдера</a></li>
-<li><a href="../../2026/05/12/composition-of-correctness/#staging-ritual">Стейджинг как ритуал</a></li>
-<li><a href="../../2026/05/12/composition-of-correctness/#canary-slo">Канарейка с SLO как настоящий тест</a></li>
-<li><a href="../../2026/05/12/composition-of-correctness/#scale">Дисциплина композиции на 10 / 20 / 100 сервисов</a></li>
-<li><a href="../../2026/05/12/composition-of-correctness/#what-removed">Что мы выкинули</a></li>
-<li><a href="../../2026/05/12/composition-of-correctness/#closing">Замыкание курса</a></li>
+<li><a href="#composition">Что такое композиция корректности</a></li>
+<li><a href="#formula-recap">Сколько тестов нужно для одного сервиса. Возврат к формуле</a></li>
+<li><a href="#transitivity">Транзитивность корректности через контракт</a></li>
+<li><a href="#contract-validation">Третий уровень — валидация контрактов, а не Pact</a></li>
+<li><a href="#contract-evolution">Эволюция контракта в CI провайдера</a></li>
+<li><a href="#staging-ritual">Стейджинг как ритуал</a></li>
+<li><a href="#canary-slo">Канарейка с SLO как настоящий тест</a></li>
+<li><a href="#scale">Дисциплина композиции на 10 / 20 / 100 сервисов</a></li>
+<li><a href="#what-removed">Что мы выкинули</a></li>
+<li><a href="#closing">Замыкание курса</a></li>
 </ul>
-<h3 id="_2"><a class="toclink" href="../../2026/05/12/composition-of-correctness/#_2">Что такое композиция корректности</a></h3>
+<h2 id="_2">Что такое композиция корректности</h2>
 <p>В формальных методах есть простая идея: если функция <code>f</code> доказана корректной по своему контракту <code>Cf</code>, и функция <code>g</code> доказана корректной по своему контракту <code>Cg</code>, и выход <code>f</code> удовлетворяет входу <code>g</code>, то композиция <code>g(f(x))</code> корректна без отдельного доказательства. Это базовая теорема Хоара о композиции, и она же — основание всей нашей дисциплины проектирования модулей.</p>
 <p>В курсе мы применили эту идею внутри сервиса. Дерево модулей с одним входом и одним выходом, контракты с антецедентом и консеквентом, граф вызовов с проверкой «консеквент A ⊆ антецедент B» (Шаг 9 скилла проектирования) — это и есть локальная композиция корректности. Сервис правилен, потому что его модули правильны и их контракты согласованы.</p>
 <p>Теперь то же самое — на уровень выше. Сервис — это модуль более крупного масштаба. У него тоже есть один вход (API), один выход (ответ или эффект на интеграции), антецедент (валидный запрос по схеме) и консеквент (ответ по схеме плюс эффекты на собственных интеграциях). И спецификация сервиса <strong>подтверждена компонентными тестами в Docker Compose</strong> против реальных зависимостей. Корректность по построению — заслуга проектирования; компонентные тесты лишь сверяют, что построенное соответствует контракту.</p>
 <p>Если у двух сервисов спецификации подтверждены тестами в изоляции, и контракт потребителя совместим с контрактом провайдера, — пара сервисов работает по своему общему контракту без отдельной проверки на стенде «двух вместе». То же для трёх, десяти, ста. Это <strong>композиция корректности на уровне сервисов</strong>.</p>
 <p>Звучит академично. На практике это означает простую вещь: <strong>если мы умеем подтвердить спецификацию одного сервиса в изоляции и проверить совместимость двух контрактов, мы умеем собрать любую систему</strong>. Никаких системных тестов, никаких e2e, никакого стейджинга.</p>
 <p>Весь остаток статьи — про то, как именно проверять совместимость контрактов и как закрывать оставшийся класс рисков канарейкой.</p>
-<h3 id="_3"><a class="toclink" href="../../2026/05/12/composition-of-correctness/#_3">Сколько тестов нужно для одного сервиса. Возврат к формуле</a></h3>
+<h2 id="_3">Сколько тестов нужно для одного сервиса. Возврат к формуле</h2>
 <p>Прежде чем складывать сервисы в систему, зафиксируем, что значит «сервис с подтверждённой спецификацией». Это работа <a href="https://codemonsters.team/blog/2026/04/25/testing-mythology-component-tests/">второй статьи курса</a>, но без неё дальнейший аргумент висит в воздухе.</p>
 <p>Спецификация сервиса как чёрного ящика описывает два класса утверждений:</p>
 <ol>
@@ -2718,23 +3039,23 @@
 <li><strong>Поведение при отказе каждой внешней интеграции</strong> — по утверждению на каждую различимую ветку обработки в адаптере этой интеграции. Адаптер — отдельный модуль, в котором инкапсулирована работа с одной конкретной интеграцией (БД, брокером, апстрим-сервисом).</li>
 </ol>
 <p>Отсюда формула:</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-10-1" name="__codelineno-10-1" href="#__codelineno-10-1"></a>N_тестов = N_API + Σᵢ (число различимых веток в адаптере интеграции i)
+<div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a>N_тестов = N_API + Σᵢ (число различимых веток в адаптере интеграции i)
 </code></pre></div>
 <p>Где <code>N_API</code> — число эндпоинтов сервиса, <code>i</code> пробегает по всем внешним интеграциям сервиса (СУБД, брокер сообщений, апстрим HTTP-сервисы, объектное хранилище и т. п.), а для каждой интеграции считается число различимых веток обработки в её адаптере.</p>
 <p>Происхождение: контракт сервиса с внешним миром конечен. Сколько утверждений в контракте — столько тестов. Не больше и не меньше. Не «всё возможное» (это математически невозможно, <a href="https://codemonsters.team/blog/2026/04/25/testing-mythology-component-tests/#nelzya-vse">см. пример с ФИО клиента</a> — 7×10¹⁵¹ комбинаций), а ровно столько утверждений, сколько мы написали в спецификации.</p>
-<h4 id="api"><a class="toclink" href="../../2026/05/12/composition-of-correctness/#api">Пример: сервис с одним API</a></h4>
+<h3 id="api">Пример: сервис с одним API</h3>
 <p>Сервис регистрации клиента. Один эндпоинт <code>POST /clients</code>. Интеграции:</p>
 <ul>
 <li>PostgreSQL — сохраняет клиента;</li>
 <li>Kafka — публикует событие <code>client_registered</code>.</li>
 </ul>
 <p>Адаптеры спроектированы просто: любая ошибка зависимости → одна ошибка наружу. Одна различимая ветка в каждом.</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-11-1" name="__codelineno-11-1" href="#__codelineno-11-1"></a>1 (POST /clients, happy path)
-<a id="__codelineno-11-2" name="__codelineno-11-2" href="#__codelineno-11-2"></a>+ 1 (БД недоступна → 503)
-<a id="__codelineno-11-3" name="__codelineno-11-3" href="#__codelineno-11-3"></a>+ 1 (брокер недоступен → 503)
-<a id="__codelineno-11-4" name="__codelineno-11-4" href="#__codelineno-11-4"></a>= 3 компонентных теста
+<div class="highlight"><pre><span></span><code><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a>1 (POST /clients, happy path)
+<a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a>+ 1 (БД недоступна → 503)
+<a id="__codelineno-1-3" name="__codelineno-1-3" href="#__codelineno-1-3"></a>+ 1 (брокер недоступен → 503)
+<a id="__codelineno-1-4" name="__codelineno-1-4" href="#__codelineno-1-4"></a>= 3 компонентных теста
 </code></pre></div>
-<h4 id="api_1"><a class="toclink" href="../../2026/05/12/composition-of-correctness/#api_1">Пример: сервис с пятью API</a></h4>
+<h3 id="api_1">Пример: сервис с пятью API</h3>
 <p>Сервис на 5 REST-эндпоинтов. Две внешние интеграции:</p>
 <ul>
 <li>PostgreSQL — для хранения;</li>
@@ -2746,10 +3067,10 @@
 <li><strong>Отказ системы</strong> — удалённая сторона ответила ошибкой по существу: ошибка SQL, нарушение схемы, NACK от брокера, тема не найдена. Удалённая сторона жива, но ситуация не лечится повтором. Реакция — отдать <code>500 Internal Server Error</code> наверх без retry.</li>
 </ul>
 <p>В каждом адаптере — две различимых ветки. Считаем:</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-12-1" name="__codelineno-12-1" href="#__codelineno-12-1"></a>5 (по одному happy-path-сценарию на эндпоинт)
-<a id="__codelineno-12-2" name="__codelineno-12-2" href="#__codelineno-12-2"></a>+ 2 (СУБД: отказ сети + отказ системы)
-<a id="__codelineno-12-3" name="__codelineno-12-3" href="#__codelineno-12-3"></a>+ 2 (брокер: отказ сети + отказ системы)
-<a id="__codelineno-12-4" name="__codelineno-12-4" href="#__codelineno-12-4"></a>= 9 компонентных тестов
+<div class="highlight"><pre><span></span><code><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a>5 (по одному happy-path-сценарию на эндпоинт)
+<a id="__codelineno-2-2" name="__codelineno-2-2" href="#__codelineno-2-2"></a>+ 2 (СУБД: отказ сети + отказ системы)
+<a id="__codelineno-2-3" name="__codelineno-2-3" href="#__codelineno-2-3"></a>+ 2 (брокер: отказ сети + отказ системы)
+<a id="__codelineno-2-4" name="__codelineno-2-4" href="#__codelineno-2-4"></a>= 9 компонентных тестов
 </code></pre></div>
 <p>Раскладка по сценариям:</p>
 <table>
@@ -2815,11 +3136,11 @@
 <p>Проверьте на нашем примере. <strong>Сеть vs система</strong> — заслуженно разные ветки: на сетевой отказ мы отвечаем <code>503 + Retry-After</code> (клиент должен повторить), на отказ системы — <code>500</code> (клиент повторять не должен). Разное поведение, разные ветки, два теста. <strong>Таймаут запроса vs таймаут транзакции</strong> — если оба приводят к одному и тому же <code>503</code> наружу, то это в спецификации сервиса <strong>одна ситуация</strong>: «БД недоступна». Внутри адаптера это может быть две разные конструкции <code>if</code>, но в контракте сервиса это одно утверждение. Один тест.</p>
 <p>Это и есть ответ на индустриальный вопрос «а нужно ли тестировать каждый код ошибки СУБД, который может прилететь». Нет, не нужно. <strong>В спецификацию сервиса попадает только то, что меняет его поведение наружу.</strong> Если поставщик умеет 200 разных ошибок, а сервис из них делает один <code>503</code> — в контракте сервиса один режим отказа этой интеграции. Один тест.</p>
 <p>Отсюда формула остаётся точной: <strong>число тестов задаётся контрактом сервиса с внешним миром</strong>. Не задаётся ни внутренним устройством сервиса, ни богатством чужих API ошибок, ни вкусом разработчика. Изменилась спецификация — число пересчитывается формулой. Не изменилась — число фиксировано.</p>
-<h4 id="_4"><a class="toclink" href="../../2026/05/12/composition-of-correctness/#_4">Что эта формула гарантирует</a></h4>
+<h3 id="_4">Что эта формула гарантирует</h3>
 <p>Когда сервис прошёл <code>N_тестов</code> по формуле — его <strong>соответствие спецификации подтверждено в изоляции</strong>. Каждое утверждение контракта с внешним миром проверено в Docker Compose с реальными зависимостями. Больше тестов поверх ничего не добавляют — они дублируют уже проверенное или проверяют то, что должно быть на юнит-уровне (валидация полей, бизнес-логика, ветвления внутри модулей).</p>
 <p>И главное — это число <strong>известно заранее, до написания кода</strong>. Спецификация конечна, формула считает, бюджет на тестирование становится <strong>предсказуемым</strong>. Не «потратим N человеко-дней, пока не наловим все баги», а «сервис требует столько-то сценариев, столько-то времени на их разработку, столько-то секунд на прогон в CI». Производство становится оцениваемым по тем же лекалам, по которым в электронике оценивается trim-конвейерной проверки чипа: датасет, число тестпойнтов, прогнозируемое время цикла.</p>
 <p>Теперь у нас есть единица композиции — <strong>сервис с подтверждённой спецификацией</strong> (<code>N_тестов</code> сценариев по формуле, все зелёные). Можно складывать.</p>
-<h3 id="_5"><a class="toclink" href="../../2026/05/12/composition-of-correctness/#_5">Транзитивность корректности через контракт</a></h3>
+<h2 id="_5">Транзитивность корректности через контракт</h2>
 <p>Сформулируем теорему. Без LaTeX-а, в одну фразу.</p>
 <blockquote>
 <p>Если сервис P корректен по контракту Cp, сервис Q корректен по контракту Cq, и Cp.responses ⊆ Cq.expectations, то P → Q корректна.</p>
@@ -2834,7 +3155,7 @@
 <p>Транзитивность означает: для системы из N сервисов с M связями между ними нужно проверить M совместимостей пар контрактов, а не комбинаторный взрыв всех возможных путей запроса через систему. Это растёт <strong>линейно</strong>, не экспоненциально. На 100 сервисов с типичными 3–5 связями на сервис — это 300–500 пар, каждая проверяется за секунды.</p>
 <p>Сравните с e2e: путь запроса через 5 сервисов даёт 2⁵ = 32 комбинации happy/failure ответов каждого узла. Это уже 32 сценария на одну цепочку. А цепочек в системе из 100 сервисов — сотни. Десятки тысяч сценариев, ни один из которых не доказателен по Дейкстре (см. <a href="https://codemonsters.team/blog/2026/04/25/testing-mythology-component-tests/">статью о компонентных тестах</a>, раздел «Почему "протестировать всё" невозможно»).</p>
 <p>Этот раздел — главное обещание статьи. Дальше — как именно проверять совместимость контрактов и что делать с оставшимся классом рисков.</p>
-<h3 id="pact"><a class="toclink" href="../../2026/05/12/composition-of-correctness/#pact">Третий уровень — валидация контрактов, а не Pact</a></h3>
+<h2 id="pact">Третий уровень — валидация контрактов, а не Pact</h2>
 <p>В индустрии для проверки совместимости сервисов есть устоявшийся ответ: <strong>consumer-driven contracts</strong>, обычно через Pact. Это работает так:</p>
 <ol>
 <li>Потребитель пишет код мока, описывающего его ожидания от провайдера.</li>
@@ -2854,7 +3175,7 @@
 <li>лежит в репозитории сервиса, версионируется, ревьюится.</li>
 </ul>
 <p>Если два сервиса держат контракты в таком виде, совместимость между ними <strong>проверяется сравнением двух YAML-документов</strong>, а не прогоном моков на стенде. Это статическая верификация контракта, а не динамический тест.</p>
-<h4 id="-"><a class="toclink" href="../../2026/05/12/composition-of-correctness/#-">Контракт-валидатор: что он делает</a></h4>
+<h3 id="-">Контракт-валидатор: что он делает</h3>
 <p>Третий уровень пирамиды — это не «ещё один класс тестов», а <strong>инструмент</strong>. Я предлагаю называть его <strong>контракт-валидатор</strong>, чтобы не путать с Pact-style contract tests.</p>
 <p>Что он проверяет:</p>
 <table>
@@ -2894,7 +3215,7 @@
 </tbody>
 </table>
 <p>Вход у валидатора — два YAML-файла. Выход — список несовместимостей или «ok». Никаких моков, никакой сети, никакого Docker. Прогон занимает секунды и не зависит от ничего, кроме самих файлов.</p>
-<h4 id="pinout"><a class="toclink" href="../../2026/05/12/composition-of-correctness/#pinout">Распиновка сервиса и pinout</a></h4>
+<h3 id="pinout">Распиновка сервиса и pinout</h3>
 <p>В электронике у каждой микросхемы есть <strong>распиновка</strong> (pinout): на какие пины какие сигналы заходят, какие напряжения, какие протоколы. Чтобы две микросхемы заработали вместе, их распиновки должны сходиться. Это проверяется до того, как платы паяют, — по datasheet, не на стенде.</p>
 <p>В сервисной архитектуре ровно ту же роль играет спецификация: OpenAPI описывает «распиновку» REST-сервиса, AsyncAPI — асинхронного. Эндпоинты, схемы, коды ошибок, каналы, форматы сообщений — это распиновка сервиса. Совместимость двух сервисов — это совместимость их распиновок. И, как в электронике, она проверяется <strong>до сборки</strong>, по двум документам.</p>
 <p>Для этой проверки в курсе разрабатывается тулинг — <strong><a href="https://github.com/codemonstersteam/pinout">pinout</a></strong>: экосистема валидаторов контрактов consumer↔provider на основе OpenAPI и AsyncAPI. Состав:</p>
@@ -2930,7 +3251,7 @@
 </tbody>
 </table>
 <p>Метафора распиновки задаёт и название второго модуля — <strong>netlist</strong>. В печатных платах netlist — формальное описание всех соединений в схеме до её разводки. В сервисной архитектуре netlist — формальное описание всех связей consumer↔provider в системе до её сборки. Не Confluence-схема «на словах», а машиночитаемый граф, по которому валидаторы прогоняют совместимости.</p>
-<h4 id="pinout_1"><a class="toclink" href="../../2026/05/12/composition-of-correctness/#pinout_1">pinout и индустриальный тулинг — разные классы проверок</a></h4>
+<h3 id="pinout_1">pinout и индустриальный тулинг — разные классы проверок</h3>
 <p>Важно не путать pinout с тем, что уже есть в индустрии. В индустрии есть инструменты для <strong>обнаружения ломающих изменений в одной спецификации во времени</strong>: <code>oasdiff</code> для OpenAPI, <code>asyncapi diff</code> для AsyncAPI, <code>Buf breaking</code> для protobuf. Они отвечают на вопрос: «не ломаю ли я свой контракт по сравнению со вчерашней версией».</p>
 <p>Это <strong>другой класс проверки</strong>, не тот, что решает pinout. Сведём в таблице:</p>
 <table>
@@ -2959,7 +3280,7 @@
 </table>
 <p>Обе проверки нужны, и обе живут в CI. Первая защищает потребителей сервиса от ломающих изменений его собственного контракта. Вторая защищает систему в целом от несовместимости контрактов между сервисами. Они не заменяют друг друга — они закрывают разные классы рисков.</p>
 <p>Почему вторую проверку индустрия не решила готовым инструментом — отдельный разговор. Краткая версия: в эпоху REST-без-схем её симулировали через Pact, и индустрия закрепилась на этом решении даже после прихода OpenAPI. Никто не дописал «настоящий» валидатор совместимости спецификаций, потому что Pact формально работал. pinout закрывает эту нишу прямо, через сравнение машиночитаемых распиновок.</p>
-<h4 id="_6"><a class="toclink" href="../../2026/05/12/composition-of-correctness/#_6">Сравнение в одной таблице</a></h4>
+<h3 id="_6">Сравнение в одной таблице</h3>
 <table>
 <thead>
 <tr>
@@ -3002,20 +3323,20 @@
 </tbody>
 </table>
 <p>Pact решает задачу окольным путём — через симуляцию. Валидатор решает её прямо — через сравнение спецификаций. Когда контракт стал машиночитаемым, симуляция стала лишней.</p>
-<h4 id="_7"><a class="toclink" href="../../2026/05/12/composition-of-correctness/#_7">Где валидатор живёт в репозитории</a></h4>
+<h3 id="_7">Где валидатор живёт в репозитории</h3>
 <p>Скилл для агента — отдельной статьёй после этой, по образцу <a href="https://codemonsters.team/blog/2026/04/26/component-tests-skill-passkey-demo/">skill для компонентных тестов</a>. Но структура уже понятна:</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-13-1" name="__codelineno-13-1" href="#__codelineno-13-1"></a>service-template/
-<a id="__codelineno-13-2" name="__codelineno-13-2" href="#__codelineno-13-2"></a>├── api-specification/
-<a id="__codelineno-13-3" name="__codelineno-13-3" href="#__codelineno-13-3"></a>│   ├── openapi.yaml
-<a id="__codelineno-13-4" name="__codelineno-13-4" href="#__codelineno-13-4"></a>│   └── asyncapi.yaml
-<a id="__codelineno-13-5" name="__codelineno-13-5" href="#__codelineno-13-5"></a>├── pinout-checks/
-<a id="__codelineno-13-6" name="__codelineno-13-6" href="#__codelineno-13-6"></a>│   ├── upstream/                  # распиновки сервисов, к которым ходим
-<a id="__codelineno-13-7" name="__codelineno-13-7" href="#__codelineno-13-7"></a>│   │   ├── billing-openapi.yaml
-<a id="__codelineno-13-8" name="__codelineno-13-8" href="#__codelineno-13-8"></a>│   │   └── notifications-asyncapi.yaml
-<a id="__codelineno-13-9" name="__codelineno-13-9" href="#__codelineno-13-9"></a>│   └── compatibility.report.md    # автогенерируется в CI
-<a id="__codelineno-13-10" name="__codelineno-13-10" href="#__codelineno-13-10"></a>└── skills/
-<a id="__codelineno-13-11" name="__codelineno-13-11" href="#__codelineno-13-11"></a>    └── pinout-validator/
-<a id="__codelineno-13-12" name="__codelineno-13-12" href="#__codelineno-13-12"></a>        └── SKILL.md
+<div class="highlight"><pre><span></span><code><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a>service-template/
+<a id="__codelineno-3-2" name="__codelineno-3-2" href="#__codelineno-3-2"></a>├── api-specification/
+<a id="__codelineno-3-3" name="__codelineno-3-3" href="#__codelineno-3-3"></a>│   ├── openapi.yaml
+<a id="__codelineno-3-4" name="__codelineno-3-4" href="#__codelineno-3-4"></a>│   └── asyncapi.yaml
+<a id="__codelineno-3-5" name="__codelineno-3-5" href="#__codelineno-3-5"></a>├── pinout-checks/
+<a id="__codelineno-3-6" name="__codelineno-3-6" href="#__codelineno-3-6"></a>│   ├── upstream/                  # распиновки сервисов, к которым ходим
+<a id="__codelineno-3-7" name="__codelineno-3-7" href="#__codelineno-3-7"></a>│   │   ├── billing-openapi.yaml
+<a id="__codelineno-3-8" name="__codelineno-3-8" href="#__codelineno-3-8"></a>│   │   └── notifications-asyncapi.yaml
+<a id="__codelineno-3-9" name="__codelineno-3-9" href="#__codelineno-3-9"></a>│   └── compatibility.report.md    # автогенерируется в CI
+<a id="__codelineno-3-10" name="__codelineno-3-10" href="#__codelineno-3-10"></a>└── skills/
+<a id="__codelineno-3-11" name="__codelineno-3-11" href="#__codelineno-3-11"></a>    └── pinout-validator/
+<a id="__codelineno-3-12" name="__codelineno-3-12" href="#__codelineno-3-12"></a>        └── SKILL.md
 </code></pre></div>
 <p>Сервис в своём CI проверяет:</p>
 <ol>
@@ -3024,7 +3345,7 @@
 <li><strong>Свой контракт совместим с контрактами апстримов.</strong> Для каждого <code>upstream/*.yaml</code> — прогон <code>pinout</code>, отчёт в <code>compatibility.report.md</code>.</li>
 </ol>
 <p>Если хоть одно — красное, PR не сливается. Никакой системный стенд не поднимается.</p>
-<h3 id="ci"><a class="toclink" href="../../2026/05/12/composition-of-correctness/#ci">Эволюция контракта в CI провайдера</a></h3>
+<h2 id="ci">Эволюция контракта в CI провайдера</h2>
 <p>Композиция корректности держится на одном инварианте: <strong>контракт обратно совместим в пределах мажорной версии</strong>. Это значит — провайдер не может тихо сломать то, на что подписаны потребители.</p>
 <p>Правила эволюции конечны и формализуются как линтер. Список — не мой, это общеинженерная практика (см. рекомендации Google API Design Guide, OpenAPI Initiative versioning guide, Buf breaking change rules для protobuf):</p>
 <table>
@@ -3083,14 +3404,14 @@
 </table>
 <p>«Нет» означает: мажорная версия (<code>v2</code>), параллельная работа двух мажоров до миграции потребителей, удаление <code>v1</code> только после явного подтверждения всех потребителей. Это процесс, не «выкатим и посмотрим».</p>
 <p>Прогон в CI на каждый PR:</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-14-1" name="__codelineno-14-1" href="#__codelineno-14-1"></a>oasdiff<span class="w"> </span>breaking<span class="w"> </span><span class="se">\</span>
-<a id="__codelineno-14-2" name="__codelineno-14-2" href="#__codelineno-14-2"></a><span class="w">    </span>api-specification/openapi.yaml@HEAD<span class="w"> </span><span class="se">\</span>
-<a id="__codelineno-14-3" name="__codelineno-14-3" href="#__codelineno-14-3"></a><span class="w">    </span>api-specification/openapi.yaml@main<span class="w"> </span><span class="se">\</span>
-<a id="__codelineno-14-4" name="__codelineno-14-4" href="#__codelineno-14-4"></a><span class="w">    </span>--fail-on<span class="w"> </span>ERR
+<div class="highlight"><pre><span></span><code><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a>oasdiff<span class="w"> </span>breaking<span class="w"> </span><span class="se">\</span>
+<a id="__codelineno-4-2" name="__codelineno-4-2" href="#__codelineno-4-2"></a><span class="w">    </span>api-specification/openapi.yaml@HEAD<span class="w"> </span><span class="se">\</span>
+<a id="__codelineno-4-3" name="__codelineno-4-3" href="#__codelineno-4-3"></a><span class="w">    </span>api-specification/openapi.yaml@main<span class="w"> </span><span class="se">\</span>
+<a id="__codelineno-4-4" name="__codelineno-4-4" href="#__codelineno-4-4"></a><span class="w">    </span>--fail-on<span class="w"> </span>ERR
 </code></pre></div>
 <p>Если PR содержит breaking change без мажорной версии — CI красный, PR не сливается. Сервис <strong>физически не может выкатить ломающее изменение</strong> без явного решения. Не «забыли подумать о потребителях» — система не пустит.</p>
 <p>Это инвариант большего масштаба, чем юнит-тест. Юнит-тест говорит: «модуль ведёт себя по контракту». Линтер контракта говорит: «контракт сам по себе стабилен». Оба — статические проверки, обе детерминированные, обе быстрые.</p>
-<h3 id="_8"><a class="toclink" href="../../2026/05/12/composition-of-correctness/#_8">Стейджинг как ритуал</a></h3>
+<h2 id="_8">Стейджинг как ритуал</h2>
 <p>Теперь к нелюбимой части индустриальной практики. <strong>Стейджинг</strong> — отдельный окружение, копия прода, на которое выкатывается новая версия сервиса перед продом. На стейджинге прогоняют e2e-тесты, регрессию, нагрузочные сценарии. Зелёный стейджинг — индульгенция на выкатку в прод.</p>
 <p>Спросим прямо: что именно подтверждает зелёный стейджинг?</p>
 <p>Разберём по классам рисков:</p>
@@ -3141,7 +3462,7 @@
 <p>И второе возражение: «но e2e на стейджинге проверяют интеграцию». Нет, не проверяют. Они проверяют, что <strong>на стейджинговой инфраструктуре</strong> при <strong>стейджинговых данных</strong> при <strong>стейджинговой нагрузке</strong> запрос проходит через цепочку сервисов. На проде ни одно из этих условий не выполняется. Подтверждение, полученное на стейджинге, привязано к стейджингу и <strong>на прод не переносится</strong> — формально это просто другая программа в другом окружении.</p>
 <p>Стейджинг как класс окружений — это <strong>компенсация отсутствия канареечного деплоя</strong>. Когда непонятно, как безопасно выкатить, делают «второй прод поменьше», прогоняют там и надеются. Когда канарейка освоена как инструмент — стейджинг уходит вместе с e2e на нём.</p>
 <p>И ещё одно. Содержание стейджинга стоит реальных денег. Есть компании, у которых стейджинг по инфраструктуре сопоставим с продом.</p>
-<h3 id="slo"><a class="toclink" href="../../2026/05/12/composition-of-correctness/#slo">Канарейка с SLO как настоящий тест</a></h3>
+<h2 id="slo">Канарейка с SLO как настоящий тест</h2>
 <p>Альтернатива стейджингу — <strong>канареечный деплой</strong>. Идея простая: новая версия сервиса выкатывается на маленький процент реального трафика, метрики этого процента сравниваются с метриками старой версии, при ухудшении — автоматический откат, при стабильности — постепенное увеличение доли.</p>
 <p>Эта практика описана в книгах Sam Newman (<em>Building Microservices</em>, 2-е изд., главы 8 и 12) и Google SRE Workbook (главы про progressive rollouts и error budgets). Это не экспериментальная техника, это индустриальный стандарт продакшен-деплоя последние десять лет.</p>
 <p>Что канарейка проверяет:</p>
@@ -3180,7 +3501,7 @@
 </tbody>
 </table>
 <p>Тот класс рисков, который стейджинг <strong>не</strong> закрывает, — канарейка закрывает по построению. И не «надо бы ещё придумать кейсы», а автоматически — реальный трафик прода <strong>по определению</strong> содержит все распределения, которые есть в проде.</p>
-<h4 id="sli-slo-error-budget"><a class="toclink" href="../../2026/05/12/composition-of-correctness/#sli-slo-error-budget">SLI / SLO / error budget — критерии решения</a></h4>
+<h3 id="sli-slo-error-budget">SLI / SLO / error budget — критерии решения</h3>
 <p>Канарейка — это деплой плюс <strong>автоматическое решение об откате</strong>. Решение принимается не глазами оператора, а сравнением метрик. Это означает: должны быть метрики, должны быть пороги, должно быть правило сравнения.</p>
 <p>Определения (формализованы в Google SRE Workbook):</p>
 <ul>
@@ -3225,7 +3546,7 @@
 <li>На любом шаге, если SLI v2 нарушает SLO или ухудшение относительно v1 превышает порог — автоматический откат: трафик возвращается на v1, v2 снимается, алёрт оператору.</li>
 </ol>
 <p>Конкретные пороги — на стороне SRE-команды. Школа не дискутирует, какой именно burn rate приемлем у конкретного бизнеса; школа фиксирует, что <strong>решение принимает алгоритм по метрикам, а не человек по фотографии Grafana</strong>.</p>
-<h4 id="_9"><a class="toclink" href="../../2026/05/12/composition-of-correctness/#_9">Инструменты, которые это делают</a></h4>
+<h3 id="_9">Инструменты, которые это делают</h3>
 <p>Чтобы не плодить иллюзию, что это «надо самому написать»: канареечный деплой как сервис давно реализован в production-tooling. Есть два слоя инструментов, которые работают в связке.</p>
 <p><strong>Оркестраторы канареечного деплоя</strong> — управляют постепенным переключением трафика и откатом:</p>
 <ul>
@@ -3239,7 +3560,7 @@
 <li><strong>Kayenta</strong> — open source automated canary analysis от Netflix и Google (опубликован в 2018, описан в <a href="https://netflixtechblog.com/automated-canary-analysis-at-netflix-with-kayenta-3260bc7acc69">блоге Netflix Tech</a> и <a href="https://cloud.google.com/blog/products/gcp/introducing-kayenta-an-open-automated-canary-analysis-tool-from-google-and-netflix">блоге Google Cloud</a>). Использует U-критерий Манна-Уитни для определения значимых отклонений. Netflix перенёс на него всю свою канареечную систему; используется Adobe, Waze и многими другими.</li>
 </ul>
 <p>Связка типична такая: Argo Rollouts или Spinnaker управляют переключением трафика и вызывают Kayenta (или встроенный analysis) на каждом шаге. Если анализ показывает деградацию — автоматический откат. Эти инструменты решают задачу детерминированной выкатки с автооткатом; не нужно собирать своё.</p>
-<h4 id="_10"><a class="toclink" href="../../2026/05/12/composition-of-correctness/#_10">Что осталось делать инженеру</a></h4>
+<h3 id="_10">Что осталось делать инженеру</h3>
 <p>Когда у тебя в репозитории сервиса:</p>
 <ul>
 <li>юнит-тесты по формуле для модулей логики (подтверждают модули по контракту);</li>
@@ -3249,7 +3570,7 @@
 </ul>
 <p>— то на каждый коммит инженер делает следующее: пишет код, прогоняет CI, мержит зелёный PR, видит зелёную канарейку. Всё. Никакого ритуала «выкатили на стейдж, дали тестировщикам полдня погонять, исправили три флака, выкатили в прод, посмотрели».</p>
 <p>Полный CI-цикл от коммита до 100% трафика на новой версии — десятки минут, не дни. И каждый шаг детерминирован.</p>
-<h3 id="10-20-100"><a class="toclink" href="../../2026/05/12/composition-of-correctness/#10-20-100">Дисциплина композиции на 10 / 20 / 100 сервисов</a></h3>
+<h2 id="10-20-100">Дисциплина композиции на 10 / 20 / 100 сервисов</h2>
 <p>Принципы не меняются с масштабом. Меняется давление на отдельные элементы дисциплины — и за чем нужно следить внимательнее. Сведу одной таблицей.</p>
 <table>
 <thead>
@@ -3320,7 +3641,7 @@
 <p>Главный пункт в таблице — последний. <strong>Время от коммита до прод-канарейки не должно расти с числом сервисов в системе</strong>, потому что каждый сервис деплоится независимо и его CI не зависит от других. Это и есть смысл независимо деплоящихся сервисов: автономия команды.</p>
 <p>В индустриальной практике, к сожалению, чаще наблюдается обратное: чем больше сервисов, тем больше «общих» этапов в выкатке, тем дольше цикл. На 100 сервисов компании накапливают часовые системные регрессии, дневные релизы, недельные «релизные поезда». Это симптом того, что корректность не строится локально, а ловится коллективным прогоном — и потому масштабируется не линейно, а ужасно.</p>
 <p>Один момент про e2e на UI стоит пояснить отдельно. UI-сценарий через несколько экранов — это <strong>журей пользователя</strong>, и его имеет смысл проверять, потому что у UI нет внутренней спецификации, против которой можно прогнать компонент. Но таких сценариев на продукт <strong>единицы</strong> — 5–10 критичных путей, не сотни. Они дополняют компонентные тесты бэкенда, не заменяют их. И поднимаются на канарейке против реального бэкенда, не на стейджинге.</p>
-<h3 id="_11"><a class="toclink" href="../../2026/05/12/composition-of-correctness/#_11">Что мы выкинули</a></h3>
+<h2 id="_11">Что мы выкинули</h2>
 <p>Сведём финальный список индустриальных артефактов, которые в рациональной разработке не нужны, с обоснованием для каждого.</p>
 <table>
 <thead>
@@ -3365,7 +3686,7 @@
 </tbody>
 </table>
 <p>Это не «упрощение». Это устранение слоёв, которые были компенсацией за отсутствие инженерной дисциплины. Когда дисциплина есть — слои отваливаются сами.</p>
-<h3 id="_12"><a class="toclink" href="../../2026/05/12/composition-of-correctness/#_12">Замыкание курса</a></h3>
+<h2 id="_12">Замыкание курса</h2>
 <p>Возвращаемся к Дейкстре, с которого начинали в первой статье серии.</p>
 <blockquote>
 <p><em>Тестирование программ может служить для доказательства наличия ошибок, но никогда не докажет их отсутствия.</em></p>
@@ -3382,7 +3703,7 @@
 <p>Индустрия закопала эти идеи под слоем «гибких практик», бесконечных пирамид тестов и стейджинг-окружений. Мы их откопали.</p>
 <p>Школа мастерства «Рациональная Разработка» — это про то, чтобы вы умели это применять на своих проектах. Не как догму, а как <strong>доказательную инженерную дисциплину</strong>, которая экономит вашему работодателю миллионы и возвращает вам контроль над тем, что вы делаете.</p>
 <p>Конец курса. Дальше — практика.</p>
-<h3 id="_13"><a class="toclink" href="../../2026/05/12/composition-of-correctness/#_13">Источники</a></h3>
+<h2 id="_13">Источники</h2>
 <ol>
 <li>Hoare C. A. R. <em>An Axiomatic Basis for Computer Programming.</em> Communications of the ACM, 1969.</li>
 <li>Dijkstra E. W. <em>A Discipline of Programming.</em> Prentice-Hall, 1976.</li>
@@ -3403,549 +3724,27 @@
 <li><a href="https://github.com/ubik-life/passkey-demo-api"><code>ubik-life/passkey-demo-api</code></a> — учебный сервис курса.</li>
 <li><a href="https://github.com/ubik-life/service-template"><code>ubik-life/service-template</code></a> — шаблон сервиса с AGENTS.md и скиллами.</li>
 </ol>
-    
-    
-  </div>
-</article>
-      
-        <article class="md-post md-post--excerpt">
-  <header class="md-post__header">
-    
-      <nav class="md-post__authors md-typeset">
-        
-          <span class="md-author">
-            <img src="https://avatars.githubusercontent.com/u/45400275" alt="Max Morev">
-          </span>
-        
-      </nav>
-    
-    <div class="md-post__meta md-meta">
-      <ul class="md-meta__list">
-        <li class="md-meta__item">
-          <time datetime="2026-05-02 00:00:00+00:00">May 2, 2026</time></li>
-        
-          <li class="md-meta__item">
-            in
-            
-              <a href="./" class="md-meta__link">code</a>, 
-              <a href="../architecture/" class="md-meta__link">architecture</a>, 
-              <a href="../rational-development/" class="md-meta__link">rational-development</a>, 
-              <a href="../howtocode/" class="md-meta__link">howtocode</a>, 
-              <a href="../agents/" class="md-meta__link">agents</a></li>
-        
-        
-          
-          <li class="md-meta__item">
-            
-              44 min read
-            
-          </li>
-        
-        
-      </ul>
-      
-    </div>
-  </header>
-  <div class="md-post__content md-typeset">
-    <h2 id="opus-sonnet"><a class="toclink" href="../../2026/05/02/rational-design-skills/">Два скилла дисциплины. Скилл проектирования для opus и скилл реализации для sonnet</a></h2>
-<blockquote>
-<p><em>«Дисциплина — это мост между целями и достижениями.»</em></p>
-<p>— Jim Rohn</p>
-</blockquote>
-<p>В <a href="https://codemonsters.team/blog/2026/05/01/rational-design-discipline/">предыдущей статье</a> мы вывели дисциплину: программа = дерево модулей с контролем диапазонов, юнит-тесты по формуле «1 + ветки антецедента», корректность доказывается по построению. Там была теория, оформленная как практическая методичка.</p>
-<p>Этой статьёй закрываем разрыв между «понятно как» и «понятно что положить в Claude Code». На выходе — два самостоятельных артефакта:</p>
-<ul>
-<li><strong><code>program-design.skill</code></strong> — скилл для opus. Принимает функциональное требование, отдаёт пакет проектной документации.</li>
-<li><strong><code>program-implementation.skill</code></strong> — скилл для sonnet. Принимает пакет, отдаёт код по тикетам через Trunk Based Development.</li>
-</ul>
-<p>Связующая нить — <strong>vertical slice architecture</strong>: каждый вход API режется в отдельный поток сверху вниз, со своим адаптером, своей бизнес-логикой, своим модулем I/O. Это резко упрощает и проектирование, и сборку бэклога, и параллельную работу нескольких агентов.</p>
-<p>В следующей статье оба скилла прикручиваются к <a href="https://github.com/ubik-life/passkey-demo-api"><code>ubik-life/passkey-demo-api</code></a>. Здесь — только сами скиллы и обоснование, почему они выглядят именно так.</p>
-
-    
-      <nav class="md-post__action">
-        <a href="../../2026/05/02/rational-design-skills/">
-          Continue reading
-        </a>
-      </nav>
-    
-    
-  </div>
-</article>
-      
-        <article class="md-post md-post--excerpt">
-  <header class="md-post__header">
-    
-      <nav class="md-post__authors md-typeset">
-        
-          <span class="md-author">
-            <img src="https://avatars.githubusercontent.com/u/45400275" alt="Max Morev">
-          </span>
-        
-      </nav>
-    
-    <div class="md-post__meta md-meta">
-      <ul class="md-meta__list">
-        <li class="md-meta__item">
-          <time datetime="2026-05-01 00:00:00+00:00">May 1, 2026</time></li>
-        
-          <li class="md-meta__item">
-            in
-            
-              <a href="./" class="md-meta__link">code</a>, 
-              <a href="../architecture/" class="md-meta__link">architecture</a>, 
-              <a href="../rational-development/" class="md-meta__link">rational-development</a>, 
-              <a href="../howtocode/" class="md-meta__link">howtocode</a>, 
-              <a href="../agents/" class="md-meta__link">agents</a></li>
-        
-        
-          
-          <li class="md-meta__item">
-            
-              16 min read
-            
-          </li>
-        
-        
-      </ul>
-      
-    </div>
-  </header>
-  <div class="md-post__content md-typeset">
-    <h2 id="opus-sonnet_1"><a class="toclink" href="../../2026/05/01/rational-design-discipline/">Дисциплина проектирования программ. Скилл для opus и бэклог для sonnet</a></h2>
-<blockquote>
-<p><em>«Тестирование программ может служить для доказательства наличия ошибок, но никогда не докажет их отсутствия.»</em></p>
-<p>— Edsger W. Dijkstra</p>
-</blockquote>
-<p>Это практическая статья для вайб-кодера и джуна. Без академической мути. Цель — дать одну дисциплину проектирования, по которой opus проектирует программу, а sonnet получает готовый бэклог и реализует его в Claude Code.</p>
-<p>Статья — концентрат четырёх разборов на codemonsters.team: <a href="https://codemonsters.team/blog/2025/12/12/structured-programming-essential/">структурное программирование</a>, <a href="https://codemonsters.team/blog/2025/12/15/program-modules/">модульность</a>, <a href="https://codemonsters.team/blog/2025/12/30/program-correctness/">правильность программы</a>, <a href="https://codemonsters.team/blog/2026/04/25/testing-mythology-component-tests/">компонентные тесты</a>.</p>
-<p>Если ты дисциплинированно выполнишь то, что описано ниже, у тебя будет программа, которая работает правильно по построению. Не потому что её тщательно тестировали — а потому что её правильно спроектировали.</p>
-
-    
-      <nav class="md-post__action">
-        <a href="../../2026/05/01/rational-design-discipline/">
-          Continue reading
-        </a>
-      </nav>
-    
-    
-  </div>
-</article>
-      
-        <article class="md-post md-post--excerpt">
-  <header class="md-post__header">
-    
-      <nav class="md-post__authors md-typeset">
-        
-          <span class="md-author">
-            <img src="https://avatars.githubusercontent.com/u/45400275" alt="Max Morev">
-          </span>
-        
-      </nav>
-    
-    <div class="md-post__meta md-meta">
-      <ul class="md-meta__list">
-        <li class="md-meta__item">
-          <time datetime="2026-04-28 00:00:00+00:00">April 28, 2026</time></li>
-        
-          <li class="md-meta__item">
-            in
-            
-              <a href="./" class="md-meta__link">code</a>, 
-              <a href="../tests/" class="md-meta__link">tests</a>, 
-              <a href="../component-tests/" class="md-meta__link">component-tests</a>, 
-              <a href="../howtocode/" class="md-meta__link">howtocode</a>, 
-              <a href="../agents/" class="md-meta__link">agents</a></li>
-        
-        
-          
-          <li class="md-meta__item">
-            
-              15 min read
-            
-          </li>
-        
-        
-      </ul>
-      
-    </div>
-  </header>
-  <div class="md-post__content md-typeset">
-    <h2 id="opus-sonnet"><a class="toclink" href="../../2026/04/28/component-tests-skill-application/">Применение и доработка скилла компонентных тестов. Сессия с opus и хендофф sonnet'у</a></h2>
-<blockquote>
-<p><em>«Если карта не сходится с местностью — права местность.»</em></p>
-<p>— старая военная пословица</p>
-</blockquote>
-<p>В <a href="https://codemonsters.team/blog/2026/04/26/component-tests-skill-passkey-demo/">предыдущей статье</a> мы зафиксировали скилл компонентных тестов как артефакт: положили <code>SKILL.md</code> рядом с проектом, написали процедуру, посчитали для passkey-demo-api по формуле семь сценариев. Всё красиво.</p>
-<p>Реальность вмешалась на первой же минуте применения. Эта статья — журнал двух смежных сессий: opus прошёл от теории до зелёного smoke, потом sonnet за один день написал восемь сценариев по готовому шаблону. Карта (скилл) встретилась с местностью (реальный репозиторий), оба после этого изменились.</p>
-
-    
-      <nav class="md-post__action">
-        <a href="../../2026/04/28/component-tests-skill-application/">
-          Continue reading
-        </a>
-      </nav>
-    
-    
-  </div>
-</article>
-      
-        <article class="md-post md-post--excerpt">
-  <header class="md-post__header">
-    
-      <nav class="md-post__authors md-typeset">
-        
-          <span class="md-author">
-            <img src="https://avatars.githubusercontent.com/u/45400275" alt="Max Morev">
-          </span>
-        
-      </nav>
-    
-    <div class="md-post__meta md-meta">
-      <ul class="md-meta__list">
-        <li class="md-meta__item">
-          <time datetime="2026-04-26 00:00:00+00:00">April 26, 2026</time></li>
-        
-          <li class="md-meta__item">
-            in
-            
-              <a href="./" class="md-meta__link">code</a>, 
-              <a href="../tests/" class="md-meta__link">tests</a>, 
-              <a href="../component-tests/" class="md-meta__link">component-tests</a>, 
-              <a href="../howtocode/" class="md-meta__link">howtocode</a>, 
-              <a href="../agents/" class="md-meta__link">agents</a></li>
-        
-        
-          
-          <li class="md-meta__item">
-            
-              11 min read
-            
-          </li>
-        
-        
-      </ul>
-      
-    </div>
-  </header>
-  <div class="md-post__content md-typeset">
-    <h2 id="passkey-demo-api"><a class="toclink" href="../../2026/04/26/component-tests-skill-passkey-demo/">Компонентные тесты на практике. Скилл для агента и разбор passkey-demo-api</a></h2>
-<p>В <a href="https://codemonsters.team/blog/2026/04/25/testing-mythology-component-tests/">предыдущей статье</a> мы вывели формулу:</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-28-1" name="__codelineno-28-1" href="#__codelineno-28-1"></a>N_тестов = 1 + Σ (число различимых веток в адаптере i)
-</code></pre></div>
-<p>Теория готова. Время превратить её в инструмент, который работает каждый день — на любом сервисе, в руках любого вайб-инженера, в связке с ИИ-агентом.</p>
-
-    
-      <nav class="md-post__action">
-        <a href="../../2026/04/26/component-tests-skill-passkey-demo/">
-          Continue reading
-        </a>
-      </nav>
-    
-    
-  </div>
-</article>
-      
-        <article class="md-post md-post--excerpt">
-  <header class="md-post__header">
-    
-      <nav class="md-post__authors md-typeset">
-        
-          <span class="md-author">
-            <img src="https://avatars.githubusercontent.com/u/45400275" alt="Max Morev">
-          </span>
-        
-      </nav>
-    
-    <div class="md-post__meta md-meta">
-      <ul class="md-meta__list">
-        <li class="md-meta__item">
-          <time datetime="2026-04-25 00:00:00+00:00">April 25, 2026</time></li>
-        
-          <li class="md-meta__item">
-            in
-            
-              <a href="./" class="md-meta__link">code</a>, 
-              <a href="../tests/" class="md-meta__link">tests</a>, 
-              <a href="../component-tests/" class="md-meta__link">component-tests</a>, 
-              <a href="../howtocode/" class="md-meta__link">howtocode</a>, 
-              <a href="../ubik/" class="md-meta__link">ubik</a></li>
-        
-        
-          
-          <li class="md-meta__item">
-            
-              11 min read
-            
-          </li>
-        
-        
-      </ul>
-      
-    </div>
-  </header>
-  <div class="md-post__content md-typeset">
-    <h2 id="_1"><a class="toclink" href="../../2026/04/25/testing-mythology-component-tests/">Сколько компонентных тестов нужно сервису. Логический вывод</a></h2>
-<blockquote>
-<p><em>«Тестирование программ может служить для доказательства наличия ошибок, но никогда не докажет их отсутствия!»</em></p>
-<p>— Edsger W. Dijkstra</p>
-</blockquote>
-<p>В предыдущих статьях мы прошли путь:</p>
-<ul>
-<li><a href="https://codemonsters.team/blog/2025/12/15/program-modules/">«Модульность программы»</a> — модуль как чёрный ящик с одним входом и одним выходом.</li>
-<li><a href="https://codemonsters.team/blog/2025/12/30/program-correctness/">«Правильность программы»</a> — правильность достигается проектированием. Контроль диапазонов значений, защищённое программирование, формальное доказательство.</li>
-<li><a href="https://codemonsters.team/blog/2026/04/07/documentation-as-product-jtbd/">«README — это продукт»</a> — документация как продукт, у которого есть потребители.</li>
-</ul>
-<p>Складываем три кирпича — и приходим к вопросу, на который индустрия не даёт внятного ответа: сколько компонентных тестов нужно сервису?</p>
-<p>Ответ выводится логически. И он мал.</p>
-
-    
-      <nav class="md-post__action">
-        <a href="../../2026/04/25/testing-mythology-component-tests/">
-          Continue reading
-        </a>
-      </nav>
-    
-    
-  </div>
-</article>
-      
-        <article class="md-post md-post--excerpt">
-  <header class="md-post__header">
-    
-      <nav class="md-post__authors md-typeset">
-        
-          <span class="md-author">
-            <img src="https://avatars.githubusercontent.com/u/45400275" alt="Max Morev">
-          </span>
-        
-      </nav>
-    
-    <div class="md-post__meta md-meta">
-      <ul class="md-meta__list">
-        <li class="md-meta__item">
-          <time datetime="2026-04-07 00:00:00+00:00">April 7, 2026</time></li>
-        
-          <li class="md-meta__item">
-            in
-            
-              <a href="./" class="md-meta__link">code</a>, 
-              <a href="../ai/" class="md-meta__link">ai</a>, 
-              <a href="../documentation/" class="md-meta__link">documentation</a>, 
-              <a href="../process/" class="md-meta__link">process</a>, 
-              <a href="../ubik/" class="md-meta__link">ubik</a></li>
-        
-        
-          
-          <li class="md-meta__item">
-            
-              16 min read
-            
-          </li>
-        
-        
-      </ul>
-      
-    </div>
-  </header>
-  <div class="md-post__content md-typeset">
-    <h2 id="readme-jtbd-"><a class="toclink" href="../../2026/04/07/documentation-as-product-jtbd/">README — это продукт. Документация по JTBD с ИИ-агентом</a></h2>
-<p>В <a href="https://codemonsters.team/blog/2026/03/23/ai-passkey-demo-api/">первой практике</a> мы собрали сервис авторизации — OpenAPI-спека, README, devlog. Всё работает. Но документация получилась «для всех» — а значит ни для кого.</p>
-<p>В этой сессии разбираем: у README четыре потребителя, и каждый нанимает его на свою работу. Проектируем структуру документации с Claude Opus, применяем через Claude Sonnet в терминале.</p>
-<p>Репозиторий с результатом: <a href="https://github.com/ubik-life/service-template">service-template</a></p>
-<p><strong>GL HF DD!</strong></p>
-
-    
-      <nav class="md-post__action">
-        <a href="../../2026/04/07/documentation-as-product-jtbd/">
-          Continue reading
-        </a>
-      </nav>
-    
-    
-  </div>
-</article>
-      
-        <article class="md-post md-post--excerpt">
-  <header class="md-post__header">
-    
-      <nav class="md-post__authors md-typeset">
-        
-          <span class="md-author">
-            <img src="https://avatars.githubusercontent.com/u/45400275" alt="Max Morev">
-          </span>
-        
-      </nav>
-    
-    <div class="md-post__meta md-meta">
-      <ul class="md-meta__list">
-        <li class="md-meta__item">
-          <time datetime="2026-03-23 00:00:00+00:00">March 23, 2026</time></li>
-        
-          <li class="md-meta__item">
-            in
-            
-              <a href="./" class="md-meta__link">code</a>, 
-              <a href="../ai/" class="md-meta__link">ai</a>, 
-              <a href="../go/" class="md-meta__link">go</a>, 
-              <a href="../webauthn/" class="md-meta__link">webauthn</a>, 
-              <a href="../api/" class="md-meta__link">api</a></li>
-        
-        
-          
-          <li class="md-meta__item">
-            
-              7 min read
-            
-          </li>
-        
-        
-      </ul>
-      
-    </div>
-  </header>
-  <div class="md-post__content md-typeset">
-    <h2 id="passkey-demo-api-api-first"><a class="toclink" href="../../2026/03/23/ai-passkey-demo-api/">Passkey Demo API — собираем сервис авторизации с ИИ-агентом | API First</a></h2>
-<p>Это разбор процесса: какие промпты писать агенту, какие решения принимать, почему именно так. Не туториал «скопируй и запусти» — а маршрут, который можно пройти самому.</p>
-<p>Репозиторий с результатом: <a href="https://github.com/ubik-life/passkey-demo-api">passkey-demo-api</a></p>
-
-    
-      <nav class="md-post__action">
-        <a href="../../2026/03/23/ai-passkey-demo-api/">
-          Continue reading
-        </a>
-      </nav>
-    
-    
-  </div>
-</article>
-      
-        <article class="md-post md-post--excerpt">
-  <header class="md-post__header">
-    
-      <nav class="md-post__authors md-typeset">
-        
-          <span class="md-author">
-            <img src="https://avatars.githubusercontent.com/u/45400275" alt="Max Morev">
-          </span>
-        
-      </nav>
-    
-    <div class="md-post__meta md-meta">
-      <ul class="md-meta__list">
-        <li class="md-meta__item">
-          <time datetime="2025-12-30 00:00:00+00:00">December 30, 2025</time></li>
-        
-          <li class="md-meta__item">
-            in
-            
-              <a href="./" class="md-meta__link">code</a>, 
-              <a href="../howtocode/" class="md-meta__link">howtocode</a></li>
-        
-        
-          
-          <li class="md-meta__item">
-            
-              19 min read
-            
-          </li>
-        
-        
-      </ul>
-      
-    </div>
-  </header>
-  <div class="md-post__content md-typeset">
-    <h2 id="_1"><a class="toclink" href="../../2025/12/30/program-correctness/">Правильность программы</a></h2>
-<blockquote>
-<p><em>«Тестирование программ может служить для доказательства наличия ошибок, но никогда не докажет их отсутствия!»</em></p>
-<p>— Edsger W. Dijkstra</p>
-</blockquote>
-<h3 id="_2"><a class="toclink" href="../../2025/12/30/program-correctness/#_2">Введение</a></h3>
-<p>В <a href="../../2025/12/15/program-modules/">предыдущей статье</a> мы разобрали модульность программ и нисходящее проектирование. Теперь возникает фундаментальный вопрос: <strong>как убедиться, что спроектированная программа работает правильно?</strong></p>
-<p>Традиционный подход — тестирование — имеет принципиальное ограничение: он может показать наличие ошибок, но не может доказать их отсутствие. Для этого нужен другой метод.</p>
-<p><strong>Правильная программа</strong> — это программа, корректность которой доказана формальными методами. Доказательство строится на математических утверждениях о состоянии программы до и после выполнения каждой инструкции.</p>
-<p>Ключевой инструмент такого доказательства — <strong>защищенное программирование</strong>: контроль диапазонов допустимых значений на входе и выходе каждого модуля. Если каждый модуль гарантирует корректность своих результатов для допустимых входных данных, то вся программа работает правильно.</p>
-<p>В этой статье изучим классические работы Edsger W. Dijkstra, Niklaus Wirth и Harlan D. Mills, заложившие математические основы верификации программ. Эти принципы остаются актуальными и сегодня — они лежат в основе Domain-Driven Design, Type-Driven Development и контрактного программирования.</p>
-
-    
-      <nav class="md-post__action">
-        <a href="../../2025/12/30/program-correctness/">
-          Continue reading
-        </a>
-      </nav>
-    
-    
-  </div>
-</article>
-      
-        <article class="md-post md-post--excerpt">
-  <header class="md-post__header">
-    
-      <nav class="md-post__authors md-typeset">
-        
-          <span class="md-author">
-            <img src="https://avatars.githubusercontent.com/u/45400275" alt="Max Morev">
-          </span>
-        
-      </nav>
-    
-    <div class="md-post__meta md-meta">
-      <ul class="md-meta__list">
-        <li class="md-meta__item">
-          <time datetime="2025-12-15 00:00:00+00:00">December 15, 2025</time></li>
-        
-          <li class="md-meta__item">
-            in
-            
-              <a href="./" class="md-meta__link">code</a>, 
-              <a href="../howtocode/" class="md-meta__link">howtocode</a></li>
-        
-        
-          
-          <li class="md-meta__item">
-            
-              23 min read
-            
-          </li>
-        
-        
-      </ul>
-      
-    </div>
-  </header>
-  <div class="md-post__content md-typeset">
-    <h2 id="_1"><a class="toclink" href="../../2025/12/15/program-modules/">Модульность программы</a></h2>
-<blockquote>
-<p><em>«Всё не так легко, как кажется...»</em></p>
-<p>— Закон Мерфи</p>
-</blockquote>
-<h3 id="_2"><a class="toclink" href="../../2025/12/15/program-modules/#_2">Введение</a></h3>
-<p>Здоровый интерес к структурному программированию может быть как проявлением постепенного осознания правоты Мерфи, так и наступлением определенной зрелости в вычислительном деле. Структурное программирование возникло именно из-за того, что «все сложно, тянется дольше и стоит дороже, чем ожидалось». Нисходящая разработка призвана уменьшить сложность программы и дать возможность закончить ее вовремя. Если «что-то портится», то предлагаются средства, которые помогают обнаружить такие места как можно раньше и оставить достаточно времени на их устранение.</p>
-<p>Нисходящая разработка (top-down design) может применяться на всех фазах проектирования системы, включая как проектирование программ этой системы, так и проектирование модулей для этих программ.</p>
-
-    
-      <nav class="md-post__action">
-        <a href="../../2025/12/15/program-modules/">
-          Continue reading
-        </a>
-      </nav>
-    
-    
-  </div>
-</article>
-      
-      
-        
-          
 
 
 
-<nav class="md-pagination">
-  <span class="md-pagination__current">1</span> <a class="md-pagination__link" href="page/2/">2</a>
-</nav>
-        
+
+
+
+
+  
+  
+
+
+
+  
+
+
+  
+
+
+
       
-    </div>
+    </article>
   </div>
 
           
@@ -4031,10 +3830,10 @@
     
       
       
-      <script id="__config" type="application/json">{"annotate": null, "base": "../../..", "features": ["navigation.tabs", "navigation.sections", "navigation.indexes", "toc.integrate", "navigation.top", "search.suggest", "search.highlight", "content.tabs.link", "content.code.annotation", "content.code.copy"], "search": "../../../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
+      <script id="__config" type="application/json">{"annotate": null, "base": "../../../../..", "features": ["navigation.tabs", "navigation.sections", "navigation.indexes", "toc.integrate", "navigation.top", "search.suggest", "search.highlight", "content.tabs.link", "content.code.annotation", "content.code.copy"], "search": "../../../../../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
     
     
-      <script src="../../../assets/javascripts/bundle.79ae519e.min.js"></script>
+      <script src="../../../../../assets/javascripts/bundle.79ae519e.min.js"></script>
       
     
   </body>
