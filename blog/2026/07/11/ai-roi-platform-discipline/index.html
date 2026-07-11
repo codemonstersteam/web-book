@@ -1,0 +1,1465 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+        <meta name="description" content="Синтез трёх отчётов DORA (2024, 2025, ROI 2026) плюс независимые исследования: METR, Faros, Veracode, Apiiro, GitClear, MIT NANDA. Главный тезис DORA 2026: ИИ — амплифайер, не инструмент. На зрелой платформе он умножает поставку. На незрелой — умножает технический долг и нестабильность. ROI измеряется не количеством сгенерированных строк, а количеством устранённых узких мест.">
+      
+      
+      
+        <link rel="canonical" href="https://codemonsters.team/blog/2026/07/11/ai-roi-platform-discipline/">
+      
+      
+        <link rel="prev" href="../product-landing-jtbd/">
+      
+      
+        <link rel="next" href="../../12/subagents-orchestration/">
+      
+      
+        
+      
+      
+      <link rel="icon" href="../../../../../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.6">
+    
+    
+      
+        <title>ROI ИИ в разработке. Почему без зрелой платформы и стандарта вы покупаете ускоритель хаоса - CodeMonsters.team</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../../../../assets/stylesheets/main.484c7ddc.min.css">
+      
+        
+        <link rel="stylesheet" href="../../../../../assets/stylesheets/palette.ab4e12ef.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+    
+    
+      <link rel="stylesheet" href="../../../../../stylesheets/crt.css">
+    
+    <script>__md_scope=new URL("../../../../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+  
+
+
+  <!-- Yandex.Metrika counter -->
+<script type="text/javascript" >
+   (function(m,e,t,r,i,k,a){m[i]=m[i]||function(){(m[i].a=m[i].a||[]).push(arguments)};
+   m[i].l=1*new Date();
+   for (var j = 0; j < document.scripts.length; j++) {if (document.scripts[j].src === r) { return; }}
+   k=e.createElement(t),a=e.getElementsByTagName(t)[0],k.async=1,k.src=r,a.parentNode.insertBefore(k,a)})
+   (window, document, "script", "https://mc.yandex.ru/metrika/tag.js", "ym");
+
+   ym(92584192, "init", {
+        clickmap:true,
+        trackLinks:true,
+        accurateTrackBounce:true,
+        webvisor:true
+   });
+</script>
+<noscript><div><img src="https://mc.yandex.ru/watch/92584192" style="position:absolute; left:-9999px;" alt="" /></div></noscript>
+<!-- /Yandex.Metrika counter -->
+  
+    <script>"undefined"!=typeof __md_analytics&&__md_analytics()</script>
+  
+
+    
+    
+  </head>
+  
+  
+    
+    
+      
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="slate" data-md-color-primary="black" data-md-color-accent="cyan">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#roi" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+  
+
+<header class="md-header md-header--shadow md-header--lifted" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href="../../../../.." title="CodeMonsters.team" class="md-header__button md-logo" aria-label="CodeMonsters.team" data-md-component="logo">
+      
+  <img src="/cm-logo-header.png" alt="logo">
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            CodeMonsters.team
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              ROI ИИ в разработке. Почему без зрелой платформы и стандарта вы покупаете ускоритель хаоса
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+        <form class="md-header__option" data-md-component="palette">
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="slate" data-md-color-primary="black" data-md-color-accent="cyan"  aria-hidden="true"  type="radio" name="__palette" id="__palette_0">
+    
+  
+</form>
+      
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+    
+  </nav>
+  
+    
+      
+<nav class="md-tabs" aria-label="Tabs" data-md-component="tabs">
+  <div class="md-grid">
+    <ul class="md-tabs__list">
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../../../../codebook/" class="md-tabs__link">
+          
+  
+  
+    
+  
+  Книга кода
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+    
+  
+  
+    <li class="md-tabs__item md-tabs__item--active">
+      <a href="../../../../" class="md-tabs__link">
+        
+  
+  
+    
+  
+  Блог
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../../../../../about/" class="md-tabs__link">
+        
+  
+  
+    
+  
+  Об авторе
+
+      </a>
+    </li>
+  
+
+      
+    </ul>
+  </div>
+</nav>
+    
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+                
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" hidden>
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+  
+
+
+  
+
+<nav class="md-nav md-nav--primary md-nav--lifted md-nav--integrated" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../../../../.." title="CodeMonsters.team" class="md-nav__button md-logo" aria-label="CodeMonsters.team" data-md-component="logo">
+      
+  <img src="/cm-logo-header.png" alt="logo">
+
+    </a>
+    CodeMonsters.team
+  </label>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_1" >
+        
+          
+          <div class="md-nav__link md-nav__container">
+            <a href="../../../../../codebook/" class="md-nav__link ">
+              
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Книга кода
+  
+
+    
+  </span>
+  
+  
+
+            </a>
+            
+              
+              <label class="md-nav__link " for="__nav_1" id="__nav_1_label" tabindex="0">
+                <span class="md-nav__icon md-icon"></span>
+              </label>
+            
+          </div>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_1_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_1">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Книга кода
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../../codebook/1-codegen-machine/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    1 Заклинателю приложений
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+    
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      <a href="../../../../" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Блог
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../../about/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Об авторе
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+          
+          
+  <div class="md-content md-content--post" data-md-component="content">
+    <div class="md-sidebar md-sidebar--post" data-md-component="sidebar" data-md-type="navigation">
+      <div class="md-sidebar__scrollwrap">
+        <div class="md-sidebar__inner md-post">
+          <nav class="md-nav md-nav--primary">
+            <div class="md-post__back">
+              <div class="md-nav__title md-nav__container">
+                <a href="../../../../" class="md-nav__link">
+                  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+                  <span class="md-ellipsis">
+                    Back to index
+                  </span>
+                </a>
+              </div>
+            </div>
+            
+              <div class="md-post__authors md-typeset">
+                
+                  <div class="md-profile md-post__profile">
+                    <span class="md-author md-author--long">
+                      <img src="https://avatars.githubusercontent.com/u/45400275" alt="Max Morev">
+                    </span>
+                    <span class="md-profile__description">
+                      <strong>
+                        
+                          <a href="https://github.com/codemonstersteam">Max Morev</a>
+                        
+                      </strong>
+                      <br>
+                      Creator
+                    </span>
+                  </div>
+                
+              </div>
+            
+            <ul class="md-post__meta md-nav__list">
+              <li class="md-nav__item md-nav__item--section">
+                <div class="md-post__title">
+                  <span class="md-ellipsis">
+                    Metadata
+                  </span>
+                </div>
+                <nav class="md-nav">
+                  <ul class="md-nav__list">
+                    <li class="md-nav__item">
+                      <div class="md-nav__link">
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 19H5V8h14m-3-7v2H8V1H6v2H5c-1.11 0-2 .89-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V5a2 2 0 0 0-2-2h-1V1m-1 11h-5v5h5z"/></svg>
+                        <time datetime="2026-07-11 00:00:00+00:00" class="md-ellipsis">July 11, 2026</time>
+                      </div>
+                    </li>
+                    
+                    
+                      <li class="md-nav__item">
+                        <div class="md-nav__link">
+                          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9 3v15h3V3zm3 2 4 13 3-1-4-13zM5 5v13h3V5zM3 19v2h18v-2z"/></svg>
+                          <span class="md-ellipsis">
+                            in
+                            
+                              <a href="../../../../category/ai/">ai</a>, 
+                              <a href="../../../../category/process/">process</a>, 
+                              <a href="../../../../category/rational-development/">rational-development</a>, 
+                              <a href="../../../../category/devops/">devops</a>, 
+                              <a href="../../../../category/architecture/">architecture</a></span>
+                        </div>
+                      </li>
+                    
+                    
+                      
+                      <li class="md-nav__item">
+                        <div class="md-nav__link">
+                          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 20a8 8 0 0 0 8-8 8 8 0 0 0-8-8 8 8 0 0 0-8 8 8 8 0 0 0 8 8m0-18a10 10 0 0 1 10 10 10 10 0 0 1-10 10C6.47 22 2 17.5 2 12A10 10 0 0 1 12 2m.5 5v5.25l4.5 2.67-.75 1.23L11 13V7z"/></svg>
+                          <span class="md-ellipsis">
+                            
+                              14 min read
+                            
+                          </span>
+                        </div>
+                      </li>
+                    
+                  </ul>
+                </nav>
+              </li>
+            </ul>
+            
+          </nav>
+          
+            
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#amplifier" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Главный тезис DORA 2026: AI is an amplifier
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#productivity-paradox" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Парадокс продуктивности: семь независимых исследований, один вывод
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#j-curve" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        J-кривая: финансовая модель того, что мы и так чувствуем
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#lead-time" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Арифметика lead time: ИИ ускоряет одну колонку из десяти
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#bottlenecks" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Восемь узких мест, которые ИИ ускоряет, а не лечит
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#security" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Безопасность: системная проблема, не проблема масштабирования
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#platform-discipline" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Зрелая платформа и стандарт: почему это и есть инвестиция
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#baseline" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Сначала baseline, потом стратегия. Шесть срезов
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Сначала baseline, потом стратегия. Шесть срезов">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#1" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Срез 1. Инвентарь
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#2-dora-" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Срез 2. DORA-поток
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#3" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Срез 3. Качество кода и тестов
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#4-shadow-ai" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Срез 4. Shadow AI
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#5" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Срез 5. Онбординг и дифф платформ
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#6-value-stream-mapping-time-killers" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Срез 6. Value Stream Mapping и time killers
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#heatmap" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Heatmap как единственное полезное представление
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Последовательность измерений
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#roadmap" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Что делать. Roadmap без розовых очков
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#one-liner" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Итог в одной фразе
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#sources" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Источники
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+          
+        </div>
+      </div>
+    </div>
+    <article class="md-content__inner md-typeset">
+      
+        
+  
+
+
+
+
+<h1 id="roi">ROI ИИ в разработке. Почему без зрелой платформы и стандарта вы покупаете ускоритель хаоса</h1>
+<blockquote>
+<p><em>«Если у вас уже есть бутылочное горло, ИИ сделает поток перед ним толще. Само горло — не сделает шире.»</em></p>
+<p>— переформулированный тезис DORA 2026</p>
+</blockquote>
+<p>В апреле 2026 команда DORA опубликовала отчёт <strong>«The ROI of AI-assisted Software Development»</strong>. Это не очередная вендорская методичка про «внедрили Copilot — стали быстрее на 35%». Это финансовая рамка для разговора про ИИ, где ИИ описан буквально одним словом: <strong>amplifier</strong>, усилитель. Усилитель сильных сторон высокопроизводительных организаций. И усилитель дисфункций — у всех остальных.</p>
+<p>Эта статья — синтез трёх отчётов DORA (2024, 2025, ROI 2026), сверенный с независимыми исследованиями: METR, Faros, Veracode, Apiiro, GitClear, MIT NANDA, MIT/Microsoft/Accenture, Stack Overflow Developer Survey. Она для тех, кому интересно <strong>управляемое ИТ-производство с ИИ</strong>. Не вендорская сказка про «35% ускорения» и не академическая неопределённость про «требуется дальнейшее исследование».</p>
+<p>В этой главе рассмотрим:</p>
+<!-- more -->
+
+<ul>
+<li><a href="#amplifier">Главный тезис DORA 2026: AI is an amplifier</a></li>
+<li><a href="#productivity-paradox">Парадокс продуктивности: семь независимых исследований, один вывод</a></li>
+<li><a href="#j-curve">J-кривая: финансовая модель того, что мы и так чувствуем</a></li>
+<li><a href="#lead-time">Арифметика lead time: ИИ ускоряет одну колонку из десяти</a></li>
+<li><a href="#bottlenecks">Восемь узких мест, которые ИИ ускоряет, а не лечит</a></li>
+<li><a href="#security">Безопасность: системная проблема, не проблема масштабирования</a></li>
+<li><a href="#platform-discipline">Зрелая платформа и стандарт: почему это и есть инвестиция</a></li>
+<li><a href="#baseline">Сначала baseline, потом стратегия. Шесть срезов</a></li>
+<li><a href="#roadmap">Что делать. Roadmap без розовых очков</a></li>
+<li><a href="#one-liner">Итог в одной фразе</a></li>
+<li><a href="#sources">Источники</a></li>
+</ul>
+<h2 id="amplifier">Главный тезис DORA 2026: AI is an amplifier</h2>
+<p>Открываем executive summary отчёта и читаем:</p>
+<blockquote>
+<p>«AI магнифицирует сильные стороны высокопроизводительных организаций и дисфункции барахтающихся. Наибольший возврат на инвестиции в ИИ приходит не от инструментов, а от стратегического фокуса на нижележащей организационной системе: качестве внутренней платформы, ясности рабочих процессов и согласованности команд. Без этого фундамента ИИ создаёт <strong>локальные карманы продуктивности, которые теряются в downstream-хаосе</strong>.»</p>
+</blockquote>
+<p>И тут же — формулировка для бизнес-кейса, которую стоит зачитать дословно при любом серьёзном разговоре про инвестицию в ИИ-инструменты:</p>
+<blockquote>
+<p>«Если ваша организация обладает зрелыми internal developer platforms и оптимизированными deployment pipelines, ИИ быстро масштабирует вашу способность поставлять пользовательскую ценность. Однако, если ваши инженерные команды уже сталкиваются с узкими местами из-за ручного тестирования, тяжёлой бюрократии или фрагментированных данных, <strong>инъекция ИИ в такую систему просто ускорит накопление технического долга и затрат на сопровождение</strong>.»</p>
+</blockquote>
+<p>Это не риторика. Это формулировка крупнейшего независимого исследования индустрии 2026 года. И это исследование, которое впервые ставит знак равенства между «возвратом на ИИ» и «зрелостью платформы».</p>
+<p>DORA 2026 формулирует это ещё прямее: «<strong>ROI измеряется не количеством сгенерированных строк, а количеством устранённых узких мест.</strong>»</p>
+<h2 id="productivity-paradox">Парадокс продуктивности: семь независимых исследований, один вывод</h2>
+<p>Тех, кто читает только хедлайны вендоров, ждёт сюрприз. Разрыв между ощущениями разработчика и измеримой поставкой — главный сюжет 2025–2026 годов.</p>
+<table>
+<thead>
+<tr>
+<th>Источник</th>
+<th>Методология</th>
+<th>Что получили</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>METR (2025)</td>
+<td>RCT, 16 senior-разработчиков, 246 задач, случайное распределение «с ИИ / без ИИ»</td>
+<td>Прогнозировали ускорение на 24%, оценили постфактум +20%. Фактически — <strong>минус 19%</strong></td>
+</tr>
+<tr>
+<td>Faros AI (2025)</td>
+<td>Лонгитюдная телеметрия, 10 000+ разработчиков, 1 255 команд</td>
+<td>75% инженеров используют ИИ, <strong>большинство организаций не видят измеримого прироста поставки</strong></td>
+</tr>
+<tr>
+<td>DX / Laura Tacho (Q4 2025)</td>
+<td>121 000 разработчиков, 450+ компаний</td>
+<td>92,6% пользуются ИИ ежемесячно, 75% — еженедельно. Организационный прирост — около 10%</td>
+</tr>
+<tr>
+<td>Stack Overflow 2025</td>
+<td>n ≈ 50 000+</td>
+<td>84% используют или планируют. Только 16,3% сообщают о значимом росте продуктивности. 41,4% — об отсутствии заметного эффекта</td>
+</tr>
+<tr>
+<td>DORA 2024</td>
+<td>Опрос ~5 000, регрессионный анализ</td>
+<td>ИИ-внедрение снизило <strong>throughput на 1,5% и стабильность на 7,2%</strong></td>
+</tr>
+<tr>
+<td>DORA 2025</td>
+<td>Опрос, регрессионный анализ</td>
+<td>Throughput вышел в плюс там, где зрелая платформа. <strong>Стабильность по-прежнему деградирует</strong></td>
+</tr>
+<tr>
+<td>MIT NANDA (2025)</td>
+<td>300 корпоративных ИИ-кейсов</td>
+<td><strong>95% корпоративных ИИ-инициатив не дают финансового возврата</strong></td>
+</tr>
+</tbody>
+</table>
+<p>Семь независимых методологий — от RCT до телеметрии, от опросов до регрессии, до полевого исследования кейсов — сошлись в одной точке: <strong>индивидуальная скорость растёт, организационная поставка либо не меняется, либо ухудшается</strong>.</p>
+<p>DORA называет это «vacuum hypothesis»: ИИ освобождает время разработчика, но это время втягивает не высокоценная работа, а другая низкоценная. Faros — «AI productivity paradox». METR — «illusion of speed». Разные имена, одно явление.</p>
+<h2 id="j-curve">J-кривая: финансовая модель того, что мы и так чувствуем</h2>
+<p>Главная методологическая новинка DORA 2026 — <strong>J-Curve of AI value realization</strong>.</p>
+<p>Любое внедрение ИИ даёт <strong>временное падение продуктивности</strong>. Не «может дать». Даёт. DORA называет это «tuition cost of transformation» — плата за обучение. Кривая имеет три фазы:</p>
+<ol>
+<li><strong>The learning curve.</strong> Команды отвлекаются от регулярной поставки, учатся новым интерфейсам, перестраивают рабочие процессы.</li>
+<li><strong>The verification tax.</strong> Разработчики тратят время на верификацию сгенерированного. Чем меньше доверия — тем глубже провал.</li>
+<li><strong>Pipeline adaptation.</strong> Downstream-процессы (тестирование, ревью, релизы) масштабируются под возросший поток. Здесь обнажаются legacy-ограничения.</li>
+</ol>
+<p>Только после прохождения этих трёх фаз начинается экспоненциальный рост — та самая «правая палочка» в букве J.</p>
+<p>В калькуляторе DORA даны эталонные цифры:</p>
+<ul>
+<li>Технический штат: 500 FTE.</li>
+<li>Средняя загруженная зарплата: $176 000.</li>
+<li>J-Curve productivity drop: 15%.</li>
+<li>Длительность дропа: 3 месяца.</li>
+</ul>
+<p><strong>Итого «налог на обучение»: $3,3M.</strong> Прямой денежный эквивалент потерянной продуктивности.</p>
+<p>Это не сценарий. Это прогноз. И если этот налог <strong>не забюджетирован заранее</strong>, проект режут на дне J-кривой. Финансовый директор смотрит на квартальные показатели и не понимает, почему ИТ-операционный бюджет растёт, а delivery throughput падает. Инвестиция теряется.</p>
+<p>DORA пишет про это с редкой прямотой:</p>
+<blockquote>
+<p>«Инициативы часто проваливаются не потому, что технология ущербна, а потому, что лидеры неправильно интерпретируют эту фазу обучения как провал и срезают финансирование во время неизбежного спада.»</p>
+</blockquote>
+<h2 id="lead-time">Арифметика lead time: ИИ ускоряет одну колонку из десяти</h2>
+<p>Это, пожалуй, самая отрезвляющая арифметика в разговоре про ИИ. Прежде чем предполагать ROI от ИИ — посчитайте, какой процент lead time вообще занимает та фаза, которую ИИ может ускорить.</p>
+<p>Типичный поток от идеи до production в крупной организации:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a>Идея → Архдокумент → Согласование → Сетевые доступы →
+<a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a>Разработка → Ревью → Security review → Release approval → Деплой
+</code></pre></div>
+<p>Типичные lead time по этапам (медианы по крупным организациям):</p>
+<table>
+<thead>
+<tr>
+<th>Этап</th>
+<th>Lead time</th>
+<th>Process time</th>
+<th>Process efficiency</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Архдокумент</td>
+<td>14 дней</td>
+<td>2 дня</td>
+<td>14%</td>
+</tr>
+<tr>
+<td>Согласования документов</td>
+<td>21 день</td>
+<td>4 часа</td>
+<td>2%</td>
+</tr>
+<tr>
+<td>Сетевые доступы</td>
+<td>9 дней</td>
+<td>30 минут</td>
+<td>&lt; 1%</td>
+</tr>
+<tr>
+<td><strong>Разработка</strong></td>
+<td><strong>8 дней</strong></td>
+<td><strong>8 дней</strong></td>
+<td><strong>100%</strong></td>
+</tr>
+<tr>
+<td>Code review</td>
+<td>3 дня</td>
+<td>1 день</td>
+<td>33%</td>
+</tr>
+<tr>
+<td>Security review</td>
+<td>7 дней</td>
+<td>—</td>
+<td>—</td>
+</tr>
+<tr>
+<td>Release approval</td>
+<td>5 дней</td>
+<td>—</td>
+<td>—</td>
+</tr>
+<tr>
+<td>Деплой</td>
+<td>1 день</td>
+<td>—</td>
+<td>—</td>
+</tr>
+<tr>
+<td><strong>Итого</strong></td>
+<td><strong>~71 день</strong></td>
+<td><strong>~14 дней</strong></td>
+<td><strong>~20%</strong></td>
+</tr>
+</tbody>
+</table>
+<p><strong>Process efficiency — 20%.</strong> Это значит, что 80% lead time задача проводит в очередях, а не в работе.</p>
+<p>Теперь арифметика. ИИ ускоряет, в основном, колонку «Разработка». Допустим, мы ускоряем её <strong>вдвое</strong> — 8 дней превращаются в 4. Выигрыш — <strong>4 дня из 71. Это 5,6% общего lead time</strong>.</p>
+<p>Теперь другой сценарий. Убираем два главных time killer'а — «Согласования документов» (21 день) и «Архдокумент» (14 дней) — например, вдвое каждый. Выигрыш — <strong>17 дней из 71. Это 24% общего lead time. Без покупки ИИ</strong>.</p>
+<p>Это и есть арифметика, против которой нечего возразить. ИИ — мощный инструмент для <strong>одной</strong> колонки из десяти. Если эта колонка не главный bottleneck — экономическая эффективность ИИ ограничена сверху самой природой потока. И в большинстве крупных организаций главный bottleneck — это <strong>не разработка</strong>. Это очереди вокруг разработки.</p>
+<p><strong>Управленческий вывод.</strong> Прежде чем покупать ИИ для разработчиков — сделайте value stream mapping. Найдите свои time killer'ы. Если 80% времени уходит в согласования и доступы, ИИ для написания кода — это покупка спорткара для езды по пробкам.</p>
+<h2 id="bottlenecks">Восемь узких мест, которые ИИ ускоряет, а не лечит</h2>
+<p>Если ИИ — амплифайер, главный вопрос: <strong>что именно вы усиливаете?</strong> Ниже — те самые узкие места по приоритету риска, с источниками.</p>
+<table>
+<thead>
+<tr>
+<th>#</th>
+<th>Узкое место</th>
+<th>Что происходит при добавлении ИИ</th>
+<th>Источник</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1</td>
+<td><strong>Code review</strong></td>
+<td>PR на автора +20% YoY, инциденты на PR +23,5%. Циклы ревью становятся в 2× длиннее, post-merge фиксы — в 3× больше. DORA называет это «verification tax» — налог на верификацию</td>
+<td>DORA 2026, Apiiro</td>
+</tr>
+<tr>
+<td>2</td>
+<td><strong>Тестирование</strong></td>
+<td>Тесты, генерируемые ИИ под код, тоже генерируемый ИИ — это замыкание контура без независимой спецификации. Растёт ложное покрытие, а не защита от регрессий</td>
+<td>DORA 2026: small batches + test automation как критические capabilities</td>
+</tr>
+<tr>
+<td>3</td>
+<td><strong>Безопасность</strong></td>
+<td>45% AI-кода вносит уязвимости из OWASP Top 10. У Fortune 50: +322% privilege escalation, +153% design flaws, +40% secrets exposure</td>
+<td>Veracode 2025, Apiiro</td>
+</tr>
+<tr>
+<td>4</td>
+<td><strong>Deployment pipelines</strong></td>
+<td>Традиционный CI/CD рассчитан на предсказуемые партии от людей. ИИ генерирует синтаксически корректный, но контекстно неверный код быстрее, чем пайплайн успевает валидировать</td>
+<td>CircleCI 2025, DORA 2026</td>
+</tr>
+<tr>
+<td>5</td>
+<td><strong>Maintainability</strong></td>
+<td>Code churn 3,1% (2020) → 5,7% (2024). Дублирование кода ×4. Хардинг из GitClear называет это «AI-induced tech debt»</td>
+<td>GitClear 2025</td>
+</tr>
+<tr>
+<td>6</td>
+<td><strong>Стандартизация и контекст</strong></td>
+<td>LLM не имеют достаточного контекстного понимания целей проекта, параметров I/O и пользовательских паттернов. Без AGENTS.md, ADR, спецификаций — ИИ галлюцинирует архитектуру</td>
+<td>DORA AI Capabilities Model</td>
+</tr>
+<tr>
+<td>7</td>
+<td><strong>Люди и компетенции</strong></td>
+<td>Парадокс: junior получают наибольший прирост скорости, но не приобретают модель отладки. Senior замедляются на 19% (METR RCT). Знание становится менее воспроизводимым</td>
+<td>METR 2025, MIT/MS/Accenture 2025</td>
+</tr>
+<tr>
+<td>8</td>
+<td><strong>Shadow AI</strong></td>
+<td>MIT NANDA: внутренние корпоративные ИИ-сборки часто проваливаются. Это толкает сотрудников в shadow AI — несанкционированные потребительские приложения, мимо security review</td>
+<td>MIT NANDA, DORA 2026</td>
+</tr>
+</tbody>
+</table>
+<p>Ни один из этих восьми bottleneck'ов не лечится покупкой более дорогой модели. Все восемь — про <strong>систему, в которую агент попадает</strong>, а не про самого агента.</p>
+<h2 id="security">Безопасность: системная проблема, не проблема масштабирования</h2>
+<p>Безопасность стоит обсудить отдельно, потому что здесь сходятся независимые методологии и независимые исследования.</p>
+<p><strong>Veracode 2025 GenAI Code Security Report</strong> — 100+ LLM, 80 задач по MITRE CWE, 4 языка. Результат: 45% сгенерированного кода содержит уязвимости из OWASP Top 10. Для Java — 72%. Для CWE-80 (XSS) — 86%.</p>
+<p>Самое важное замечание CTO Veracode:</p>
+<blockquote>
+<p>«Большие модели работают не лучше малых, что говорит о <strong>системной природе проблемы уязвимостей, а не о проблеме масштабирования LLM</strong>.»</p>
+</blockquote>
+<p>Это конец стратегии «подождём следующей модели». Проблема не в размере. Проблема в обучающем сигнале: модели обучены на открытом коде, который содержит и безопасные, и небезопасные паттерны, и воспроизводят их без разбора.</p>
+<p><strong>Apiiro / Fortune 50 (2025):</strong></p>
+<ul>
+<li>+322% privilege escalation paths.</li>
+<li>+153% design flaws.</li>
+<li>+40% secrets exposure.</li>
+<li>Более 10 000 новых security findings в месяц к июню 2025 (10× рост с декабря 2024).</li>
+</ul>
+<p><strong>SoftwareSeni meta-analysis:</strong> AI-сгенерированный код содержит в <strong>2,74× больше уязвимостей</strong>, чем человеческий.</p>
+<p>Если ваш security pipeline на сегодня работает на пределе — добавление ИИ-генерации без перестройки security gates не «слегка увеличит нагрузку». Оно умножит её на три. И уровень атак растёт быстрее уровня защиты: ИИ снижает порог входа атакующего быстрее, чем повышает защитный потенциал защищающегося.</p>
+<h2 id="platform-discipline">Зрелая платформа и стандарт: почему это и есть инвестиция</h2>
+<p>Здесь — кульминация отчёта DORA 2026. Он формулирует пять системных предпосылок успеха ИИ-внедрения. <strong>Первая в списке</strong> — буквально:</p>
+<blockquote>
+<p><strong>Treat your Internal Developer Platform (IDP) as a product.</strong> Исследование 2025 года подтверждает, что качественная внутренняя платформа — это <strong>первичная соединительная ткань для ценности ИИ</strong>. В агентной эре IDP больше не просто портал к инфраструктуре — это митигатор риска и поставщик контекста для ИИ-агентов. Когда ИИ-агенты могут навигировать по хорошо определённой платформе, они тратят меньше времени на галлюцинирование архитектурных паттернов и больше — на доставку ценного кода.</p>
+</blockquote>
+<p>И отдельно про стандарт разработки — DORA 2026 называет это «<strong>context layer</strong>» и определяет как <strong>CapEx-инвестицию №1</strong> в roadmap:</p>
+<blockquote>
+<p>Капитал должен направляться на развитие качественной внутренней платформы и здоровой data-экосистемы. Это включает <strong>централизацию архитектурных стандартов</strong> и обеспечение того, что документация была высокого качества и <strong>машиночитаемой</strong>.</p>
+</blockquote>
+<p>И ещё прямее — про последствия отсутствия стандарта:</p>
+<blockquote>
+<p>«Когда внутренний knowledge graph организации фрагментирован или устарел, <strong>ИИ генерирует bloat — дублированный или нерелевантный код, который создаёт долгосрочный технический долг</strong>.»</p>
+</blockquote>
+<p>Что делает зрелая платформа + стандарт конкретно. В терминах «упирается в людей и зоопарк решений»:</p>
+<ol>
+<li><strong>Снижает verification tax.</strong> Когда у вас стандартизованные API, schema, ADR, AGENTS.md и pre/post-conditions в контрактах модулей — у ревьюера есть на что опереться. У ИИ-агента — тем более.</li>
+<li><strong>Гасит зоопарк через self-service.</strong> Один путь к production. Один CI с встроенным SAST/SCA/secrets scanning. Один наблюдаемый формат логов и метрик. Разработчик может выбирать инструмент написания, но не путь поставки.</li>
+<li><strong>Делает компетенцию воспроизводимой, а не уникальной.</strong> Если каждый ваш разработчик — «уникальный носитель знания» о том, как деплоить сервис X, это IT-коррупция в её самой банальной форме: знание захвачено инсайдером. Платформа национализирует это знание.</li>
+<li><strong>Превращает галлюцинацию в раннюю ошибку.</strong> Хорошо определённая платформа отказывает агенту, если тот генерирует код вне стандарта. Это дешевле, чем отлавливать на post-merge.</li>
+<li><strong>Защищает от security debt.</strong> Гейты в пайплайне работают вне зависимости от того, кто (или что) написал код.</li>
+</ol>
+<p>Это и есть ответ на тезис «иначе хаос будет множиться». ИИ не строит порядок там, где его нет. ИИ ускоряет то, что есть.</p>
+<h2 id="baseline">Сначала baseline, потом стратегия. Шесть срезов</h2>
+<p>Стратегия без baseline — это вкусовщина. Перед тем как масштабировать ИИ — оцените, <strong>что именно вы собираетесь усилить</strong>. Это занимает примерно 10 недель и даёт картину, на которой можно принимать решения, а не верить в обещания вендора.</p>
+<p>Шесть срезов. Они независимы — можно делать параллельно, но порядок важен: каждый следующий опирается на предыдущий.</p>
+<h3 id="1">Срез 1. Инвентарь</h3>
+<p>Что у вас вообще есть. До этого среза все остальные — средние по больнице.</p>
+<table>
+<thead>
+<tr>
+<th>Артефакт</th>
+<th>Зачем смотрим</th>
+<th>Сигнал тревоги</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Живые сервисы по стримам и платформам</td>
+<td>Отличить актив от мумии</td>
+<td>Из 500 сервисов живых обычно 250–350</td>
+</tr>
+<tr>
+<td>README.md осмысленный (LLM-проверка JTBD)</td>
+<td>Контекст для людей и преемников</td>
+<td>&lt; 50% — стандарта нет</td>
+</tr>
+<tr>
+<td>AGENTS.md</td>
+<td>Контекст для ИИ-агентов</td>
+<td>нет — агент будет галлюцинировать</td>
+</tr>
+<tr>
+<td>OpenAPI</td>
+<td>Контракт синхронных API</td>
+<td>нет / drift с реализацией</td>
+</tr>
+<tr>
+<td>AsyncAPI</td>
+<td>Контракт асинхронных API (брокеры)</td>
+<td>нет / drift с реализацией</td>
+</tr>
+<tr>
+<td>Компонентные тесты через реальный вход</td>
+<td>Спецификация поведения</td>
+<td>&lt; 5% от тестов — нет спецификации</td>
+</tr>
+<tr>
+<td><strong>Соответствие тестов спецификациям OpenAPI/AsyncAPI</strong></td>
+<td><strong>Реализация = спецификация, не разъезжается с ней</strong></td>
+<td>Тесты живут параллельно спеке</td>
+</tr>
+<tr>
+<td>CODEOWNERS / явный владелец</td>
+<td>Кто отвечает</td>
+<td>orphan-сервисы — прямой риск</td>
+</tr>
+<tr>
+<td>ADR / architecture.md</td>
+<td>Решения зафиксированы</td>
+<td>нет — решения в головах</td>
+</tr>
+<tr>
+<td>Охват стандартным пайплайном</td>
+<td>Сколько команд используют один путь к prod</td>
+<td>&lt; 50% — IDP не product, а артефакт</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Особое внимание — соответствие тестов спецификациям.</strong> Это и есть главная защита от ИИ-галлюцинации контракта. Когда спецификация — единственный источник истины и компонентный тест её проверяет (импорт OpenAPI/AsyncAPI в тестовом коде, runtime-валидация ответов против схемы), ИИ-агент не сможет втихую разойтись с контрактом. Без этой проверки спека и реализация живут параллельно, и одна из них всегда врёт. С ИИ — обе врут одинаково правдоподобно.</p>
+<h3 id="2-dora-">Срез 2. DORA-поток</h3>
+<p>Пять метрик — критическая база для любого разговора про поставку:</p>
+<ul>
+<li><strong>Deployment frequency</strong></li>
+<li><strong>Lead time for changes</strong></li>
+<li><strong>Change failure rate</strong></li>
+<li><strong>Failed deployment recovery time</strong></li>
+<li><strong>Rework rate</strong> (новая метрика DORA 2025 — прямой ответ на рост code churn)</li>
+</ul>
+<p>Меряем <strong>по живым сервисам</strong>, не по всем. И не в среднем по организации, а <strong>по стриму, по платформе, по типу сервиса</strong>. Среднее по 500 сервисам ничего не скажет, кроме того, что у вас, в среднем, всё нормально.</p>
+<h3 id="3">Срез 3. Качество кода и тестов</h3>
+<p>Здесь меряем то, что DORA называет «verification tax» и «AI-induced tech debt». <strong>Количество тестов — не индикатор.</strong> Сервис с 300 тестами при mutation score 35% хуже сервиса с 50 тестами при mutation score 75%.</p>
+<table>
+<thead>
+<tr>
+<th>Метрика</th>
+<th>Здоровье</th>
+<th>Тревога</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Mutation score</strong> (PIT/Stryker/go-mutesting)</td>
+<td>&gt; 70%</td>
+<td>&lt; 40% — тесты декоративные, проходят на сломанном коде</td>
+</tr>
+<tr>
+<td><strong>Доля тестов с моками</strong></td>
+<td>&lt; 30%</td>
+<td>&gt; 60% — тестируется эхо, а не код</td>
+</tr>
+<tr>
+<td><strong>Flaky rate</strong></td>
+<td>&lt; 1%</td>
+<td>&gt; 5% — разработчики сами не доверяют</td>
+</tr>
+<tr>
+<td><strong>Время прогона полного набора</strong></td>
+<td>&lt; 10 мин</td>
+<td>&gt; 30 мин — pipeline-killer</td>
+</tr>
+<tr>
+<td><strong>Code churn</strong> (% строк, переписанных за &lt; 2 недели)</td>
+<td>3–5%</td>
+<td>&gt; 7% — AI-tax уже идёт</td>
+</tr>
+<tr>
+<td><strong>Дублирование</strong> (jscpd/sonar-clones)</td>
+<td>&lt; 5%</td>
+<td>&gt; 15%</td>
+</tr>
+<tr>
+<td><strong>Vulnerabilities на сервис в месяц</strong></td>
+<td>стабильно</td>
+<td>растёт ×N — security pipeline не справляется</td>
+</tr>
+</tbody>
+</table>
+<h3 id="4-shadow-ai">Срез 4. Shadow AI</h3>
+<p>Без этого среза вы оцениваете систему, не зная, что в ней уже происходит:</p>
+<ul>
+<li>Опрос лидов: «у вашей команды есть Cursor / Copilot? Через корпоративную подписку или личные?»</li>
+<li>DLP-логи: случаи отправки кода во внешние ИИ.</li>
+<li>Анализ outbound-трафика на домены AI-вендоров.</li>
+<li>% стримов с собственной политикой по ИИ.</li>
+</ul>
+<p>Если 60% разработчиков уже на Cursor через личные карты — вы <strong>уже в J-кривой</strong>, просто без управления.</p>
+<h3 id="5">Срез 5. Онбординг и дифф платформ</h3>
+<p>Самый недооценённый baseline-вопрос. Меряем не «что есть», а <strong>сколько времени между «новый человек или новый сервис» и «первый коммит в prod»</strong>.</p>
+<table>
+<thead>
+<tr>
+<th>Метрика</th>
+<th>Здоровье</th>
+<th>Тревога</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Time-to-first-commit нового разработчика</td>
+<td>&lt; 2 дня</td>
+<td>&gt; 2 недели</td>
+</tr>
+<tr>
+<td>Time-to-first-deploy-to-prod</td>
+<td>&lt; 1 месяц</td>
+<td>&gt; 3 месяцев</td>
+</tr>
+<tr>
+<td>Шагов в инструкции «как начать»</td>
+<td>&lt; 10</td>
+<td>&gt; 30</td>
+</tr>
+<tr>
+<td>Зависимостей от ручных тикетов для старта</td>
+<td>0–1</td>
+<td>4+</td>
+</tr>
+</tbody>
+</table>
+<p>Здесь же — <strong>golden path test</strong>: даём пятерым одинаковым junior'ам одно задание («сделать сервис на платформе X, который принимает HTTP POST и пишет в БД») и засекаем время от «получил задание» до «работает в test-окружении». Результат — таблица:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a>Платформа A: 4 часа, 0 тикетов   → golden path работает
+<a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a>Платформа B: 2 дня, 3 тикета     → есть процесс, но трение
+<a id="__codelineno-1-3" name="__codelineno-1-3" href="#__codelineno-1-3"></a>Платформа C: 9 дней, 12 тикетов  → по сути нет платформы
+<a id="__codelineno-1-4" name="__codelineno-1-4" href="#__codelineno-1-4"></a>Платформа D: «не смог»           → legacy-зона, кандидат на decommission
+<a id="__codelineno-1-5" name="__codelineno-1-5" href="#__codelineno-1-5"></a>Платформа E: 1 день, 1 тикет     → норма
+</code></pre></div>
+<p>Это жесточайший аргумент в управленческом разговоре. Не абстрактная «зрелость платформы», а конкретный наблюдаемый показатель.</p>
+<h3 id="6-value-stream-mapping-time-killers">Срез 6. Value Stream Mapping и time killers</h3>
+<p>Сам процесс производства. См. раздел про <a href="#lead-time">арифметику lead time</a>. На каждом этапе пути от идеи до production меряем lead time и process time, считаем efficiency. Это даёт карту, где видно, <strong>где деньги горят прямо сейчас</strong> — и где ИИ может реально помочь, а где нет.</p>
+<p>Источники для этого среза:</p>
+<ul>
+<li><strong>Опрос команд</strong> про частотность time killers (1 неделя): «сколько раз за 3 месяца вы ждали более 2 дней архревью / сетевой доступ / security review / согласования релиза?»</li>
+<li><strong>Тикет-анализ</strong> Jira / SD за 90 дней по типам тикетов.</li>
+<li><strong>Полный VSM</strong> на 5–7 типичных сервисах разных профилей.</li>
+</ul>
+<h3 id="heatmap">Heatmap как единственное полезное представление</h3>
+<p>После сбора шести срезов сводим всё в одну матрицу:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a>                │ Платф A │ Платф B │ Платф C │ Платф D │ Платф E │
+<a id="__codelineno-2-2" name="__codelineno-2-2" href="#__codelineno-2-2"></a>────────────────┼─────────┼─────────┼─────────┼─────────┼─────────┤
+<a id="__codelineno-2-3" name="__codelineno-2-3" href="#__codelineno-2-3"></a>Стрим 1 (15сс)  │ 🟢🟢🟢  │ 🟡🔴🔴  │   —     │   —     │   —     │
+<a id="__codelineno-2-4" name="__codelineno-2-4" href="#__codelineno-2-4"></a>Стрим 2 (8сс)   │ 🟢🔴🔴  │   —     │   —     │   —     │   —     │
+<a id="__codelineno-2-5" name="__codelineno-2-5" href="#__codelineno-2-5"></a>Стрим 3 (30сс)  │ 🔴🔴🔴  │ 🔴🔴🔴  │ 🔴🟠🔴  │ orphan  │   —     │
+</code></pre></div>
+<p>Три цвета в ячейке: DORA-поток, качество тестов, RRA-score (I/O-граница + JTBD).</p>
+<ul>
+<li>🟢🟢🟢 — пилоты для ИИ (обычно 5–10 стримов из 40).</li>
+<li>🟢🔴🔴 — <strong>главная зона риска</strong>: быстро поставляют, защиты нет. ИИ добьёт первой.</li>
+<li>🔴🟢🟢 — задушены платформой или процессом. Сюда — инвестиции в IDP.</li>
+<li>🔴🔴🔴 — санация: контракты, AGENTS.md, переписывание тестов как спецификации.</li>
+<li>orphan — кандидаты на decommission.</li>
+</ul>
+<h3 id="_1">Последовательность измерений</h3>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a>Нед 1–2  → Срез 1 (инвентарь) + Срез 6 (опрос time killers)
+<a id="__codelineno-3-2" name="__codelineno-3-2" href="#__codelineno-3-2"></a>Нед 2–4  → Срез 4 (Shadow AI) + Срез 6 (тикет-анализ)
+<a id="__codelineno-3-3" name="__codelineno-3-3" href="#__codelineno-3-3"></a>Нед 3–8  → Срезы 2, 3 — на 8–10 пилотных стримах разных профилей
+<a id="__codelineno-3-4" name="__codelineno-3-4" href="#__codelineno-3-4"></a>Нед 4–8  → Срез 5 (онбординг) — golden path test на платформах
+<a id="__codelineno-3-5" name="__codelineno-3-5" href="#__codelineno-3-5"></a>Нед 8–10 → Срез 6 (полный VSM) + сборка heatmap
+<a id="__codelineno-3-6" name="__codelineno-3-6" href="#__codelineno-3-6"></a>Нед 10+  → Стратегия на основе данных, а не вкусовщины
+</code></pre></div>
+<p><strong>10 недель</strong> — реалистичный темп. Кто обещает «оценим за 2 недели» — врёт. Кто растягивает на полгода — не вернёт деньги бизнесу.</p>
+<h2 id="roadmap">Что делать. Roadmap без розовых очков</h2>
+<p>Roadmap построен по DORA 2026 + независимым источникам. Без вендорского оптимизма и без академической нейтральности.</p>
+<table>
+<thead>
+<tr>
+<th>Горизонт</th>
+<th>Действие</th>
+<th>Почему</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>0–3 мес</strong></td>
+<td>Собрать baseline по шести срезам (см. предыдущий раздел): инвентарь, DORA-поток, качество кода и тестов, shadow AI, онбординг и дифф платформ, value stream mapping</td>
+<td>Без baseline вы не отличите J-Curve dip от провала проекта. Без VSM не отличите узкое горло «разработки» от узких горлов «согласований» и «доступов»</td>
+</tr>
+<tr>
+<td><strong>0–6 мес</strong></td>
+<td>Установить «AI stance» — официальную позицию организации: что можно, чего нельзя, какие инструменты одобрены</td>
+<td>DORA 2026 называет это критической capability. Без неё — shadow AI и неконтролируемый отток данных</td>
+</tr>
+<tr>
+<td><strong>3–12 мес</strong></td>
+<td>Инвестировать в IDP как продукт. Self-service для типового сервиса. Стандарт скаффолдинга. Гейты безопасности в пайплайне — <strong>не опциональные</strong></td>
+<td>DORA 2026: первая CapEx-инвестиция в roadmap</td>
+</tr>
+<tr>
+<td><strong>3–12 мес</strong></td>
+<td>Развернуть AI-accessible internal data: машиночитаемая документация, чистые API-спецификации (OpenAPI, AsyncAPI), ADR</td>
+<td>DORA 2026 называет это «context layer» — без него агенты бесполезны</td>
+</tr>
+<tr>
+<td><strong>3–12 мес</strong></td>
+<td>Атаковать главные time killer'ы, найденные через VSM: убрать ручные согласования, сделать сетевые доступы self-service, унифицировать архревью</td>
+<td>Каждый день, отыгранный здесь, даёт прирост lead time, сравнимый с месяцами работы над ИИ</td>
+</tr>
+<tr>
+<td><strong>6–18 мес</strong></td>
+<td>Стандарт прикладной разработки: контракты модулей, pre/post-conditions, AGENTS.md в каждом репозитории, разделение логики и I/O. Компонентные тесты сверяются со спецификацией OpenAPI/AsyncAPI. Обязательное code review с AI-assisted scanning, но не AI-only</td>
+<td>Превращает ИИ из источника галлюцинаций в исполнителя по спецификации</td>
+</tr>
+<tr>
+<td><strong>Постоянно</strong></td>
+<td><strong>Не сокращать штат.</strong> Освобождённую капасити направлять на верификацию, рефакторинг, инновации</td>
+<td>Прямое управленческое указание DORA 2026</td>
+</tr>
+</tbody>
+</table>
+<p>Особое внимание на последний пункт. DORA 2026 пишет про это в отдельном блоке:</p>
+<blockquote>
+<p>«Мы настоятельно рекомендуем организациям не принимать стратегию сокращения штата. Производительность должна перенаправляться на инновации, а не на сокращение… Reducing the amount of unnecessary rework recovers engineering capacity equivalent to <strong>free headcount</strong>, который может быть напрямую реинвестирован в новые фичи.»</p>
+</blockquote>
+<p>Логика проста: verification tax вырос, инциденты на PR выросли, security findings выросли. Если в этот момент сократить штат — у вас не останется людей, чтобы верифицировать ускоренный поток. ИИ-производительность сожжётся внутри организации, не дойдя до бизнеса.</p>
+<h2 id="one-liner">Итог в одной фразе</h2>
+<p>Без зрелой платформы и стандарта <strong>ИИ — это ускоритель деградации</strong>. Вы покупаете не продуктивность, а более быструю генерацию того самого хаоса, на который и так уходит большая часть инженерного бюджета.</p>
+<p>DORA 2026 формулирует это финально и без оговорок:</p>
+<blockquote>
+<p>«Истинный риск для технологических лидеров — не провалить ИИ, а не построить организационную систему и культуру, которые позволяют ИИ доставлять ценность. Цена бездействия высока, но броситься в адаптацию без подготовки среды — столь же разрушительно.»</p>
+</blockquote>
+<h2 id="sources">Источники</h2>
+<p><strong>Первичные источники DORA — основа синтеза:</strong></p>
+<ol>
+<li>DORA. <em>The ROI of AI-assisted Software Development.</em> April 2026. <a href="https://dora.dev/ai/roi">dora.dev/ai/roi</a></li>
+<li>DORA. <em>State of AI-assisted Software Development.</em> 2025. <a href="https://dora.dev/dora-report-2025">dora.dev/dora-report-2025</a></li>
+<li>DORA. <em>Accelerate State of DevOps.</em> 2024. <a href="https://dora.dev/research/2024/dora-report/">dora.dev/research/2024/dora-report/</a></li>
+<li>DORA. <em>AI Capabilities Model.</em> <a href="https://dora.dev/dora-aicmr">dora.dev/dora-aicmr</a></li>
+<li>DORA. <em>ROI Calculator.</em> <a href="https://dora.dev/ai/roi/calculator">dora.dev/ai/roi/calculator</a></li>
+</ol>
+<p><strong>Продуктивность и бизнес-эффект:</strong></p>
+<ol>
+<li>METR. <em>Measuring the Impact of Early-2025 AI on Experienced Open-Source Developer Productivity.</em> 2025. <a href="https://metr.org/blog/2025-07-10-early-2025-ai-experienced-os-dev-study/">metr.org/blog/2025-07-10-early-2025-ai-experienced-os-dev-study/</a></li>
+<li>Faros AI. <em>Productivity Paradox Report.</em> 2025. <a href="https://www.faros.ai/blog/ai-software-engineering">faros.ai/blog/ai-software-engineering</a></li>
+<li>Cui, Demirer, Jaffe, Musolff. <em>The Effects of Generative AI on High-Skilled Work.</em> MIT / Microsoft / Accenture RCT, 2025. <a href="https://economics.mit.edu/sites/default/files/inline-files/draft_copilot_experiments.pdf">economics.mit.edu</a></li>
+<li>MIT NANDA. <em>State of AI in Business 2025.</em> <a href="https://mlq.ai/media/quarterly_decks/v0.1_State_of_AI_in_Business_2025_Report.pdf">mlq.ai</a></li>
+<li>Stack Overflow. <em>Developer Survey 2025.</em> <a href="https://survey.stackoverflow.co/2025">survey.stackoverflow.co/2025</a></li>
+<li>Tacho L. <em>This CTO says 93% of developers use AI, but productivity is still ~10%.</em> Shiftmag / Pragmatic Summit 2026. <a href="https://shiftmag.dev/this-cto-says-93-of-developers-use-ai-but-productivity-is-still-10-8013/">shiftmag.dev</a></li>
+</ol>
+<p><strong>Качество кода и безопасность:</strong></p>
+<ol>
+<li>Veracode. <em>2025 GenAI Code Security Report.</em> <a href="https://www.veracode.com/resources/analyst-reports/2025-genai-code-security-report/">veracode.com/resources/analyst-reports/2025-genai-code-security-report/</a></li>
+<li>Apiiro / Fortune 50 study, 2025. Обзор: <a href="https://www.softwareseni.com/ai-generated-code-security-risks-why-vulnerabilities-increase-2-74x-and-how-to-prevent-them/">softwareseni.com</a></li>
+<li>GitClear. <em>AI Copilot Code Quality 2025.</em> <a href="https://www.gitclear.com/ai_assistant_code_quality_2025_research">gitclear.com/ai_assistant_code_quality_2025_research</a></li>
+<li>Stanford HAI. <em>2025 AI Index Report.</em> <a href="https://hai.stanford.edu/ai-index/2025-ai-index-report">hai.stanford.edu/ai-index/2025-ai-index-report</a></li>
+</ol>
+
+
+
+
+
+
+
+  
+  
+
+
+
+  
+
+
+  
+
+
+
+      
+    </article>
+  </div>
+
+          
+  <script>var tabs=__md_get("__tabs");if(Array.isArray(tabs))e:for(var set of document.querySelectorAll(".tabbed-set")){var labels=set.querySelector(".tabbed-labels");for(var tab of tabs)for(var label of labels.getElementsByTagName("label"))if(label.innerText.trim()===tab){var input=document.getElementById(label.htmlFor);input.checked=!0;continue e}}</script>
+
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+          <button type="button" class="md-top md-icon" data-md-component="top" hidden>
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8z"/></svg>
+  Back to top
+</button>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+    <div class="md-copyright__highlight">
+      &copy; 2023 <a href="https://git.codemonsters.team/guides/web-book"  target="_blank" rel="noopener">CodeMonsters.team</a>
+    </div>
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+        
+<div class="md-social">
+  
+    
+    
+    
+    
+      
+      
+    
+    <a href="https://git.codemonsters.team/guides/web-book" target="_blank" rel="noopener" title="git.codemonsters.team" class="md-social__link">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M202.1 328.7c0 20.9-10.9 55.1-36.7 55.1s-36.7-34.2-36.7-55.1 10.9-55.1 36.7-55.1 36.7 34.2 36.7 55.1M496 278.2c0 31.9-3.2 65.7-17.5 95-37.9 76.6-142.1 74.8-216.7 74.8-75.8 0-186.2 2.7-225.6-74.8-14.6-29-20.2-63.1-20.2-95 0-41.9 13.9-81.5 41.5-113.6-5.2-15.8-7.7-32.4-7.7-48.8 0-21.5 4.9-32.3 14.6-51.8 45.3 0 74.3 9 108.8 36 29-6.9 58.8-10 88.7-10 27 0 54.2 2.9 80.4 9.2 34-26.7 63-35.2 107.8-35.2 9.8 19.5 14.6 30.3 14.6 51.8 0 16.4-2.6 32.7-7.7 48.2 27.5 32.4 39 72.3 39 114.2m-64.3 50.5c0-43.9-26.7-82.6-73.5-82.6-18.9 0-37 3.4-56 6-14.9 2.3-29.8 3.2-45.1 3.2-15.2 0-30.1-.9-45.1-3.2-18.7-2.6-37-6-56-6-46.8 0-73.5 38.7-73.5 82.6 0 87.8 80.4 101.3 150.4 101.3h48.2c70.3 0 150.6-13.4 150.6-101.3m-82.6-55.1c-25.8 0-36.7 34.2-36.7 55.1s10.9 55.1 36.7 55.1 36.7-34.2 36.7-55.1-10.9-55.1-36.7-55.1"/></svg>
+    </a>
+  
+    
+    
+    
+    
+      
+      
+    
+    <a href="https://t.me/codemonsterslogs" target="_blank" rel="noopener" title="t.me" class="md-social__link">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M256 8a248 248 0 1 0 0 496 248 248 0 1 0 0-496m115 168.7c-3.7 39.2-19.9 134.4-28.1 178.3-3.5 18.6-10.3 24.8-16.9 25.4-14.4 1.3-25.3-9.5-39.3-18.7-21.8-14.3-34.2-23.2-55.3-37.2-24.5-16.1-8.6-25 5.3-39.5 3.7-3.8 67.1-61.5 68.3-66.7.2-.7.3-3.1-1.2-4.4s-3.6-.8-5.1-.5c-2.2.5-37.1 23.5-104.6 69.1-9.9 6.8-18.9 10.1-26.9 9.9-8.9-.2-25.9-5-38.6-9.1-15.5-5-27.9-7.7-26.8-16.3.6-4.5 6.7-9 18.4-13.7 72.3-31.5 120.5-52.3 144.6-62.3 68.9-28.6 83.2-33.6 92.5-33.8 2.1 0 6.6.5 9.6 2.9 2 1.7 3.2 4.1 3.5 6.7.5 3.2.6 6.5.4 9.8z"/></svg>
+    </a>
+  
+    
+    
+    
+    
+      
+      
+    
+    <a href="https://www.linkedin.com/in/maximmorev/" target="_blank" rel="noopener" title="www.linkedin.com" class="md-social__link">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M416 32H31.9C14.3 32 0 46.5 0 64.3v383.4C0 465.5 14.3 480 31.9 480H416c17.6 0 32-14.5 32-32.3V64.3c0-17.8-14.4-32.3-32-32.3M135.4 416H69V202.2h66.5V416zM102.2 96a38.5 38.5 0 1 1 0 77 38.5 38.5 0 1 1 0-77m282.1 320h-66.4V312c0-24.8-.5-56.7-34.5-56.7-34.6 0-39.9 27-39.9 54.9V416h-66.4V202.2h63.7v29.2h.9c8.9-16.8 30.6-34.5 62.9-34.5 67.2 0 79.7 44.3 79.7 101.9z"/></svg>
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    
+      
+      
+      <script id="__config" type="application/json">{"annotate": null, "base": "../../../../..", "features": ["navigation.tabs", "navigation.tabs.sticky", "navigation.sections", "navigation.indexes", "toc.integrate", "navigation.top", "search.suggest", "search.highlight", "content.tabs.link", "content.code.annotation", "content.code.copy"], "search": "../../../../../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
+    
+    
+      <script src="../../../../../assets/javascripts/bundle.79ae519e.min.js"></script>
+      
+    
+  </body>
+</html>
