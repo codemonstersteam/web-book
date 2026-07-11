@@ -1,0 +1,374 @@
+/* ============================================================
+   CRT / terminal theme for CodeMonsters.team (mkdocs-material)
+   Ported from the rationaldev · aicraftsman reference design.
+   Palette: cyan (#22e6ff) on near-black (#04070a), monospace,
+   cyan glow, scanlines + glow-orb ambience.
+   ============================================================ */
+
+:root {
+  --crt-bg:        #04070a;
+  --crt-panel:     #070c11;
+  --crt-panel-2:   #030507;   /* inputs / code blocks */
+  --crt-line:      #0e2a30;   /* borders */
+  --crt-cyan:      #22e6ff;
+  --crt-cyan-dim:  #2b6b74;
+  --crt-text:      #a9e9f2;
+  --crt-text-dim:  #4d7079;
+  --crt-magenta:   #ff2bd6;   /* chromatic-aberration accent */
+  --crt-glow:      0 0 6px rgba(34, 230, 255, .55), 0 0 18px rgba(34, 230, 255, .25);
+  --crt-glow-soft: 0 0 4px rgba(34, 230, 255, .35);
+  --crt-mono:      ui-monospace, "SF Mono", "JetBrains Mono", "Fira Code", Menlo, Consolas, monospace;
+}
+
+/* ---- Map mkdocs-material design tokens onto the CRT palette ---- */
+[data-md-color-scheme="slate"] {
+  --md-hue: 195;
+
+  --md-default-bg-color:            var(--crt-bg);
+  --md-default-bg-color--light:     rgba(169, 233, 242, .06);
+  --md-default-bg-color--lighter:   rgba(169, 233, 242, .03);
+  --md-default-bg-color--lightest:  rgba(169, 233, 242, .015);
+
+  --md-default-fg-color:            var(--crt-text);
+  --md-default-fg-color--light:     var(--crt-text-dim);
+  --md-default-fg-color--lighter:   rgba(77, 112, 121, .5);
+  --md-default-fg-color--lightest:  rgba(77, 112, 121, .18);
+
+  --md-primary-fg-color:            var(--crt-panel);
+  --md-primary-fg-color--light:     var(--crt-panel);
+  --md-primary-fg-color--dark:      var(--crt-bg);
+  --md-primary-bg-color:            var(--crt-text);
+  --md-primary-bg-color--light:     var(--crt-text-dim);
+
+  --md-accent-fg-color:             var(--crt-cyan);
+  --md-accent-fg-color--transparent: rgba(34, 230, 255, .1);
+  --md-accent-bg-color:             #02181c;
+
+  --md-typeset-color:               var(--crt-text);
+  --md-typeset-a-color:             var(--crt-cyan);
+  --md-typeset-mark-color:          rgba(34, 230, 255, .28);
+
+  --md-code-fg-color:               var(--crt-text);
+  --md-code-bg-color:               var(--crt-panel-2);
+  --md-code-hl-color:               rgba(34, 230, 255, .18);
+  --md-code-hl-comment-color:       var(--crt-text-dim);
+  --md-code-hl-keyword-color:       var(--crt-cyan);
+  --md-code-hl-function-color:      #6fe9ff;
+  --md-code-hl-string-color:        #7fd6a0;
+  --md-code-hl-number-color:        var(--crt-magenta);
+  --md-code-hl-name-color:          var(--crt-text);
+  --md-code-hl-operator-color:      var(--crt-cyan-dim);
+
+  --md-footer-bg-color:             var(--crt-panel);
+  --md-footer-bg-color--dark:       var(--crt-bg);
+  --md-footer-fg-color:             var(--crt-text-dim);
+
+  color-scheme: dark;
+}
+
+/* ---- Base typography ---- */
+body,
+.md-typeset {
+  font-family: var(--crt-mono);
+}
+.md-typeset {
+  font-size: .78rem;
+  line-height: 1.65;
+  letter-spacing: .01em;
+}
+
+html { background: var(--crt-bg); }
+body { background: var(--crt-bg); color: var(--crt-text); }
+
+::selection { background: rgba(34, 230, 255, .28); color: #02181c; }
+
+/* ============================================================
+   CRT ambience — scanlines + glow orb, site-wide
+   ============================================================ */
+body::before {
+  content: "";
+  position: fixed; inset: 0; z-index: 100; pointer-events: none;
+  background: repeating-linear-gradient(
+    0deg,
+    rgba(0,0,0,0) 0, rgba(0,0,0,0) 2px, rgba(0,0,0,.22) 3px);
+  mix-blend-mode: multiply;
+  opacity: .5;
+}
+body::after {
+  content: "";
+  position: fixed; z-index: 0; pointer-events: none;
+  top: -22vh; left: 50%; transform: translateX(-50%);
+  width: 120vw; height: 62vh; border-radius: 50%;
+  background: radial-gradient(ellipse at center, rgba(34,230,255,.09), transparent 62%);
+  filter: blur(22px);
+}
+/* keep real content above the orb (leave .md-tabs alone so sticky works) */
+.md-container, .md-header, .md-footer { position: relative; z-index: 1; }
+
+/* ============================================================
+   Header + navigation tabs (window-chrome feel)
+   ============================================================ */
+.md-header {
+  background: var(--crt-panel);
+  border-bottom: 1px solid var(--crt-line);
+  box-shadow: 0 1px 0 rgba(34,230,255,.06);
+}
+.md-header__title { color: var(--crt-text); letter-spacing: .04em; }
+.md-header__topic { font-weight: 700; }
+
+.md-tabs {
+  background: var(--crt-panel);
+  border-bottom: 1px solid var(--crt-line);
+  /* keep the three tabs visible on every width (Material hides them < 76.25em) */
+  display: block;
+}
+.md-tabs__list { margin: 0; padding: 0; }
+.md-tabs__item { height: auto; }
+.md-tabs__link {
+  color: var(--crt-text);
+  opacity: 1;
+  letter-spacing: .06em;
+  font-weight: 600;
+  margin: 0;
+  padding: 12px 16px;
+}
+.md-tabs__link::before { content: "> "; color: var(--crt-cyan); opacity: .7; }
+.md-tabs__link:hover,
+.md-tabs__link--active {
+  color: var(--crt-cyan);
+  text-shadow: var(--crt-glow);
+}
+
+/* search box in header */
+.md-search__form {
+  background: var(--crt-panel-2);
+  border: 1px solid var(--crt-line);
+  border-radius: 6px;
+  box-shadow: none;
+}
+.md-search__form:hover { background: var(--crt-panel-2); }
+.md-search__input { color: var(--crt-text); }
+.md-search__input::placeholder { color: var(--crt-cyan-dim); }
+[data-md-toggle="search"]:checked ~ .md-header .md-search__form {
+  box-shadow: 0 0 0 1px var(--crt-cyan-dim), var(--crt-glow);
+}
+.md-search__output { background: var(--crt-panel); border: 1px solid var(--crt-line); }
+.md-search-result__meta { background: var(--crt-panel-2); color: var(--crt-text-dim); }
+.md-search-result__link:is(:focus, :hover) { background: rgba(34,230,255,.08); }
+
+/* ============================================================
+   Sidebars / nav
+   ============================================================ */
+.md-nav { color: var(--crt-text); }
+.md-nav__title { color: var(--crt-text-dim); letter-spacing: .1em; font-size: .66rem; }
+.md-nav__link { color: var(--crt-text-dim); }
+.md-nav__link:is(:focus, :hover) { color: var(--crt-cyan); }
+.md-nav__link--active,
+.md-nav__item--active > .md-nav__link {
+  color: var(--crt-cyan);
+  text-shadow: var(--crt-glow-soft);
+}
+.md-nav__link .md-nav__icon { color: inherit; }
+
+/* ============================================================
+   Headings — terminal glow
+   ============================================================ */
+.md-typeset h1,
+.md-typeset h2,
+.md-typeset h3,
+.md-typeset h4,
+.md-typeset h5,
+.md-typeset h6 {
+  font-family: var(--crt-mono);
+  color: var(--crt-cyan);
+  text-shadow: var(--crt-glow-soft);
+  letter-spacing: .02em;
+}
+.md-typeset h1 {
+  font-weight: 800;
+  letter-spacing: .06em;
+  text-shadow: var(--crt-glow);
+}
+/* prompt glyph before top-level headings, like the reference `>` lines */
+.md-typeset h2::before {
+  content: "> ";
+  color: var(--crt-cyan);
+  opacity: .8;
+}
+
+.md-typeset a { color: var(--crt-cyan); }
+.md-typeset a:hover { text-shadow: var(--crt-glow-soft); }
+
+.md-typeset strong,
+.md-typeset b { color: var(--crt-text); }
+.md-typeset em { color: var(--crt-cyan); font-style: normal; }
+
+/* ============================================================
+   Code
+   ============================================================ */
+.md-typeset code,
+.md-typeset pre > code {
+  font-family: var(--crt-mono);
+}
+.md-typeset code {
+  background: var(--crt-panel-2);
+  color: var(--crt-cyan);
+  border: 1px solid var(--crt-line);
+  border-radius: 4px;
+  padding: .1em .35em;
+}
+.md-typeset pre > code {
+  border: 1px solid var(--crt-line);
+  color: var(--crt-text);
+  box-shadow: inset 0 0 0 1px rgba(34,230,255,.03);
+}
+.md-typeset .highlight,
+.md-typeset pre { background: transparent; }
+.md-clipboard { color: var(--crt-text-dim); }
+.md-clipboard:hover { color: var(--crt-cyan); }
+
+/* ============================================================
+   Tables, blockquotes, admonitions
+   ============================================================ */
+.md-typeset table:not([class]) {
+  background: var(--crt-panel);
+  border: 1px solid var(--crt-line);
+}
+.md-typeset table:not([class]) th {
+  background: var(--crt-panel-2);
+  color: var(--crt-cyan);
+  border-bottom: 1px solid var(--crt-line);
+  letter-spacing: .04em;
+}
+.md-typeset table:not([class]) td { border-top: 1px solid var(--crt-line); }
+.md-typeset table:not([class]) tr:hover { background: rgba(34,230,255,.03); }
+
+.md-typeset blockquote {
+  border-left: 2px solid var(--crt-cyan-dim);
+  color: var(--crt-text-dim);
+  background: linear-gradient(90deg, rgba(34,230,255,.03), transparent);
+}
+
+.md-typeset .admonition,
+.md-typeset details {
+  background: var(--crt-panel);
+  border: 1px solid var(--crt-line);
+  border-radius: 6px;
+  box-shadow: none;
+  font-size: .74rem;
+}
+.md-typeset .admonition-title,
+.md-typeset summary {
+  background: var(--crt-panel-2);
+  color: var(--crt-text);
+}
+/* recolor the admonition accent bars to the cyan family */
+.md-typeset :is(.admonition, details):is(.note, .info, .abstract, .tip, .hint, .example, .quote) {
+  border-color: var(--crt-cyan-dim);
+}
+.md-typeset :is(.note, .info, .abstract, .tip, .hint, .example) > :is(.admonition-title, summary)::before {
+  background-color: var(--crt-cyan);
+}
+
+/* horizontal rule as a faint scan line */
+.md-typeset hr { border-bottom: 1px solid var(--crt-line); }
+
+/* ============================================================
+   Buttons — cyan outline (reference .download / .chip)
+   ============================================================ */
+.md-typeset .md-button {
+  color: var(--crt-cyan);
+  background: transparent;
+  border: 1px solid var(--crt-cyan);
+  border-radius: 6px;
+  text-shadow: var(--crt-glow-soft);
+  letter-spacing: .04em;
+  transition: all .15s;
+}
+.md-typeset .md-button:hover {
+  background: rgba(34,230,255,.08);
+  border-color: var(--crt-cyan);
+  color: var(--crt-cyan);
+  box-shadow: var(--crt-glow);
+}
+.md-typeset .md-button--primary {
+  color: #02181c;
+  background: var(--crt-cyan);
+  box-shadow: var(--crt-glow);
+}
+
+/* ============================================================
+   Footer
+   ============================================================ */
+.md-footer,
+.md-footer-meta { background: var(--crt-panel); }
+.md-footer__link { color: var(--crt-text-dim); }
+.md-footer__link:hover { color: var(--crt-cyan); }
+.md-footer-meta__inner { border-top: 1px solid var(--crt-line); }
+.md-copyright { color: var(--crt-text-dim); }
+.md-copyright a { color: var(--crt-cyan-dim); }
+
+/* social icons */
+.md-social__link:hover svg { fill: var(--crt-cyan); }
+
+/* ============================================================
+   Scrollbar
+   ============================================================ */
+* {
+  scrollbar-width: thin;
+  scrollbar-color: var(--crt-cyan-dim) var(--crt-bg);
+}
+*::-webkit-scrollbar { width: 10px; height: 10px; }
+*::-webkit-scrollbar-track { background: var(--crt-bg); }
+*::-webkit-scrollbar-thumb {
+  background: var(--crt-cyan-dim);
+  border-radius: 6px;
+  border: 2px solid var(--crt-bg);
+}
+*::-webkit-scrollbar-thumb:hover { background: var(--crt-cyan); }
+
+/* ============================================================
+   Blog index cards / post meta
+   ============================================================ */
+.md-typeset .md-post__meta,
+.md-typeset .md-post--excerpt .md-post__meta { color: var(--crt-text-dim); }
+.md-typeset .md-post__action a { color: var(--crt-cyan); }
+
+/* ============================================================
+   About-the-author page — framed photo card
+   ============================================================ */
+.md-typeset .author-hero {
+  display: flex;
+  gap: 26px;
+  align-items: flex-start;
+  margin: 1.2em 0 1.6em;
+  padding: 22px;
+  border: 1px solid var(--crt-line);
+  border-radius: 8px;
+  background: linear-gradient(180deg, rgba(34,230,255,.03), transparent);
+}
+.md-typeset .author-photo {
+  flex: 0 0 220px;
+  width: 220px;
+  border-radius: 8px;
+  border: 1px solid var(--crt-cyan-dim);
+  box-shadow: var(--crt-glow);
+  filter: saturate(.92) contrast(1.02);
+}
+.md-typeset .author-intro { flex: 1 1 auto; min-width: 0; }
+.md-typeset .author-intro h3 {
+  margin-top: 0;
+  font-size: 1.25rem;
+  letter-spacing: .04em;
+}
+.md-typeset .author-intro h3::before { content: "> "; opacity: .8; }
+.md-typeset .author-intro blockquote {
+  margin: .6em 0;
+  font-size: .72rem;
+}
+
+@media (max-width: 44.9375em) {
+  .md-typeset { font-size: .76rem; }
+  .md-typeset .author-hero { flex-direction: column; align-items: center; text-align: left; }
+  .md-typeset .author-photo { flex-basis: auto; width: min(260px, 70%); }
+}
