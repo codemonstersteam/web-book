@@ -23,7 +23,7 @@
       
       
       <link rel="icon" href="../../../../../assets/images/favicon.png">
-      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.6">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.7">
     
     
       
@@ -31,7 +31,7 @@
       
     
     
-      <link rel="stylesheet" href="../../../../../assets/stylesheets/main.484c7ddc.min.css">
+      <link rel="stylesheet" href="../../../../../assets/stylesheets/main.ec1eaa64.min.css">
       
         
         <link rel="stylesheet" href="../../../../../assets/stylesheets/palette.ab4e12ef.min.css">
@@ -1339,16 +1339,16 @@
 <h3 id="_5">Пример: безопасное деление</h3>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a>divide(numerator: BigDecimal, denominator: BigDecimal) -&gt; Result&lt;BigDecimal, Error&gt;:
 <a id="__codelineno-5-2" name="__codelineno-5-2" href="#__codelineno-5-2"></a>    if denominator == 0:
-<a id="__codelineno-5-3" name="__codelineno-5-3" href="#__codelineno-5-3"></a>        return Failure(&quot;Деление на ноль невозможно&quot;)
+<a id="__codelineno-5-3" name="__codelineno-5-3" href="#__codelineno-5-3"></a>        return Failure("Деление на ноль невозможно")
 <a id="__codelineno-5-4" name="__codelineno-5-4" href="#__codelineno-5-4"></a>    return Success(numerator / denominator)
 </code></pre></div>
 <p>Здесь явно проверен диапазон допустимых значений знаменателя. Никаких <code>ArithmeticException</code>, никаких сюрпризов. Модуль защищён.</p>
 <h3 id="_6">Пример: валидация имени</h3>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a>createValidName(name: String, fieldName: String) -&gt; Result&lt;String, Error&gt;:
 <a id="__codelineno-6-2" name="__codelineno-6-2" href="#__codelineno-6-2"></a>    if name is null or trim(name) is empty:
-<a id="__codelineno-6-3" name="__codelineno-6-3" href="#__codelineno-6-3"></a>        return Failure(&quot;Ошибка: &quot; + fieldName + &quot; не может быть пустым&quot;)
-<a id="__codelineno-6-4" name="__codelineno-6-4" href="#__codelineno-6-4"></a>    if not name.matches(&quot;^[А-Я][а-яА-Я\-]*$&quot;):
-<a id="__codelineno-6-5" name="__codelineno-6-5" href="#__codelineno-6-5"></a>        return Failure(&quot;Ошибка: &quot; + fieldName + &quot; должно содержать только кириллицу и начинаться с заглавной буквы&quot;)
+<a id="__codelineno-6-3" name="__codelineno-6-3" href="#__codelineno-6-3"></a>        return Failure("Ошибка: " + fieldName + " не может быть пустым")
+<a id="__codelineno-6-4" name="__codelineno-6-4" href="#__codelineno-6-4"></a>    if not name.matches("^[А-Я][а-яА-Я\-]*$"):
+<a id="__codelineno-6-5" name="__codelineno-6-5" href="#__codelineno-6-5"></a>        return Failure("Ошибка: " + fieldName + " должно содержать только кириллицу и начинаться с заглавной буквы")
 <a id="__codelineno-6-6" name="__codelineno-6-6" href="#__codelineno-6-6"></a>    return Success(name)
 </code></pre></div>
 <p>Антецедент: непустая строка из кириллицы, начинающаяся с заглавной. Консеквент: на выходе всегда строка, удовлетворяющая антецеденту, или ошибка.</p>
@@ -1606,8 +1606,8 @@
 <a id="__codelineno-15-17" name="__codelineno-15-17" href="#__codelineno-15-17"></a>
 <a id="__codelineno-15-18" name="__codelineno-15-18" href="#__codelineno-15-18"></a>Юнит-тесты (по формуле 1 + ветки антецедента):
 <a id="__codelineno-15-19" name="__codelineno-15-19" href="#__codelineno-15-19"></a>  - happy path: &lt;вход&gt; -&gt; Success(&lt;выход&gt;)
-<a id="__codelineno-15-20" name="__codelineno-15-20" href="#__codelineno-15-20"></a>  - &lt;ветка 1&gt;: &lt;вход&gt; -&gt; Failure(&quot;&lt;сообщение&gt;&quot;)
-<a id="__codelineno-15-21" name="__codelineno-15-21" href="#__codelineno-15-21"></a>  - &lt;ветка 2&gt;: &lt;вход&gt; -&gt; Failure(&quot;&lt;сообщение&gt;&quot;)
+<a id="__codelineno-15-20" name="__codelineno-15-20" href="#__codelineno-15-20"></a>  - &lt;ветка 1&gt;: &lt;вход&gt; -&gt; Failure("&lt;сообщение&gt;")
+<a id="__codelineno-15-21" name="__codelineno-15-21" href="#__codelineno-15-21"></a>  - &lt;ветка 2&gt;: &lt;вход&gt; -&gt; Failure("&lt;сообщение&gt;")
 <a id="__codelineno-15-22" name="__codelineno-15-22" href="#__codelineno-15-22"></a>
 <a id="__codelineno-15-23" name="__codelineno-15-23" href="#__codelineno-15-23"></a>Definition of Done:
 <a id="__codelineno-15-24" name="__codelineno-15-24" href="#__codelineno-15-24"></a>  - модуль реализован согласно контракту
@@ -1820,7 +1820,7 @@
       <script id="__config" type="application/json">{"annotate": null, "base": "../../../../..", "features": ["navigation.tabs", "navigation.tabs.sticky", "navigation.sections", "navigation.indexes", "toc.integrate", "navigation.top", "search.suggest", "search.highlight", "content.tabs.link", "content.code.annotation", "content.code.copy"], "search": "../../../../../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
     
     
-      <script src="../../../../../assets/javascripts/bundle.79ae519e.min.js"></script>
+      <script src="../../../../../assets/javascripts/bundle.d7400e89.min.js"></script>
       
     
   </body>
