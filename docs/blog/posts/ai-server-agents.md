@@ -39,11 +39,12 @@ categories:
 
 В контексте разработки ПО это серверный агент, который берёт тикет из Jira/GitHub, анализирует его,
 дорабатывает кодовую базу по стандартам организации и открывает PR. Масштаб явления показывает
-исследование Microsoft Research по 3,2 млн следов GitHub Copilot: **87% вызовов LLM в production
-инициируют сами агенты, а не разработчики**
-([Microsoft Research](https://www.microsoft.com/en-us/research/publication/agentic-coding-in-the-wild-characterizing-github-copilot-traces-at-production-scale/)).
-Когда почти весь трафик к модели порождает машина, архитектура оркестрации становится критически
-важным слоем — качеством чат-интерфейса результат уже не вытянуть.
+исследование Microsoft Research по производственным трассам GitHub Copilot за июнь 2026: **3,2 млн
+пользователей, 13 млн сессий, 761 млн вызовов LLM и 95 триллионов токенов**, и сессии разворачиваются
+в автономные циклы агентов — вызовы LLM сопряжены с исполнением инструментов почти один к одному
+([Microsoft Research](https://www.microsoft.com/en-us/research/publication/agentic-coding-in-the-wild-characterizing-github-copilot-at-production-scale)).
+Когда трафик к модели порождает машина, а не разработчик за чатом, архитектура оркестрации становится
+критически важным слоем — качеством чат-интерфейса результат уже не вытянуть.
 
 Каноническая статья Anthropic *«Building Effective Agents»* разделяет агентные системы на два типа:
 **workflows** — предопределённые графы вызовов, и **agents** — автономные циклы, где модель сама
@@ -130,20 +131,21 @@ LLM развиваются стремительно. Архитектура, п�
 или только GPT), устаревает за месяцы. Исследование MIT Technology Review подчёркивает, что
 enterprise-среда для агентов должна включать надёжный слой управления контекстом и независимость от
 моделей ([MIT Technology
-Review](https://www.technologyreview.com/2026/07/27)).
+Review](https://www.technologyreview.com/2026/07/27/1140668/building-the-enterprise-environment-for-agentic-ai)).
 
 Ключевые принципы защиты от устаревания:
 
 1. **Provider-Agnostic Adapter.** Использование AI Gateway (например, LiteLLM или TrueFoundry),
    который ставится перед всеми агентами и маршрутизирует запросы на любой OpenAI-совместимый
-   эндпоинт.
+   эндпоинт — дорогое на планирование, дешёвое на исполнение
+   ([VentureBeat](https://venturebeat.com/orchestration/ai-coding-agents-are-blowing-through-budgets-replit-kilo-code-and-symbotic-explain-how-theyre-managing-it)).
 2. **Evals как часть пайплайна.** Перед обновлением модели агент должен прогоняться через набор
    регрессионных тестов (например, с использованием Kitaru или BenchFlow), чтобы убедиться, что
-   качество кода не упало ([VentureBeat](https://venturebeat.com/orchestration/ai-coding-agents-are-blowing-through-budgets-replit-kilo-code-and-symbotic-explain-how-theyre-managing-it)).
+   качество кода не упало.
 3. **Context Engineering.** Согласно исследованию ACM Queue (фреймворк CAFE(S)), главная причина
    падения качества агентов — не «глупость» модели, а нечёткий, устаревший или неполный контекст
-   ([ACM Queue](https://queue.acm.org)). Инвестиции в context engineering окупаются больше, чем
-   смена LLM.
+   ([ACM Queue](https://queue.acm.org/doi/10.1145/3847288)). Инвестиции в context engineering
+   окупаются больше, чем смена LLM.
 
 ## Практический чеклист внедрения
 
@@ -174,16 +176,17 @@ LLM.
 ### Научные публикации и исследования
 
 - `[перв.]` [SWE-agent: Agent-Computer Interfaces Enable Automated Software Engineering (NeurIPS
-  2024)](https://proceedings.neurips.cc/paper_files/swe-agent) — базовый референс по проектированию
-  интерфейсов агентов.
-- `[перв.]` [Agentic Coding in the Wild: Characterizing GitHub Copilot Traces (Microsoft Research,
-  2026)](https://www.microsoft.com/en-us/research/publication/agentic-coding-in-the-wild-characterizing-github-copilot-traces-at-production-scale/) —
+  2024)](https://proceedings.neurips.cc/paper_files/paper/2024/hash/5a7c947568c1b1328ccc5230172e1e7c-Abstract-Conference.html) —
+  базовый референс по проектированию интерфейсов агентов.
+- `[перв.]` [Agentic Coding in the Wild: Characterizing GitHub Copilot at Production Scale
+  (Microsoft Research,
+  2026)](https://www.microsoft.com/en-us/research/publication/agentic-coding-in-the-wild-characterizing-github-copilot-at-production-scale) —
   масштабное исследование поведения агентов в production.
-- `[перв.]` [ACM Queue: CAFE(S) Framework](https://queue.acm.org) — фреймворк из 5 измерений для
+- `[перв.]` [CAFE(S): Your Agent Is Only As Good As Its Context — ACM
+  Queue](https://queue.acm.org/doi/10.1145/3847288) — фреймворк из 5 измерений для
   диагностики контекста AI-агентов.
-- `[перв.]` [The OpenHands Software Agent SDK (Semantic
-  Scholar)](https://www.semanticscholar.org/paper/the-openhands-software-agent-sdk) — архитектура
-  event-sourced агента.
+- `[перв.]` [The OpenHands Software Agent SDK (arXiv 2511.03690, MLSys
+  2026)](https://arxiv.org/abs/2511.03690) — архитектура event-sourced агента.
 
 ### Отраслевые издания
 
@@ -191,7 +194,8 @@ LLM.
   (2026)](https://mitsloan.mit.edu/ideas-made-to-matter/agentic-ai-explained) — что такое агенты и
   чем они отличаются от LLM.
 - `[втор.]` [MIT Technology Review: Building the enterprise environment for agentic AI (июль
-  2026)](https://www.technologyreview.com/2026/07/27) — требования к enterprise-среде для агентов.
+  2026)](https://www.technologyreview.com/2026/07/27/1140668/building-the-enterprise-environment-for-agentic-ai) —
+  требования к enterprise-среде для агентов.
 - `[блог]` [VentureBeat: AI coding agents are blowing through budgets (август
   2026)](https://venturebeat.com/orchestration/ai-coding-agents-are-blowing-through-budgets-replit-kilo-code-and-symbotic-explain-how-theyre-managing-it) —
   реальный опыт управления cost-эффективностью агентов.
@@ -213,7 +217,8 @@ LLM.
   LangGraph](https://www.langchain.com/blog/deep-agents-vs-langchain-vs-langgraph) — разница между
   рантаймом, фреймворком и харнесом.
 - `[перв.]` [GitHub Blog: Continuous AI in
-  practice](https://github.blog/AI%20&%20ML/Generative%20AI) — концепция Continuous AI в репозитории.
+  practice](https://github.blog/ai-and-ml/generative-ai/continuous-ai-in-practice-what-developers-can-automate-today-with-agentic-ci) —
+  концепция Continuous AI в репозитории.
 
 ### Официальные репозитории и документация
 
