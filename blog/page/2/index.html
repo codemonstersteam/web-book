@@ -464,6 +464,70 @@
     <div class="md-post__meta md-meta">
       <ul class="md-meta__list">
         <li class="md-meta__item">
+          <time datetime="2026-04-25 00:00:00+00:00">April 25, 2026</time></li>
+        
+          <li class="md-meta__item">
+            in
+            
+              <a href="../../category/code/" class="md-meta__link">code</a>, 
+              <a href="../../category/tests/" class="md-meta__link">tests</a>, 
+              <a href="../../category/component-tests/" class="md-meta__link">component-tests</a>, 
+              <a href="../../category/howtocode/" class="md-meta__link">howtocode</a>, 
+              <a href="../../category/ubik/" class="md-meta__link">ubik</a></li>
+        
+        
+          
+          <li class="md-meta__item">
+            
+              11 min read
+            
+          </li>
+        
+        
+      </ul>
+      
+    </div>
+  </header>
+  <div class="md-post__content md-typeset">
+    <h2 id="_1"><a class="toclink" href="../../2026/04/25/testing-mythology-component-tests/">Сколько компонентных тестов нужно сервису. Логический вывод</a></h2>
+<blockquote>
+<p><em>«Тестирование программ может служить для доказательства наличия ошибок, но никогда не докажет их отсутствия!»</em></p>
+<p>— Edsger W. Dijkstra</p>
+</blockquote>
+<p>В предыдущих статьях мы прошли путь:</p>
+<ul>
+<li><a href="https://codemonsters.team/blog/2025/12/15/program-modules/">«Модульность программы»</a> — модуль как чёрный ящик с одним входом и одним выходом.</li>
+<li><a href="https://codemonsters.team/blog/2025/12/30/program-correctness/">«Правильность программы»</a> — правильность достигается проектированием. Контроль диапазонов значений, защищённое программирование, формальное доказательство.</li>
+<li><a href="https://codemonsters.team/blog/2026/04/07/documentation-as-product-jtbd/">«README — это продукт»</a> — документация как продукт, у которого есть потребители.</li>
+</ul>
+<p>Складываем три кирпича — и приходим к вопросу, на который индустрия не даёт внятного ответа: сколько компонентных тестов нужно сервису?</p>
+<p>Ответ выводится логически. И он мал.</p>
+
+    
+      <nav class="md-post__action">
+        <a href="../../2026/04/25/testing-mythology-component-tests/">
+          Continue reading
+        </a>
+      </nav>
+    
+    
+  </div>
+</article>
+      
+        <article class="md-post md-post--excerpt">
+  <header class="md-post__header">
+    
+      <nav class="md-post__authors md-typeset">
+        
+          <span class="md-author">
+            <img src="https://avatars.githubusercontent.com/u/45400275" alt="Max Morev">
+          </span>
+        
+      </nav>
+    
+    <div class="md-post__meta md-meta">
+      <ul class="md-meta__list">
+        <li class="md-meta__item">
           <time datetime="2026-04-07 00:00:00+00:00">April 7, 2026</time></li>
         
           <li class="md-meta__item">
@@ -979,66 +1043,6 @@ VS Code в сочетании с cursor меня очень порадовал �
     
       <nav class="md-post__action">
         <a href="../../2025/06/10/ai-component-tests-example/">
-          Continue reading
-        </a>
-      </nav>
-    
-    
-  </div>
-</article>
-      
-        <article class="md-post md-post--excerpt">
-  <header class="md-post__header">
-    
-      <nav class="md-post__authors md-typeset">
-        
-          <span class="md-author">
-            <img src="https://avatars.githubusercontent.com/u/45400275" alt="Max Morev">
-          </span>
-        
-      </nav>
-    
-    <div class="md-post__meta md-meta">
-      <ul class="md-meta__list">
-        <li class="md-meta__item">
-          <time datetime="2025-02-17 00:00:00+00:00">February 17, 2025</time></li>
-        
-          <li class="md-meta__item">
-            in
-            
-              <a href="../../category/linux/" class="md-meta__link">linux</a>, 
-              <a href="../../category/git/" class="md-meta__link">git</a>, 
-              <a href="../../category/devops/" class="md-meta__link">devops</a></li>
-        
-        
-          
-          <li class="md-meta__item">
-            
-              8 min read
-            
-          </li>
-        
-        
-      </ul>
-      
-    </div>
-  </header>
-  <div class="md-post__content md-typeset">
-    <h2 id="as-code"><a class="toclink" href="../../2025/02/17/as-code/">As-Code как ДНК актуальной инженерной культуры</a></h2>
-<p>Недавно на митапе о стандарте разработки нам с <strong>Heads of Profession</strong> задали вопрос, который завис в воздухе, как нерешенный баг в коде. Пятый по популярности в сообществе, он звучал так:</p>
-<p><strong>“А что за потребность всё делать %-as-code? Какая от этого польза? Зачем число комитящих в код?”</strong></p>
-<p>Мы, как архитекторы инженерной культуры, внедряем лучшие практики и подходы: <strong>Infrastructure-as-Code</strong>, <strong>API-First</strong>, <strong>unit-тесты</strong>, <strong>компонентное тестирование</strong>, <strong>TBD</strong> (trunk based development), GitOps, Doc As Cod, ..as code.  Хаос необходимо упорядочить. Мы дорабатываем пайплайн, как инженеры, собирающие сеть в подвале старого дата-центра. Мы создаем условия для <strong>Continuous Deployment</strong> с продуктовыми платформами, где <a href="https://docs.aws.amazon.com/whitepapers/latest/overview-deployment-options/bluegreen-deployments.html"><strong>blue-green deployment</strong></a> и <a href="https://cloud.google.com/deploy/docs/deployment-strategies/canary"><strong>canary deployment</strong></a> становятся порталами для перехода прода из одного состояние в другое..</p>
-<p>Каждый коммит — это шаг в будущее, где код уже не просто текст, а нить в живой ткани новой реальности. Число комитящих — это не просто метрика, это сигнал, что система жива, что она дышит, что она развивается. <strong>As-code</strong> — это философия, где всё, от инфраструктуры до документации, становится частью единого цифрового сада.</p>
-<p>Я провалился  в момент осознания вопроса в другой слой реальности, задумался об истории ..as code и собрал этот текст из разбросанных по сети слепков.</p>
-<p>И когда кто-то спрашивает: “Зачем?”, я  отвечаю: “Потому что иначе мы останемся в прошлом, где ручные процессы, как старые провода, тянут нас назад в тишину, замедляя каждый шаг. ” Мы строим мир, где as code не просто слова, код - наша новая реальность. И каждый, кто коммитит, становится частью этой вселенной.</p>
-<p>Концепт "as code" зародился как реакция на вызовы современной ИТ-индустрии: сложность, скорость изменений и необходимость автоматизации. <br />
-As code концепт стал естественным продолжением эволюции разработки, где код стал не только инструментом создания программ, но и способом управления инфраструктурой, документацией, архитектурой и политиками. Этот подход продолжает развиваться, интегрируя новые технологии, такие как AI, и становится стандартом для современных ИТ-компаний</p>
-<p><strong>"as code"</strong> глубоко корнями тонет в 1970-е годах. Ранние инструменты, такие как Unix "make" и PXE boot, заложили фундамент для автоматизации конфигураций, которые позже эволюционировали в современные подходы, такие как <strong>Infrastructure-as-Code</strong>, <strong>Documentation-as-Code</strong> и <strong>GitOps</strong>. Это подчеркивает, что "as code" — это не просто тренд, а естественное развитие технологий, направленное на упрощение управления сложными системами.</p>
-<p>Если хотите глубже погрузиться в историю, рекомендую изучить материалы по эволюции конфигурационных инструментов, которые показывают, как идеи 1970-х годов повлияли на современные практики.</p>
-
-    
-      <nav class="md-post__action">
-        <a href="../../2025/02/17/as-code/">
           Continue reading
         </a>
       </nav>
